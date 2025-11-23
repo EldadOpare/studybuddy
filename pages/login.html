@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - StudyBuddy</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/auth.js"></script>
+</head>
+<body>
+
+    <div class="auth_container">
+
+        <!-- Left side - Colored section -->
+        <div class="auth_left_section">
+            <div class="brand_section">
+                <h1 class="brand_logo">StudyBuddy</h1>
+                <p class="brand_tagline">Your personal learning companion</p>
+            </div>
+        </div>
+
+
+        <!-- Right side - Form section -->
+        <div class="auth_right_section">
+            <div class="form_wrapper">
+
+                <div class="form_header">
+                    <h2 class="form_title">Welcome Back</h2>
+                    <p class="form_subtitle">Sign in to continue your learning journey</p>
+                </div>
+
+                <form class="auth_form" id="loginForm">
+
+                    <div class="form_group">
+                        <label class="form_label" for="email">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            class="form_input"
+                            placeholder="Enter your email"
+                            required>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label" for="password">Password</label>
+                        <div class="password_input_wrapper">
+                            <input
+                                type="password"
+                                id="password"
+                                class="form_input password_input"
+                                placeholder="Enter your password"
+                                required>
+                            <button
+                                type="button"
+                                class="toggle_password_button"
+                                onclick="togglePassword('password')">
+                                <svg class="eye_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form_options">
+                        <label class="checkbox_label">
+                            <input type="checkbox" class="form_checkbox">
+                            <span class="checkbox_text">Remember me</span>
+                        </label>
+
+                        <a href="#" class="forgot_password_link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="submit_button">
+                        Sign In
+                    </button>
+
+                </form>
+
+                <div class="form_footer">
+                    <p class="footer_text">
+                        Don't have an account?
+                        <a href="signup.html" class="switch_form_link">Sign up</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
