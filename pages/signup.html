@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - StudyBuddy</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/auth.js"></script>
+</head>
+<body>
+
+    <div class="auth_container">
+
+        <!-- Left side - Colored section -->
+        <div class="auth_left_section">
+            <div class="brand_section">
+                <h1 class="brand_logo">StudyBuddy</h1>
+                <p class="brand_tagline">Your personal learning companion</p>
+            </div>
+        </div>
+
+
+        <!-- Right side - Form section -->
+        <div class="auth_right_section">
+            <div class="form_wrapper">
+
+                <div class="form_header">
+                    <h2 class="form_title">Create Account</h2>
+                    <p class="form_subtitle">Start your learning journey with us today</p>
+                </div>
+
+                <form class="auth_form" id="signupForm">
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label class="form_label" for="first_name">First Name</label>
+                            <input
+                                type="text"
+                                id="first_name"
+                                class="form_input"
+                                placeholder="First name"
+                                required>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label" for="last_name">Last Name</label>
+                            <input
+                                type="text"
+                                id="last_name"
+                                class="form_input"
+                                placeholder="Last name"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label" for="signup_email">Email Address</label>
+                        <input
+                            type="email"
+                            id="signup_email"
+                            class="form_input"
+                            placeholder="Enter your email"
+                            required>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label" for="signup_password">Password</label>
+                        <div class="password_input_wrapper">
+                            <input
+                                type="password"
+                                id="signup_password"
+                                class="form_input password_input"
+                                placeholder="Create a password"
+                                required>
+                            <button
+                                type="button"
+                                class="toggle_password_button"
+                                onclick="togglePassword('signup_password')">
+                                <svg class="eye_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label" for="confirm_password">Confirm Password</label>
+                        <div class="password_input_wrapper">
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                class="form_input password_input"
+                                placeholder="Confirm your password"
+                                required>
+                            <button
+                                type="button"
+                                class="toggle_password_button"
+                                onclick="togglePassword('confirm_password')">
+                                <svg class="eye_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit_button">
+                        Create Account
+                    </button>
+
+                </form>
+
+                <div class="form_footer">
+                    <p class="footer_text">
+                        Already have an account?
+                        <a href="login.html" class="switch_form_link">Log in</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
