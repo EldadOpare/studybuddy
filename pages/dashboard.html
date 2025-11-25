@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - StudyBuddy</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/dashboard.js"></script>
+</head>
+<body>
+
+    <div class="app_container">
+
+        <!-- Left sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo_section">
+                <span class="logo_text"><span class="logo_text_study">Study</span><span class="logo_text_buddy">Buddy</span></span>
+            </div>
+
+            <nav class="sidebar_navigation">
+                <a href="dashboard.html" class="nav_item active">
+                    <span class="nav_icon"></span>
+                    Dashboard
+                </a>
+
+                <a href="my_notes.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    My Materials
+                </a>
+
+                <a href="quizzes.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Quizzes
+                </a>
+
+                <a href="study_plan.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Study Plan
+                </a>
+
+                <a href="settings.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Settings
+                </a>
+            </nav>
+
+            <div class="folders_section">
+                <div class="folders_header">
+                    <span class="folders_title">FOLDERS</span>
+                    <button class="add_folder_button">+</button>
+                </div>
+
+                <div class="folder_list">
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon orange"></span>
+                        Biology 101
+                    </a>
+
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon blue"></span>
+                        History Essays
+                    </a>
+
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon green"></span>
+                        Physics Labs
+                    </a>
+                </div>
+            </div>
+
+            <button class="create_new_button">
+                + Create New
+            </button>
+
+        </aside>
+
+
+        <!-- Main content area -->
+        <main class="main_content">
+
+            <header class="page_header">
+                <div class="header_left">
+                </div>
+
+                <div class="header_right">
+                    <div class="search_container">
+                        <input type="text" class="search_input" placeholder="Search decks, quizzes...">
+                    </div>
+
+                    <img src="../images/user.jpg" alt="Profile" class="profile_picture">
+
+                    <button class="logout_button" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+
+            <div class="dashboard_main_wrapper">
+
+                <div class="dashboard_content">
+
+                    <!-- Welcome Hero Section -->
+                    <div class="welcome_hero">
+                        <h2 class="hero_title">Welcome back, Alex!</h2>
+                        <p class="hero_subtitle">Ready to continue learning?</p>
+                    </div>
+
+
+                    <!-- Quick Stats Section -->
+                    <div class="quick_stats_section">
+
+                        <div class="stat_card materials_stat">
+                            <div class="stat_content">
+                                <div class="stat_number">24</div>
+                                <div class="stat_label">Materials</div>
+                            </div>
+                        </div>
+
+                        <div class="stat_card quizzes_stat">
+                            <div class="stat_content">
+                                <div class="stat_number">18</div>
+                                <div class="stat_label">Quizzes Taken</div>
+                            </div>
+                        </div>
+
+                        <div class="stat_card average_stat">
+                            <div class="stat_content">
+                                <div class="stat_number">87%</div>
+                                <div class="stat_label">Average Score</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- My Materials Section -->
+                    <div class="my_materials_section">
+                        <div class="materials_header">
+                            <h3 class="section_title">My Materials</h3>
+
+                            <div class="filter_dropdown">
+                                <select class="filter_select">
+                                    <option value="all">All Materials</option>
+                                    <option value="pdf">PDFs</option>
+                                    <option value="doc">Documents</option>
+                                    <option value="images">Images</option>
+                                    <option value="recent">Recently Added</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="materials_table">
+                            <div class="table_header">
+                                <div class="header_cell material_icon_header">#</div>
+                                <div class="header_cell material_name_header">Material Name</div>
+                                <div class="header_cell material_type_header">Type</div>
+                                <div class="header_cell material_date_header">Date Added</div>
+                            </div>
+
+                            <div class="table_row">
+                                <div class="table_cell row_number">
+                                    <div class="material_icon pdf_icon"></div>
+                                </div>
+
+                                <div class="table_cell material_name_cell">
+                                    <span class="material_name">Introduction to Web Design.pdf</span>
+                                </div>
+
+                                <div class="table_cell material_type_cell">
+                                    <span class="type_badge pdf_badge">PDF</span>
+                                </div>
+
+                                <div class="table_cell material_date_cell">
+                                    <span class="material_date">Oct 26, 2023</span>
+                                </div>
+                            </div>
+
+                            <div class="table_row">
+                                <div class="table_cell row_number">
+                                    <div class="material_icon doc_icon"></div>
+                                </div>
+
+                                <div class="table_cell material_name_cell">
+                                    <span class="material_name">HTML Basics Notes.docx</span>
+                                </div>
+
+                                <div class="table_cell material_type_cell">
+                                    <span class="type_badge doc_badge">DOC</span>
+                                </div>
+
+                                <div class="table_cell material_date_cell">
+                                    <span class="material_date">Oct 24, 2023</span>
+                                </div>
+                            </div>
+
+                            <div class="table_row">
+                                <div class="table_cell row_number">
+                                    <div class="material_icon pdf_icon"></div>
+                                </div>
+
+                                <div class="table_cell material_name_cell">
+                                    <span class="material_name">Python Data Analysis Guide.pdf</span>
+                                </div>
+
+                                <div class="table_cell material_type_cell">
+                                    <span class="type_badge pdf_badge">PDF</span>
+                                </div>
+
+                                <div class="table_cell material_date_cell">
+                                    <span class="material_date">Oct 22, 2023</span>
+                                </div>
+                            </div>
+
+                            <div class="table_row">
+                                <div class="table_cell row_number">
+                                    <div class="material_icon image_icon"></div>
+                                </div>
+
+                                <div class="table_cell material_name_cell">
+                                    <span class="material_name">CSS Flexbox Cheatsheet.png</span>
+                                </div>
+
+                                <div class="table_cell material_type_cell">
+                                    <span class="type_badge image_badge">IMAGE</span>
+                                </div>
+
+                                <div class="table_cell material_date_cell">
+                                    <span class="material_date">Oct 20, 2023</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Right Sidebar -->
+                <aside class="right_sidebar">
+
+                    <!-- Calendar Widget -->
+                    <div class="calendar_widget">
+                        <div class="calendar_header">
+                            <h4 class="calendar_title">Calendar</h4>
+                            <div class="calendar_nav">
+                                <button class="nav_arrow prev_month">&lt;</button>
+                                <button class="nav_arrow next_month">&gt;</button>
+                            </div>
+                        </div>
+
+                        <div class="mini_calendar">
+                            <div class="weekday_row">
+                                <div class="weekday">Mo</div>
+                                <div class="weekday">Tu</div>
+                                <div class="weekday">We</div>
+                                <div class="weekday">Th</div>
+                                <div class="weekday">Fr</div>
+                                <div class="weekday">Sa</div>
+                                <div class="weekday">Su</div>
+                            </div>
+
+                            <div class="calendar_grid">
+                                <!-- Calendar days will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Upcoming Deadlines -->
+                    <div class="upcoming_widget">
+                        <h4 class="upcoming_title">Upcoming</h4>
+
+                        <div class="upcoming_list">
+
+                            <div class="upcoming_item">
+                                <div class="upcoming_date">
+                                    <div class="date_day">29</div>
+                                    <div class="date_month">Sept</div>
+                                </div>
+
+                                <div class="upcoming_details">
+                                    <div class="upcoming_task">Practical theory</div>
+                                    <div class="upcoming_type assignments_type">Assignments</div>
+                                </div>
+                            </div>
+
+                            <div class="upcoming_item">
+                                <div class="upcoming_date">
+                                    <div class="date_day">29</div>
+                                    <div class="date_month">Sept</div>
+                                </div>
+
+                                <div class="upcoming_details">
+                                    <div class="upcoming_task">Practical theory 1</div>
+                                    <div class="upcoming_type test_type">Test</div>
+                                </div>
+                            </div>
+
+                            <div class="upcoming_item">
+                                <div class="upcoming_date">
+                                    <div class="date_day">29</div>
+                                    <div class="date_month">Sept</div>
+                                </div>
+
+                                <div class="upcoming_details">
+                                    <div class="upcoming_task">Practical theory 2</div>
+                                    <div class="upcoming_type lessons_type">Lessons</div>
+                                </div>
+                            </div>
+
+                            <div class="upcoming_item">
+                                <div class="upcoming_date">
+                                    <div class="date_day">29</div>
+                                    <div class="date_month">Sept</div>
+                                </div>
+
+                                <div class="upcoming_details">
+                                    <div class="upcoming_task">Practical theory 3</div>
+                                    <div class="upcoming_type assignments_type">Assignments</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
