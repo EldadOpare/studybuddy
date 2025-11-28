@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Note - StudyBuddy</title>
+    <link rel="stylesheet" href="../css/note_editor.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/note_editor.js"></script>
+</head>
+<body>
+
+    <div class="editor_container">
+
+        <!-- Top toolbar -->
+        <div class="editor_toolbar">
+            <div class="toolbar_left">
+                <a href="my_notes.html" class="back_button">
+                    ← Back to Materials
+                </a>
+            </div>
+
+            <div class="toolbar_right">
+                <button class="save_draft_button" id="saveDraftButton">
+                    Save Draft
+                </button>
+                <button class="publish_button" id="publishButton">
+                    Publish Note
+                </button>
+            </div>
+        </div>
+
+
+        <!-- Note metadata section -->
+        <div class="note_metadata">
+            <input type="text"
+                   
+            class="note_title_input"
+            
+            id="noteTitleInput"
+            
+            placeholder="Untitled Note"
+            
+            autofocus>
+
+            <div class="metadata_row">
+            
+                <div class="metadata_item">
+                    <label class="metadata_label">Folder</label>
+                    <select class="metadata_select" id="folderSelect">
+                        <option value="biology">Biology 101</option>
+                        <option value="history">History Essays</option>
+                        <option value="physics">Physics Labs</option>
+                    </select>
+                </div>
+
+                <div class="metadata_item">
+                    <label class="metadata_label">Color</label>
+                    <select class="metadata_select" id="colorSelect">
+                        <option value="purple">Purple</option>
+                        
+                        <option value="orange">Orange</option>
+                        
+                        <option value="green">Green</option>
+                        
+                        <option value="blue">Blue</option>
+                        
+                        <option value="pink">Pink</option>
+                    
+                    </select>
+                </div>
+
+                <div class="metadata_item">
+                    <label class="metadata_label">Tags</label>
+                    <input type="text"
+                           class="metadata_input"
+                           id="tagsInput"
+                           placeholder="Add tags (e.g., exam, chapter-3)">
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Formatting toolbar -->
+        <div class="formatting_toolbar">
+            <div class="format_group">
+                <button class="format_button" data-command="bold" title="Bold (Ctrl+B)">
+                    <strong>B</strong>
+                </button>
+                <button class="format_button" data-command="italic" title="Italic (Ctrl+I)">
+                    <em>I</em>
+                </button>
+                <button class="format_button" data-command="underline" title="Underline (Ctrl+U)">
+                    <u>U</u>
+                </button>
+            </div>
+
+            <div class="format_divider"></div>
+
+            <div class="format_group">
+                <button class="format_button" data-command="insertUnorderedList" title="Bullet List">
+                    •
+                </button>
+                <button class="format_button" data-command="insertOrderedList" title="Numbered List">
+                    1.
+                </button>
+            </div>
+
+            <div class="format_divider"></div>
+
+            <div class="format_group">
+                <button class="format_button" data-command="formatBlock" data-value="h2" title="Heading">
+                    H
+                </button>
+                <button class="format_button" data-command="formatBlock" data-value="p" title="Paragraph">
+                    P
+                </button>
+            </div>
+        </div>
+
+
+        <!-- Main note editor -->
+        <div class="note_editor_wrapper">
+            <div class="note_editor"
+                 id="noteEditor"
+                 contenteditable="true"
+                 data-placeholder="Start typing your note...">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
