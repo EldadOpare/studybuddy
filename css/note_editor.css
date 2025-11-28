@@ -1,0 +1,277 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #FAFAFA;
+    color: #1D1D1F;
+    font-weight: normal;
+}
+
+
+/* Editor Container */
+.editor_container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: white;
+    min-height: 100vh;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Top Toolbar */
+.editor_toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid #F0F0F0;
+    background-color: white;
+    sticky: top;
+    top: 0;
+    z-index: 100;
+}
+
+.toolbar_left {
+    display: flex;
+    align-items: center;
+}
+
+.back_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: #86868B;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.back_button:hover {
+    background-color: #F5F5F5;
+    color: #1D1D1F;
+}
+
+.toolbar_right {
+    display: flex;
+    gap: 12px;
+}
+
+.save_draft_button,
+.publish_button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.save_draft_button {
+    background-color: white;
+    border: 1px solid #D0D0D0;
+    color: #1D1D1F;
+}
+
+.save_draft_button:hover {
+    background-color: #F5F5F5;
+}
+
+.publish_button {
+    background-color: #00B7B5;
+    color: white;
+}
+
+.publish_button:hover {
+    background-color: #018790;
+}
+
+
+/* Note Metadata */
+.note_metadata {
+    padding: 40px 60px 32px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.note_title_input {
+    width: 100%;
+    font-size: 36px;
+    font-weight: normal;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin-bottom: 24px;
+    color: #1D1D1F;
+}
+
+.note_title_input::placeholder {
+    color: #D0D0D0;
+}
+
+.metadata_row {
+    display: flex;
+    gap: 24px;
+}
+
+.metadata_item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.metadata_label {
+    font-size: 13px;
+    color: #86868B;
+    font-weight: normal;
+}
+
+.metadata_select,
+.metadata_input {
+    padding: 10px 14px;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1D1D1F;
+    outline: none;
+    transition: border-color 0.2s;
+    background-color: #FAFAFA;
+}
+
+.metadata_select:focus,
+.metadata_input:focus {
+    border-color: #00B7B5;
+    background-color: white;
+}
+
+
+/* Formatting Toolbar */
+.formatting_toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 60px;
+    border-bottom: 1px solid #F0F0F0;
+    background-color: #FAFAFA;
+}
+
+.format_group {
+    display: flex;
+    gap: 4px;
+}
+
+.format_divider {
+    width: 1px;
+    height: 24px;
+    background-color: #E0E0E0;
+    margin: 0 8px;
+}
+
+.format_button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1D1D1F;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.format_button:hover {
+    background-color: #F0F0F0;
+}
+
+.format_button.active {
+    background-color: #E0F4F5;
+    color: #00B7B5;
+}
+
+
+/* Note Editor */
+.note_editor_wrapper {
+    padding: 40px 60px 80px;
+    min-height: 500px;
+}
+
+.note_editor {
+    min-height: 400px;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #1D1D1F;
+    outline: none;
+}
+
+.note_editor:empty:before {
+    content: attr(data-placeholder);
+    color: #D0D0D0;
+    pointer-events: none;
+}
+
+.note_editor h2 {
+    font-size: 24px;
+    font-weight: normal;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    color: #1D1D1F;
+}
+
+.note_editor h2:first-child {
+    margin-top: 0;
+}
+
+.note_editor p {
+    margin-bottom: 16px;
+}
+
+.note_editor ul,
+.note_editor ol {
+    margin-left: 24px;
+    margin-bottom: 16px;
+}
+
+.note_editor li {
+    margin-bottom: 8px;
+}
+
+.note_editor strong {
+    font-weight: 600;
+}
+
+.note_editor em {
+    font-style: italic;
+}
+
+.note_editor u {
+    text-decoration: underline;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .note_metadata,
+    .formatting_toolbar,
+    .note_editor_wrapper {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .note_title_input {
+        font-size: 28px;
+    }
+
+    .metadata_row {
+        flex-direction: column;
+    }
+}
