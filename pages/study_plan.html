@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Plan - StudyBuddy</title>
+    <link rel="stylesheet" href="../css/study_plan.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/study_plan.js"></script>
+</head>
+<body>
+
+    <div class="app_container">
+
+        <!-- Left sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo_section">
+                <span class="logo_text"><span class="logo_text_study">Study</span><span class="logo_text_buddy">Buddy</span></span>
+            </div>
+
+            <nav class="sidebar_navigation">
+                <a href="dashboard.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Dashboard
+                </a>
+
+                <a href="my_notes.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    My Materials
+                </a>
+
+                <a href="quizzes.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Quizzes
+                </a>
+
+                <a href="study_plan.html" class="nav_item active">
+                    <span class="nav_icon"></span>
+                    Study Plan
+                </a>
+
+                <a href="settings.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Settings
+                </a>
+            </nav>
+
+            <div class="folders_section">
+                <div class="folders_header">
+                    <span class="folders_title">FOLDERS</span>
+                    <button class="add_folder_button">+</button>
+                </div>
+
+                <div class="folder_list">
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon orange"></span>
+                        Biology 101
+                    </a>
+
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon blue"></span>
+                        History Essays
+                    </a>
+
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon green"></span>
+                        Physics Labs
+                    </a>
+                </div>
+            </div>
+
+            <button class="create_new_button">
+                + Create New
+            </button>
+
+        </aside>
+
+
+        <!-- Main content area -->
+        <main class="main_content">
+
+            <header class="page_header">
+                <div class="header_right">
+                    <img src="../images/user.jpg" alt="Profile" class="profile_picture">
+                    <button class="logout_button" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+
+            <div class="content_grid">
+
+                <!-- Schedule Section -->
+                <div class="schedule_section">
+
+                    <div class="calendar_header">
+                        <div class="month_navigation">
+                            <button class="month_arrow prev">&lt;</button>
+                            <h2 class="current_month">October 2024</h2>
+                            <button class="month_arrow next">&gt;</button>
+                        </div>
+
+                        <button class="today_button">Today</button>
+                    </div>
+
+                    <div class="calendar_weekdays">
+                        <div class="weekday">Sun</div>
+                        <div class="weekday">Mon</div>
+                        <div class="weekday">Tue</div>
+                        <div class="weekday">Wed</div>
+                        <div class="weekday">Thu</div>
+                        <div class="weekday">Fri</div>
+                        <div class="weekday">Sat</div>
+                    </div>
+
+                    <div class="calendar_grid">
+
+                        <!-- Week 1 -->
+                        <div class="calendar_day other_month">
+                            <span class="day_number">29</span>
+                        </div>
+                        <div class="calendar_day other_month">
+                            <span class="day_number">30</span>
+                        </div>
+                        <div class="calendar_day other_month">
+                            <span class="day_number">1</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">2</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">3</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">4</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">5</span>
+                        </div>
+
+                        <!-- Week 2 -->
+                        <div class="calendar_day">
+                            <span class="day_number">6</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">7</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">8</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">9</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">10</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">11</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">12</span>
+                        </div>
+
+                        <!-- Week 3 -->
+                        <div class="calendar_day">
+                            <span class="day_number">13</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">14</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">15</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">16</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">17</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">18</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">19</span>
+                        </div>
+
+                        <!-- Week 4 -->
+                        <div class="calendar_day">
+                            <span class="day_number">20</span>
+                        </div>
+                        <div class="calendar_day has_activities">
+                            <span class="day_number">21</span>
+                            <div class="activity_dot blue_dot"></div>
+                            <div class="activity_dot pink_dot"></div>
+                        </div>
+                        <div class="calendar_day has_activities">
+                            <span class="day_number">22</span>
+                            <div class="activity_dot orange_dot"></div>
+                        </div>
+                        <div class="calendar_day has_activities">
+                            <span class="day_number">23</span>
+                            <div class="activity_dot blue_dot"></div>
+                            <div class="activity_dot green_dot"></div>
+                        </div>
+                        <div class="calendar_day has_activities">
+                            <span class="day_number">24</span>
+                            <div class="activity_dot pink_dot"></div>
+                        </div>
+                        <div class="calendar_day has_activities today">
+                            <span class="day_number">25</span>
+                            <div class="activity_dot blue_dot"></div>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">26</span>
+                        </div>
+
+                        <!-- Week 5 -->
+                        <div class="calendar_day">
+                            <span class="day_number">27</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">28</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">29</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">30</span>
+                        </div>
+                        <div class="calendar_day">
+                            <span class="day_number">31</span>
+                        </div>
+                        <div class="calendar_day other_month">
+                            <span class="day_number">1</span>
+                        </div>
+                        <div class="calendar_day other_month">
+                            <span class="day_number">2</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Right column - Day Details and Deadlines -->
+                <div class="sidebar_widgets">
+
+                    <!-- Selected Day Activities -->
+                    <div class="day_details_widget">
+                        <h3 class="widget_title">Friday, October 25</h3>
+
+                        <div class="activities_list">
+
+                            <div class="activity_item blue_activity">
+                                <div class="activity_time">9:00 AM - 11:00 AM</div>
+                                <div class="activity_info">
+                                    <h4 class="activity_title">Calculus Chapter 3</h4>
+                                    <p class="activity_subject">Calculus</p>
+                                </div>
+                                <button class="activity_options">...</button>
+                            </div>
+
+                            <div class="activity_item pink_activity">
+                                <div class="activity_time">2:00 PM - 3:30 PM</div>
+                                <div class="activity_info">
+                                    <h4 class="activity_title">Physics: Kinematics</h4>
+                                    <p class="activity_subject">Physics</p>
+                                </div>
+                                <button class="activity_options">...</button>
+                            </div>
+
+                        </div>
+
+                        <button class="add_to_day_button">+ Add to this day</button>
+                    </div>
+
+
+                    <!-- Upcoming Deadlines -->
+                    <div class="deadlines_widget">
+                        <h3 class="widget_title">Upcoming Deadlines</h3>
+
+                        <div class="deadlines_list">
+
+                            <div class="deadline_item">
+                                <div class="deadline_date">
+                                    <span class="date_month">OCT</span>
+                                    <span class="date_day">23</span>
+                                </div>
+                                <div class="deadline_info">
+                                    <h4 class="deadline_title">Calculus Quiz</h4>
+                                    <p class="deadline_subtitle">Covers Chapters 1-3.</p>
+                                </div>
+                            </div>
+
+                            <div class="deadline_item">
+                                <div class="deadline_date orange_date">
+                                    <span class="date_month">OCT</span>
+                                    <span class="date_day">25</span>
+                                </div>
+                                <div class="deadline_info">
+                                    <h4 class="deadline_title">History Paper Final Draft</h4>
+                                    <p class="deadline_subtitle">Submit by 11:59 PM.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- Create Folder Modal -->
+    <div class="modal_overlay" id="createFolderModal" style="display: none;">
+        <div class="modal_container modal_small">
+            <div class="modal_header">
+                <h2 class="modal_title">Create New Folder</h2>
+                <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <form class="folder_form" id="createFolderForm">
+
+                    <div class="form_group">
+                        <label class="form_label">Folder Name</label>
+                        <input type="text"
+                               class="form_input"
+                               id="folderName"
+                               placeholder="Enter folder name..."
+                               required>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label">Choose Color</label>
+                        <div class="color_picker">
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="yellow" class="color_input">
+                                <span class="color_circle" style="background-color: #FFD63A;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="orange" class="color_input" checked>
+                                <span class="color_circle" style="background-color: #FFA955;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="red" class="color_input">
+                                <span class="color_circle" style="background-color: #F75A5A;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="navy" class="color_input">
+                                <span class="color_circle" style="background-color: #0D1164;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="purple_dark" class="color_input">
+                                <span class="color_circle" style="background-color: #640D5F;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="pink" class="color_input">
+                                <span class="color_circle" style="background-color: #EA2264;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="peach" class="color_input">
+                                <span class="color_circle" style="background-color: #F78D60;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="pink_light" class="color_input">
+                                <span class="color_circle" style="background-color: #F29AAE;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="lavender" class="color_input">
+                                <span class="color_circle" style="background-color: #C47BE4;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="purple" class="color_input">
+                                <span class="color_circle" style="background-color: #7132CA;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="indigo" class="color_input">
+                                <span class="color_circle" style="background-color: #301CA0;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="cancel_modal_button" id="cancelFolderModalButton">
+                    Cancel
+                </button>
+                <button type="submit" form="createFolderForm" class="submit_modal_button" id="submitFolderButton">
+                    Create Folder
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Activity Modal -->
+    <div class="modal_overlay" id="addActivityModal" style="display: none;">
+        <div class="modal_container">
+            <div class="modal_header">
+                <h2 class="modal_title">Add Activity</h2>
+                <button class="modal_close_button" id="closeActivityModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <form class="activity_form" id="addActivityForm">
+
+                    <div class="form_group">
+                        <label class="form_label">Activity Title</label>
+                        <input type="text"
+                               class="form_input"
+                               id="activityTitle"
+                               placeholder="Enter activity title..."
+                               required>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label class="form_label">Subject</label>
+                            <select class="form_select" id="activitySubject" required>
+                                <option value="">Select subject</option>
+                                <option value="calculus">Calculus</option>
+                                <option value="physics">Physics</option>
+                                <option value="history">History</option>
+                                <option value="biology">Biology</option>
+                            </select>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">Color</label>
+                            <select class="form_select" id="activityColor" required>
+                                <option value="blue">Blue</option>
+                                <option value="orange">Orange</option>
+                                <option value="pink">Pink</option>
+                                <option value="green">Green</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label class="form_label">Date</label>
+                            <input type="date"
+                                   class="form_input"
+                                   id="activityDate"
+                                   required>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">Start Time</label>
+                            <input type="time"
+                                   class="form_input"
+                                   id="activityStartTime"
+                                   required>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">End Time</label>
+                            <input type="time"
+                                   class="form_input"
+                                   id="activityEndTime"
+                                   required>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="cancel_modal_button" id="cancelActivityModalButton">
+                    Cancel
+                </button>
+                <button type="submit" form="addActivityForm" class="submit_modal_button" id="submitActivityButton">
+                    Add Activity
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
