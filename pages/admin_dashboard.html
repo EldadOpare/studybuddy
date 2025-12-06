@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - StudyBuddy</title>
+    <link rel="stylesheet" href="../css/admin_dashboard.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/admin_dashboard.js"></script>
+</head>
+<body>
+
+    <div class="app_container">
+
+        <!-- Left sidebar - simpler for admin -->
+        <aside class="sidebar">
+
+            <div class="logo_section">
+                <span class="logo_text"><span class="logo_text_study">Study</span><span class="logo_text_buddy">Buddy</span></span>
+            </div>
+
+            <nav class="sidebar_navigation">
+                <a href="admin_dashboard.html" class="nav_item active">
+                    <span class="nav_icon"></span>
+                    Dashboard
+                </a>
+
+                <a href="admin_students.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Users
+                </a>
+
+                <a href="admin_settings.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Settings
+                </a>
+            </nav>
+
+        </aside>
+
+
+        <!-- Main content area -->
+        <main class="main_content">
+
+            <header class="page_header">
+                <div class="header_right">
+                    <img src="../images/user.jpg" alt="Profile" class="profile_picture">
+                    <button class="logout_button" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+
+            <!-- Dashboard content -->
+            <div class="dashboard_content">
+
+                <!-- Welcome message -->
+                <div class="welcome_section">
+                    <h2 class="welcome_title">Welcome, Admin</h2>
+                    <p class="welcome_subtitle">Platform overview and statistics</p>
+                </div>
+
+
+                <!-- Stats cards -->
+                <div class="stats_grid">
+
+                    <div class="stat_card">
+                        <div class="stat_icon students_icon"></div>
+                        <div class="stat_info">
+                            <div class="stat_number">24</div>
+                            <div class="stat_label">Total Users</div>
+                        </div>
+                    </div>
+
+                    <div class="stat_card">
+                        <div class="stat_icon files_icon"></div>
+                        <div class="stat_info">
+                            <div class="stat_number">156</div>
+                            <div class="stat_label">Files Uploaded</div>
+                        </div>
+                    </div>
+
+                    <div class="stat_card">
+                        <div class="stat_icon notes_icon"></div>
+                        <div class="stat_info">
+                            <div class="stat_number">89</div>
+                            <div class="stat_label">Notes Created</div>
+                        </div>
+                    </div>
+
+                    <div class="stat_card">
+                        <div class="stat_icon quizzes_icon"></div>
+                        <div class="stat_info">
+                            <div class="stat_number">45</div>
+                            <div class="stat_label">Quizzes Generated</div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Recent Activity Section -->
+                <div class="recent_activity_section">
+                    <h3 class="section_title">Recent Activity</h3>
+
+                    <div class="activity_feed">
+                        <!-- Activity items will be populated by JavaScript -->
+                        <div class="activity_item">
+                            <div class="activity_icon upload_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>John Mensah</strong> uploaded a new file</p>
+                                <span class="activity_time">2 hours ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity_item">
+                            <div class="activity_icon note_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>Ama Asante</strong> created a note</p>
+                                <span class="activity_time">5 hours ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity_item">
+                            <div class="activity_icon quiz_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>Kwame Boateng</strong> generated a quiz</p>
+                                <span class="activity_time">1 day ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity_item">
+                            <div class="activity_icon upload_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>Efua Owusu</strong> uploaded a new file</p>
+                                <span class="activity_time">1 day ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity_item">
+                            <div class="activity_icon note_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>Yaw Agyeman</strong> created a note</p>
+                                <span class="activity_time">2 days ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity_item">
+                            <div class="activity_icon quiz_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>John Mensah</strong> generated a quiz</p>
+                                <span class="activity_time">2 days ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity_item">
+                            <div class="activity_icon upload_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>Ama Asante</strong> uploaded a new file</p>
+                                <span class="activity_time">3 days ago</span>
+                            </div>
+                        </div>
+
+                        <div class="activity_item">
+                            <div class="activity_icon note_icon"></div>
+                            <div class="activity_details">
+                                <p class="activity_text"><strong>Kwame Boateng</strong> created a note</p>
+                                <span class="activity_time">3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
