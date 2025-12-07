@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - StudyBuddy Admin</title>
+    <link rel="stylesheet" href="../css/admin_students.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/admin_students.js"></script>
+</head>
+<body>
+
+    <div class="app_container">
+
+        <!-- Left sidebar - simpler for admin -->
+        <aside class="sidebar">
+
+            <div class="logo_section">
+                <span class="logo_text"><span class="logo_text_study">Study</span><span class="logo_text_buddy">Buddy</span></span>
+            </div>
+
+            <nav class="sidebar_navigation">
+                <a href="admin_dashboard.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Dashboard
+                </a>
+
+                <a href="admin_students.html" class="nav_item active">
+                    <span class="nav_icon"></span>
+                    Users
+                </a>
+
+                <a href="admin_settings.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Settings
+                </a>
+            </nav>
+
+        </aside>
+
+
+        <!-- Main content area -->
+        <main class="main_content">
+
+            <header class="page_header">
+                <div class="header_right">
+                    <div class="search_container">
+                        <input type="text" class="search_input" id="studentSearch" placeholder="Search users...">
+                    </div>
+                    <img src="../images/user.jpg" alt="Profile" class="profile_picture">
+                    <button class="logout_button" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+
+            <!-- Students content -->
+            <div class="students_content">
+
+                <!-- Page title section -->
+                <div class="page_title_section">
+                    <h2 class="page_title">All Users</h2>
+                    <p class="page_subtitle">View and manage user accounts</p>
+                </div>
+
+
+                <!-- Students table -->
+                <div class="table_container">
+                    <table class="students_table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Files Uploaded</th>
+                                <th>Notes Created</th>
+                                <th>Quizzes Generated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- User rows - mock data for now -->
+                            <tr class="student_row" data-student-id="1">
+                                <td class="student_name">
+                                    <div class="name_cell">
+                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
+                                        <span>John Mensah</span>
+                                    </div>
+                                </td>
+                                <td>john.mensah@student.com</td>
+                                <td>12</td>
+                                <td>8</td>
+                                <td>5</td>
+                                <td>
+                                    <button class="view_button" onclick="viewStudent(1)">View</button>
+                                </td>
+                            </tr>
+
+                            <tr class="student_row" data-student-id="2">
+                                <td class="student_name">
+                                    <div class="name_cell">
+                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
+                                        <span>Ama Asante</span>
+                                    </div>
+                                </td>
+                                <td>ama.asante@student.com</td>
+                                <td>18</td>
+                                <td>15</td>
+                                <td>9</td>
+                                <td>
+                                    <button class="view_button" onclick="viewStudent(2)">View</button>
+                                </td>
+                            </tr>
+
+                            <tr class="student_row" data-student-id="3">
+                                <td class="student_name">
+                                    <div class="name_cell">
+                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
+                                        <span>Kwame Boateng</span>
+                                    </div>
+                                </td>
+                                <td>kwame.boateng@student.com</td>
+                                <td>7</td>
+                                <td>5</td>
+                                <td>3</td>
+                                <td>
+                                    <button class="view_button" onclick="viewStudent(3)">View</button>
+                                </td>
+                            </tr>
+
+                            <tr class="student_row" data-student-id="4">
+                                <td class="student_name">
+                                    <div class="name_cell">
+                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
+                                        <span>Efua Owusu</span>
+                                    </div>
+                                </td>
+                                <td>efua.owusu@student.com</td>
+                                <td>21</td>
+                                <td>18</td>
+                                <td>12</td>
+                                <td>
+                                    <button class="view_button" onclick="viewStudent(4)">View</button>
+                                </td>
+                            </tr>
+
+                            <tr class="student_row" data-student-id="5">
+                                <td class="student_name">
+                                    <div class="name_cell">
+                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
+                                        <span>Yaw Agyeman</span>
+                                    </div>
+                                </td>
+                                <td>yaw.agyeman@student.com</td>
+                                <td>9</td>
+                                <td>6</td>
+                                <td>4</td>
+                                <td>
+                                    <button class="view_button" onclick="viewStudent(5)">View</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- User Detail Modal -->
+    <div id="studentDetailModal" class="modal_overlay" style="display: none;">
+        <div class="modal_container">
+            <div class="modal_header">
+                <h3 class="modal_title">User Details</h3>
+                <button class="modal_close_button" id="closeStudentModal">&times;</button>
+            </div>
+
+            <div class="modal_body">
+
+                <!-- User info -->
+                <div class="student_detail_section">
+                    <div class="student_header">
+                        <img src="../images/user.jpg" alt="User" class="student_detail_avatar">
+                        <div class="student_header_info">
+                            <h4 class="student_detail_name" id="studentName">User Name</h4>
+                            <p class="student_detail_email" id="studentEmail">user@email.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User stats -->
+                <div class="student_stats_grid">
+                    <div class="student_stat_card">
+                        <div class="student_stat_number" id="studentFiles">0</div>
+                        <div class="student_stat_label">Files Uploaded</div>
+                    </div>
+
+                    <div class="student_stat_card">
+                        <div class="student_stat_number" id="studentNotes">0</div>
+                        <div class="student_stat_label">Notes Created</div>
+                    </div>
+
+                    <div class="student_stat_card">
+                        <div class="student_stat_number" id="studentQuizzes">0</div>
+                        <div class="student_stat_label">Quizzes Generated</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal_footer">
+                <button class="delete_user_button" id="deleteUserButton">Delete Account</button>
+                <button class="cancel_modal_button" id="closeStudentModalButton">Close</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
