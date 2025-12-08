@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results - StudyBuddy</title>
+    <link rel="stylesheet" href="../css/quiz_results.css">
+    <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="../js/quiz_results.js"></script>
+</head>
+<body>
+
+    <div class="app_container">
+
+        <!-- Left sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo_section">
+                <span class="logo_text"><span class="logo_text_study">Study</span><span class="logo_text_buddy">Buddy</span></span>
+            </div>
+
+            <nav class="sidebar_navigation">
+                <a href="dashboard.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Dashboard
+                </a>
+
+                <a href="my_notes.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    My Materials
+                </a>
+
+                <a href="quizzes.html" class="nav_item active">
+                    <span class="nav_icon"></span>
+                    Quizzes
+                </a>
+
+                <a href="study_plan.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Study Plan
+                </a>
+
+                <a href="settings.html" class="nav_item">
+                    <span class="nav_icon"></span>
+                    Settings
+                </a>
+            </nav>
+
+            <div class="folders_section">
+                <div class="folders_header">
+                    <span class="folders_title">FOLDERS</span>
+                    <button class="add_folder_button">+</button>
+                </div>
+
+                <div class="folder_list">
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon orange"></span>
+                        Biology 101
+                    </a>
+
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon blue"></span>
+                        History Essays
+                    </a>
+
+                    <a href="#" class="folder_item">
+                        <span class="folder_icon green"></span>
+                        Physics Labs
+                    </a>
+                </div>
+            </div>
+
+            <button class="create_new_button">
+                + Create New
+            </button>
+
+        </aside>
+
+
+        <!-- Main content area -->
+        <main class="main_content">
+
+            <header class="page_header">
+                <div class="header_left">
+                </div>
+
+                <div class="header_right">
+                    <div class="search_container">
+                        <input type="text" class="search_input" placeholder="Search decks, quizzes...">
+                    </div>
+
+                    <img src="../images/user.jpg" alt="Profile" class="profile_picture">
+
+                    <button class="logout_button" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
+            </header>
+
+            <div class="results_content">
+
+                <!-- Results Header -->
+                <div class="results_header">
+                    <h2 class="results_title" id="quizTitle">Biology 101 - Cell Structure</h2>
+                    <div class="results_actions">
+                        <button class="action_button secondary_button" id="retakeQuizButton">Retake Quiz</button>
+                        <button class="action_button primary_button" id="backToQuizzesButton">Back to Quizzes</button>
+                    </div>
+                </div>
+
+                <!-- Score Summary -->
+                <div class="score_summary">
+                    <div class="score_card">
+                        <div class="score_circle" id="scoreCircle">
+                            <svg width="180" height="180">
+                                <circle cx="90" cy="90" r="80" fill="none" stroke="#e2e8f0" stroke-width="12"></circle>
+                                <circle id="scoreProgress" cx="90" cy="90" r="80" fill="none" stroke="#018790" stroke-width="12"
+                                    stroke-dasharray="502.4" stroke-dashoffset="125.6"
+                                    transform="rotate(-90 90 90)" stroke-linecap="round"></circle>
+                            </svg>
+                            <div class="score_text">
+                                <div class="score_percentage" id="scorePercentage">75%</div>
+                                <div class="score_label">Score</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary_stats">
+                        <div class="stat_item">
+                            <div class="stat_icon correct_icon"></div>
+                            <div class="stat_info">
+                                <div class="stat_value" id="correctCount">8</div>
+                                <div class="stat_label">Correct</div>
+                            </div>
+                        </div>
+
+                        <div class="stat_item">
+                            <div class="stat_icon incorrect_icon"></div>
+                            <div class="stat_info">
+                                <div class="stat_value" id="incorrectCount">2</div>
+                                <div class="stat_label">Incorrect</div>
+                            </div>
+                        </div>
+
+                        <div class="stat_item">
+                            <div class="stat_icon time_icon"></div>
+                            <div class="stat_info">
+                                <div class="stat_value" id="timeSpent">5:42</div>
+                                <div class="stat_label">Time Spent</div>
+                            </div>
+                        </div>
+
+                        <div class="stat_item">
+                            <div class="stat_icon date_icon"></div>
+                            <div class="stat_info">
+                                <div class="stat_value" id="dateTaken">Dec 10</div>
+                                <div class="stat_label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review Section -->
+                <div class="review_section">
+                    <h3 class="section_title">Review Answers</h3>
+
+                    <div class="questions_review" id="questionsReview">
+                        <!-- Questions will be populated by JavaScript -->
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
