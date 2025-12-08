@@ -6,6 +6,11 @@
     <title>Quizzes - StudyBuddy</title>
     <link rel="stylesheet" href="../css/quizzes.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Configure PDF.js worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
     <script src="../js/quizzes.js"></script>
 </head>
 <body>
@@ -89,12 +94,345 @@
             <!-- Main content will go here -->
             <div class="quizzes_content">
 
-                <!-- Content coming soon -->
+                <!-- Top Section with Hero and Generate Button -->
+                <div class="top_section">
+                    <!-- Welcome Hero Banner -->
+                    <div class="welcome_hero">
+                        <h2 class="hero_title">Quizzes</h2>
+                        <p class="hero_subtitle">Generate AI-powered quizzes and track your progress</p>
+                    </div>
+
+                    <!-- Generate Quiz Card -->
+                    <div class="generate_quiz_card">
+                        <button class="generate_quiz_button" id="generateQuizButton">
+                            + Generate Quiz
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats_section">
+                    <div class="stat_card">
+                        <div class="stat_number" id="totalQuizzes">12</div>
+                        <div class="stat_label">Total Quizzes</div>
+                    </div>
+
+                    <div class="stat_card">
+                        <div class="stat_number" id="quizzesTaken">8</div>
+                        <div class="stat_label">Quizzes Taken</div>
+                    </div>
+
+                    <div class="stat_card">
+                        <div class="stat_number" id="averageScore">87%</div>
+                        <div class="stat_label">Average Score</div>
+                    </div>
+                </div>
+
+                <!-- Quizzes Section -->
+                <div class="quizzes_section">
+                    <div class="section_header">
+                        <h3 class="section_title">Past Quizzes</h3>
+
+                        <div class="section_actions">
+                            <div class="search_container">
+                                <input type="text" class="search_input" placeholder="Search quizzes..." id="searchQuizzes">
+                            </div>
+
+                            <select class="filter_select" id="filterQuizzes">
+                                <option value="all">All Quizzes</option>
+                                <option value="completed">Completed</option>
+                                <option value="not_started">Not Started</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Quizzes Table -->
+                    <div class="quizzes_table">
+                        <div class="table_header">
+                            <div class="header_cell quiz_name_header">Quiz Name</div>
+                            <div class="header_cell quiz_type_header">Type</div>
+                            <div class="header_cell quiz_questions_header">Questions</div>
+                            <div class="header_cell quiz_score_header">Score</div>
+                            <div class="header_cell quiz_date_header">Date Created</div>
+                            <div class="header_cell quiz_actions_header">Actions</div>
+                        </div>
+
+                        <!-- Sample Quiz Rows -->
+                        <div class="table_row">
+                            <div class="table_cell quiz_name_cell">
+                                <span class="quiz_name">Introduction to Biology</span>
+                            </div>
+                            <div class="table_cell quiz_type_cell">
+                                <span class="type_badge prompt_badge">Prompt</span>
+                            </div>
+                            <div class="table_cell quiz_questions_cell">
+                                <span class="quiz_questions">10</span>
+                            </div>
+                            <div class="table_cell quiz_score_cell">
+                                <span class="quiz_score completed_score">92%</span>
+                            </div>
+                            <div class="table_cell quiz_date_cell">
+                                <span class="quiz_date">Nov 15, 2024</span>
+                            </div>
+                            <div class="table_cell quiz_actions_cell">
+                                <button class="action_button retake_button">Retake</button>
+                                <button class="action_button view_button">View Results</button>
+                            </div>
+                        </div>
+
+                        <div class="table_row">
+                            <div class="table_cell quiz_name_cell">
+                                <span class="quiz_name">Python Programming Basics</span>
+                            </div>
+                            <div class="table_cell quiz_type_cell">
+                                <span class="type_badge pdf_badge">PDF</span>
+                            </div>
+                            <div class="table_cell quiz_questions_cell">
+                                <span class="quiz_questions">15</span>
+                            </div>
+                            <div class="table_cell quiz_score_cell">
+                                <span class="quiz_score completed_score">85%</span>
+                            </div>
+                            <div class="table_cell quiz_date_cell">
+                                <span class="quiz_date">Nov 12, 2024</span>
+                            </div>
+                            <div class="table_cell quiz_actions_cell">
+                                <button class="action_button retake_button">Retake</button>
+                                <button class="action_button view_button">View Results</button>
+                            </div>
+                        </div>
+
+                        <div class="table_row">
+                            <div class="table_cell quiz_name_cell">
+                                <span class="quiz_name">World War II History</span>
+                            </div>
+                            <div class="table_cell quiz_type_cell">
+                                <span class="type_badge prompt_badge">Prompt</span>
+                            </div>
+                            <div class="table_cell quiz_questions_cell">
+                                <span class="quiz_questions">20</span>
+                            </div>
+                            <div class="table_cell quiz_score_cell">
+                                <span class="quiz_score not_started">Not Started</span>
+                            </div>
+                            <div class="table_cell quiz_date_cell">
+                                <span class="quiz_date">Nov 10, 2024</span>
+                            </div>
+                            <div class="table_cell quiz_actions_cell">
+                                <button class="action_button start_button">Start Quiz</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
 
         </main>
 
+    </div>
+
+
+    <!-- Generate Quiz Selection Modal -->
+    <div class="modal_overlay" id="generateQuizModal" style="display: none;">
+        <div class="modal_container modal_small">
+            <div class="modal_header">
+                <h2 class="modal_title">Generate New Quiz</h2>
+                <button class="modal_close_button" id="closeGenerateModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <p class="modal_description">Choose how you'd like to generate your quiz</p>
+
+                <div class="quiz_type_options">
+                    <div class="quiz_type_option" id="promptQuizOption">
+                        <h3 class="option_title">From Prompt</h3>
+                        <p class="option_description">Enter a topic or question and AI will generate a quiz</p>
+                        <button class="option_button">Choose</button>
+                    </div>
+
+                    <div class="quiz_type_option" id="pdfQuizOption">
+                        <h3 class="option_title">From PDF</h3>
+                        <p class="option_description">Select from your materials or upload a new PDF document</p>
+                        <button class="option_button">Choose</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Create Quiz from Prompt Modal -->
+    <div class="modal_overlay" id="promptQuizModal" style="display: none;">
+        <div class="modal_container">
+            <div class="modal_header">
+                <h2 class="modal_title">Generate Quiz from Prompt</h2>
+                <button class="modal_close_button" id="closePromptModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <form class="quiz_form" id="promptQuizForm">
+
+                    <div class="form_group">
+                        <label class="form_label">Quiz Title</label>
+                        <input type="text"
+                               class="form_input"
+                               id="promptQuizTitle"
+                               placeholder="e.g., Introduction to Biology"
+                               required>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label">Topic or Prompt</label>
+                        <textarea
+                               class="form_textarea"
+                               id="promptQuizTopic"
+                               placeholder="Enter the topic or questions you want the quiz to cover..."
+                               rows="4"
+                               required></textarea>
+                        <span class="form_hint">Be specific about what you want to be tested on</span>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label class="form_label">Number of Questions</label>
+                            <select class="form_input" id="promptQuizCount" required>
+                                <option value="5">5 Questions</option>
+                                <option value="10" selected>10 Questions</option>
+                                <option value="15">15 Questions</option>
+                                <option value="20">20 Questions</option>
+                            </select>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">Difficulty</label>
+                            <select class="form_input" id="promptQuizDifficulty" required>
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="cancel_modal_button" id="cancelPromptModalButton">
+                    Cancel
+                </button>
+                <button type="submit" form="promptQuizForm" class="submit_modal_button" id="submitPromptButton">
+                    Generate Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Create Quiz from PDF Modal -->
+    <div class="modal_overlay" id="pdfQuizModal" style="display: none;">
+        <div class="modal_container">
+            <div class="modal_header">
+                <h2 class="modal_title">Generate Quiz from PDF</h2>
+                <button class="modal_close_button" id="closePdfModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <form class="quiz_form" id="pdfQuizForm">
+
+                    <div class="form_group">
+                        <label class="form_label">Quiz Title</label>
+                        <input type="text"
+                               class="form_input"
+                               id="pdfQuizTitle"
+                               placeholder="e.g., Python Programming Basics"
+                               required>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label">Select Source</label>
+                        <div class="pdf_source_tabs">
+                            <button type="button" class="source_tab active" id="cloudinaryTab">
+                                From My Notes
+                            </button>
+                            <button type="button" class="source_tab" id="uploadTab">
+                                Upload New PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Cloudinary Materials List -->
+                    <div class="form_group" id="cloudinarySection">
+                        <label class="form_label">Select from Your Notes</label>
+                        <select class="form_input" id="cloudinaryPdfSelect" required>
+                            <option value="">Choose a note or PDF...</option>
+                            <optgroup label="Notes">
+                                <option value="note1">Biology 101 - Cell Structure</option>
+                                <option value="note2">History - World War II Summary</option>
+                                <option value="note3">Python Programming - Functions</option>
+                                <option value="note4">Chemistry - Periodic Table</option>
+                            </optgroup>
+                            <optgroup label="PDFs">
+                                <option value="pdf1">Introduction to Web Design.pdf</option>
+                                <option value="pdf2">Python Data Analysis Guide.pdf</option>
+                                <option value="pdf3">Biology Chapter 5.pdf</option>
+                                <option value="pdf4">History Notes - WWII.pdf</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Upload New PDF Section -->
+                    <div class="form_group" id="uploadSection" style="display: none;">
+                        <label class="form_label">Upload PDF Document</label>
+                        <div class="file_upload_area" id="fileUploadArea">
+                            <input type="file"
+                                   class="file_input"
+                                   id="pdfFileInput"
+                                   accept=".pdf">
+                            <div class="upload_placeholder">
+                                <p class="upload_text">Click to upload or drag and drop</p>
+                                <p class="upload_hint">PDF files only (Max 10MB)</p>
+                            </div>
+                            <div class="file_selected" id="fileSelected" style="display: none;">
+                                <span class="file_name" id="fileName"></span>
+                                <button type="button" class="remove_file_button" id="removeFileButton">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label class="form_label">Number of Questions</label>
+                            <select class="form_input" id="pdfQuizCount" required>
+                                <option value="5">5 Questions</option>
+                                <option value="10" selected>10 Questions</option>
+                                <option value="15">15 Questions</option>
+                                <option value="20">20 Questions</option>
+                            </select>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">Difficulty</label>
+                            <select class="form_input" id="pdfQuizDifficulty" required>
+                                <option value="easy">Easy</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="cancel_modal_button" id="cancelPdfModalButton">
+                    Cancel
+                </button>
+                <button type="submit" form="pdfQuizForm" class="submit_modal_button" id="submitPdfButton">
+                    Generate Quiz
+                </button>
+            </div>
+        </div>
     </div>
 
 

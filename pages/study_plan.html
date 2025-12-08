@@ -279,29 +279,43 @@
 
                     <!-- Upcoming Deadlines -->
                     <div class="deadlines_widget">
-                        <h3 class="widget_title">Upcoming Deadlines</h3>
+                        <h3 class="widget_title">Upcoming</h3>
 
                         <div class="deadlines_list">
 
                             <div class="deadline_item">
                                 <div class="deadline_date">
-                                    <span class="date_month">OCT</span>
-                                    <span class="date_day">23</span>
+                                    <div class="date_day">23</div>
+                                    <div class="date_month">Oct</div>
                                 </div>
+
                                 <div class="deadline_info">
-                                    <h4 class="deadline_title">Calculus Quiz</h4>
-                                    <p class="deadline_subtitle">Covers Chapters 1-3.</p>
+                                    <div class="deadline_title">Calculus Quiz</div>
+                                    <div class="deadline_type assignments_type">Assignments</div>
                                 </div>
                             </div>
 
                             <div class="deadline_item">
-                                <div class="deadline_date orange_date">
-                                    <span class="date_month">OCT</span>
-                                    <span class="date_day">25</span>
+                                <div class="deadline_date">
+                                    <div class="date_day">25</div>
+                                    <div class="date_month">Oct</div>
                                 </div>
+
                                 <div class="deadline_info">
-                                    <h4 class="deadline_title">History Paper Final Draft</h4>
-                                    <p class="deadline_subtitle">Submit by 11:59 PM.</p>
+                                    <div class="deadline_title">History Paper Final Draft</div>
+                                    <div class="deadline_type test_type">Test</div>
+                                </div>
+                            </div>
+
+                            <div class="deadline_item">
+                                <div class="deadline_date">
+                                    <div class="date_day">28</div>
+                                    <div class="date_month">Oct</div>
+                                </div>
+
+                                <div class="deadline_info">
+                                    <div class="deadline_title">Physics Lab Report</div>
+                                    <div class="deadline_type lessons_type">Lessons</div>
                                 </div>
                             </div>
 
@@ -471,6 +485,21 @@
                         </div>
                     </div>
 
+                    <div class="form_group">
+                        <label class="checkbox_label">
+                            <input type="checkbox" id="repeatWeekly" class="checkbox_input">
+                            <span class="checkbox_text">Repeat weekly</span>
+                        </label>
+                    </div>
+
+                    <div class="form_group" id="repeatUntilGroup" style="display: none;">
+                        <label class="form_label">Repeat Until</label>
+                        <input type="date"
+                               class="form_input"
+                               id="repeatUntilDate">
+                        <span class="form_hint">Leave empty to repeat indefinitely</span>
+                    </div>
+
                 </form>
             </div>
 
@@ -480,6 +509,147 @@
                 </button>
                 <button type="submit" form="addActivityForm" class="submit_modal_button" id="submitActivityButton">
                     Add Activity
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Event Details Modal -->
+    <div class="modal_overlay" id="eventDetailsModal" style="display: none;">
+        <div class="modal_container modal_small">
+            <div class="modal_header">
+                <h2 class="modal_title" id="eventDetailsTitle">Event Details</h2>
+                <button class="modal_close_button" id="closeEventDetailsButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <div class="event_details_content">
+                    <div class="detail_row">
+                        <span class="detail_label">Subject:</span>
+                        <span class="detail_value" id="eventSubject"></span>
+                    </div>
+                    <div class="detail_row">
+                        <span class="detail_label">Date:</span>
+                        <span class="detail_value" id="eventDate"></span>
+                    </div>
+                    <div class="detail_row">
+                        <span class="detail_label">Time:</span>
+                        <span class="detail_value" id="eventTime"></span>
+                    </div>
+                    <div class="detail_row" id="recurringDetail" style="display: none;">
+                        <span class="detail_label">Recurring:</span>
+                        <span class="detail_value" id="eventRecurring"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="modal_button secondary_button" id="editEventButton">
+                    Edit
+                </button>
+                <button type="button" class="modal_button danger_button" id="deleteEventButton">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Edit Activity Modal -->
+    <div class="modal_overlay" id="editActivityModal" style="display: none;">
+        <div class="modal_container">
+            <div class="modal_header">
+                <h2 class="modal_title">Edit Activity</h2>
+                <button class="modal_close_button" id="closeEditModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <form class="activity_form" id="editActivityForm">
+                    <input type="hidden" id="editEventId">
+
+                    <div class="form_group">
+                        <label class="form_label">Activity Title</label>
+                        <input type="text"
+                               class="form_input"
+                               id="editActivityTitle"
+                               placeholder="Enter activity title..."
+                               required>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label class="form_label">Subject</label>
+                            <select class="form_select" id="editActivitySubject" required>
+                                <option value="">Select subject</option>
+                                <option value="calculus">Calculus</option>
+                                <option value="physics">Physics</option>
+                                <option value="history">History</option>
+                                <option value="biology">Biology</option>
+                            </select>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">Color</label>
+                            <select class="form_select" id="editActivityColor" required>
+                                <option value="blue">Blue</option>
+                                <option value="orange">Orange</option>
+                                <option value="pink">Pink</option>
+                                <option value="green">Green</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form_row">
+                        <div class="form_group">
+                            <label class="form_label">Date</label>
+                            <input type="date"
+                                   class="form_input"
+                                   id="editActivityDate"
+                                   required>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">Start Time</label>
+                            <input type="time"
+                                   class="form_input"
+                                   id="editActivityStartTime"
+                                   required>
+                        </div>
+
+                        <div class="form_group">
+                            <label class="form_label">End Time</label>
+                            <input type="time"
+                                   class="form_input"
+                                   id="editActivityEndTime"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="checkbox_label">
+                            <input type="checkbox" id="editRepeatWeekly" class="checkbox_input">
+                            <span class="checkbox_text">Repeat weekly</span>
+                        </label>
+                    </div>
+
+                    <div class="form_group" id="editRepeatUntilGroup" style="display: none;">
+                        <label class="form_label">Repeat Until</label>
+                        <input type="date"
+                               class="form_input"
+                               id="editRepeatUntilDate">
+                        <span class="form_hint">Leave empty to repeat indefinitely</span>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="cancel_modal_button" id="cancelEditModalButton">
+                    Cancel
+                </button>
+                <button type="submit" form="editActivityForm" class="submit_modal_button" id="submitEditButton">
+                    Save Changes
                 </button>
             </div>
         </div>

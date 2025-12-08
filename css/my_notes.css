@@ -739,9 +739,11 @@ body {
 }
 
 .upload_icon_small {
-    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: #86868B;
     display: block;
-    margin-bottom: 12px;
+    margin: 0 auto 12px;
 }
 
 .upload_text {

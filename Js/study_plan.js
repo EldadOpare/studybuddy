@@ -18,6 +18,9 @@ const monthNames = [
     'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
+// Current event being viewed/edited
+let currentEventId = null;
+
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -124,6 +127,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelActivityModalButton = document.getElementById('cancelActivityModalButton');
     const addActivityForm = document.getElementById('addActivityForm');
 
+    // Weekly repeat checkbox handler
+    const repeatWeeklyCheckbox = document.getElementById('repeatWeekly');
+    const repeatUntilGroup = document.getElementById('repeatUntilGroup');
+
+    if (repeatWeeklyCheckbox && repeatUntilGroup) {
+        repeatWeeklyCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                repeatUntilGroup.style.display = 'block';
+            } else {
+                repeatUntilGroup.style.display = 'none';
+                document.getElementById('repeatUntilDate').value = '';
+            }
+        });
+    }
+
     // Open add activity modal
     function openActivityModal() {
         if (addActivityModal) {
@@ -148,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'auto';
             if (addActivityForm) {
                 addActivityForm.reset();
+                repeatUntilGroup.style.display = 'none';
             }
         }
     }
@@ -186,27 +205,296 @@ document.addEventListener('DOMContentLoaded', function() {
             const activityDate = document.getElementById('activityDate').value;
             const activityStartTime = document.getElementById('activityStartTime').value;
             const activityEndTime = document.getElementById('activityEndTime').value;
+            const repeatWeekly = document.getElementById('repeatWeekly').checked;
+            const repeatUntilDate = document.getElementById('repeatUntilDate').value;
 
-            console.log('Creating activity:', {
+            const activity = {
+                id: Date.now().toString(),
                 title: activityTitle,
                 subject: activitySubject,
                 color: activityColor,
                 date: activityDate,
                 startTime: activityStartTime,
-                endTime: activityEndTime
-            });
+                endTime: activityEndTime,
+                repeatWeekly: repeatWeekly,
+                repeatUntil: repeatUntilDate || null
+            };
 
-            // Here you would save the activity to the database
-            alert('Activity saved! (This will connect to database later)');
+            saveActivity(activity);
+
+            console.log('Activity saved:', activity);
 
             closeActivityModal();
+            renderCalendar();
+            updateSelectedDayPanel();
         });
     }
 
+    // Event Details Modal handlers
+    const eventDetailsModal = document.getElementById('eventDetailsModal');
+    const closeEventDetailsButton = document.getElementById('closeEventDetailsButton');
+    const editEventButton = document.getElementById('editEventButton');
+    const deleteEventButton = document.getElementById('deleteEventButton');
+
+    if (closeEventDetailsButton) {
+        closeEventDetailsButton.addEventListener('click', function() {
+            eventDetailsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    }
+
+    if (eventDetailsModal) {
+        eventDetailsModal.addEventListener('click', function(e) {
+            if (e.target === eventDetailsModal) {
+                eventDetailsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+
+    if (editEventButton) {
+        editEventButton.addEventListener('click', function() {
+            eventDetailsModal.style.display = 'none';
+            openEditModal(currentEventId);
+        });
+    }
+
+    if (deleteEventButton) {
+        deleteEventButton.addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete this event?')) {
+                deleteEvent(currentEventId);
+                eventDetailsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                renderCalendar();
+                updateSelectedDayPanel();
+            }
+        });
+    }
+
+    // Edit Activity Modal handlers
+    const editActivityModal = document.getElementById('editActivityModal');
+    const closeEditModalButton = document.getElementById('closeEditModalButton');
+    const cancelEditButton = document.getElementById('cancelEditButton');
+    const editActivityForm = document.getElementById('editActivityForm');
+
+    // Edit weekly repeat checkbox handler
+    const editRepeatWeeklyCheckbox = document.getElementById('editRepeatWeekly');
+    const editRepeatUntilGroup = document.getElementById('editRepeatUntilGroup');
+
+    if (editRepeatWeeklyCheckbox && editRepeatUntilGroup) {
+        editRepeatWeeklyCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                editRepeatUntilGroup.style.display = 'block';
+            } else {
+                editRepeatUntilGroup.style.display = 'none';
+                document.getElementById('editRepeatUntilDate').value = '';
+            }
+        });
+    }
+
+    function closeEditModal() {
+        if (editActivityModal) {
+            editActivityModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            if (editActivityForm) {
+                editActivityForm.reset();
+                editRepeatUntilGroup.style.display = 'none';
+            }
+        }
+    }
+
+    if (closeEditModalButton) {
+        closeEditModalButton.addEventListener('click', closeEditModal);
+    }
+
+    if (cancelEditButton) {
+        cancelEditButton.addEventListener('click', closeEditModal);
+    }
+
+    if (editActivityModal) {
+        editActivityModal.addEventListener('click', function(e) {
+            if (e.target === editActivityModal) {
+                closeEditModal();
+            }
+        });
+    }
+
+    if (editActivityForm) {
+        editActivityForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const activityTitle = document.getElementById('editActivityTitle').value;
+            const activitySubject = document.getElementById('editActivitySubject').value;
+            const activityColor = document.getElementById('editActivityColor').value;
+            const activityDate = document.getElementById('editActivityDate').value;
+            const activityStartTime = document.getElementById('editActivityStartTime').value;
+            const activityEndTime = document.getElementById('editActivityEndTime').value;
+            const repeatWeekly = document.getElementById('editRepeatWeekly').checked;
+            const repeatUntilDate = document.getElementById('editRepeatUntilDate').value;
+
+            const updatedActivity = {
+                id: currentEventId,
+                title: activityTitle,
+                subject: activitySubject,
+                color: activityColor,
+                date: activityDate,
+                startTime: activityStartTime,
+                endTime: activityEndTime,
+                repeatWeekly: repeatWeekly,
+                repeatUntil: repeatUntilDate || null
+            };
+
+            updateActivity(updatedActivity);
+
+            console.log('Activity updated:', updatedActivity);
+
+            closeEditModal();
+            renderCalendar();
+            updateSelectedDayPanel();
+        });
+    }
 
     // Initialize calendar
     renderCalendar();
 });
+
+
+// Activity storage functions
+function saveActivity(activity) {
+    const activities = getActivities();
+    activities.push(activity);
+    localStorage.setItem('study_plan_activities', JSON.stringify(activities));
+}
+
+function getActivities() {
+    const activities = localStorage.getItem('study_plan_activities');
+    return activities ? JSON.parse(activities) : [];
+}
+
+function updateActivity(updatedActivity) {
+    const activities = getActivities();
+    const index = activities.findIndex(a => a.id === updatedActivity.id);
+    if (index !== -1) {
+        activities[index] = updatedActivity;
+        localStorage.setItem('study_plan_activities', JSON.stringify(activities));
+    }
+}
+
+function deleteEvent(eventId) {
+    const activities = getActivities();
+    const filtered = activities.filter(a => a.id !== eventId);
+    localStorage.setItem('study_plan_activities', JSON.stringify(filtered));
+}
+
+// Get events for a specific date (including recurring events)
+function getEventsForDate(date) {
+    const activities = getActivities();
+    const events = [];
+
+    activities.forEach(activity => {
+        const activityDate = new Date(activity.date + 'T00:00:00');
+
+        if (activity.repeatWeekly) {
+            // Check if this date matches the day of week
+            if (activityDate.getDay() === date.getDay()) {
+                // Check if date is on or after the start date
+                if (date >= activityDate) {
+                    // Check if there's an end date
+                    if (activity.repeatUntil) {
+                        const endDate = new Date(activity.repeatUntil + 'T23:59:59');
+                        if (date <= endDate) {
+                            events.push(activity);
+                        }
+                    } else {
+                        // No end date, repeat indefinitely
+                        events.push(activity);
+                    }
+                }
+            }
+        } else {
+            // Single occurrence event
+            if (activityDate.toDateString() === date.toDateString()) {
+                events.push(activity);
+            }
+        }
+    });
+
+    return events;
+}
+
+// Show event details modal
+function showEventDetails(eventId) {
+    const activities = getActivities();
+    const event = activities.find(a => a.id === eventId);
+
+    if (!event) return;
+
+    currentEventId = eventId;
+
+    // Update modal content
+    document.getElementById('eventDetailsTitle').textContent = event.title;
+    document.getElementById('eventSubject').textContent = event.subject;
+
+    const eventDate = new Date(event.date + 'T00:00:00');
+    document.getElementById('eventDate').textContent = eventDate.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    });
+
+    document.getElementById('eventTime').textContent = `${event.startTime} - ${event.endTime}`;
+
+    if (event.repeatWeekly) {
+        let recurringText = 'Repeats weekly';
+        if (event.repeatUntil) {
+            const untilDate = new Date(event.repeatUntil + 'T00:00:00');
+            recurringText += ` until ${untilDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            })}`;
+        }
+        document.getElementById('eventRecurring').textContent = recurringText;
+    } else {
+        document.getElementById('eventRecurring').textContent = 'Does not repeat';
+    }
+
+    // Show modal
+    const eventDetailsModal = document.getElementById('eventDetailsModal');
+    eventDetailsModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+// Open edit modal with pre-filled data
+function openEditModal(eventId) {
+    const activities = getActivities();
+    const event = activities.find(a => a.id === eventId);
+
+    if (!event) return;
+
+    currentEventId = eventId;
+
+    // Pre-fill form
+    document.getElementById('editActivityTitle').value = event.title;
+    document.getElementById('editActivitySubject').value = event.subject;
+    document.getElementById('editActivityColor').value = event.color;
+    document.getElementById('editActivityDate').value = event.date;
+    document.getElementById('editActivityStartTime').value = event.startTime;
+    document.getElementById('editActivityEndTime').value = event.endTime;
+    document.getElementById('editRepeatWeekly').checked = event.repeatWeekly;
+
+    if (event.repeatWeekly) {
+        document.getElementById('editRepeatUntilGroup').style.display = 'block';
+        document.getElementById('editRepeatUntilDate').value = event.repeatUntil || '';
+    } else {
+        document.getElementById('editRepeatUntilGroup').style.display = 'none';
+    }
+
+    // Show modal
+    const editActivityModal = document.getElementById('editActivityModal');
+    editActivityModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
 
 
 function renderCalendar() {
@@ -280,6 +568,32 @@ function createDayElement(day, isOtherMonth, year, month) {
     dayNumber.textContent = day;
     dayElement.appendChild(dayNumber);
 
+    // Check for events on this day
+    const dayDate = new Date(year, month, day);
+    const events = getEventsForDate(dayDate);
+
+    if (events.length > 0) {
+        const eventDotsContainer = document.createElement('div');
+        eventDotsContainer.className = 'event_dots';
+        eventDotsContainer.style.display = 'flex';
+        eventDotsContainer.style.gap = '3px';
+        eventDotsContainer.style.justifyContent = 'center';
+        eventDotsContainer.style.marginTop = '4px';
+
+        // Show up to 3 event dots
+        events.slice(0, 3).forEach(event => {
+            const dot = document.createElement('span');
+            dot.style.width = '6px';
+            dot.style.height = '6px';
+            dot.style.borderRadius = '50%';
+            dot.style.backgroundColor = event.color;
+            dot.style.display = 'inline-block';
+            eventDotsContainer.appendChild(dot);
+        });
+
+        dayElement.appendChild(eventDotsContainer);
+    }
+
     // Add click event
     dayElement.addEventListener('click', function() {
         selectedDate = new Date(year, month, day);
@@ -310,16 +624,36 @@ function updateSelectedDayPanel() {
         dayTitle.textContent = `${dayName}, ${monthName} ${date}`;
     }
 
-    // Here you would load activities for the selected date from the database
-    // For now, we'll just show a message if there are no activities
+    // Load activities for the selected date
     const activitiesList = document.querySelector('.activities_list');
     if (activitiesList) {
-        // Check if it's the sample date (October 25) to show sample activities
-        if (selectedDate.getMonth() === 9 && selectedDate.getDate() === 25) {
-            // Keep the existing sample activities
-        } else {
-            // Show empty state for other dates
+        const events = getEventsForDate(selectedDate);
+
+        if (events.length === 0) {
             activitiesList.innerHTML = '<p style="color: #86868B; text-align: center; padding: 20px;">No activities scheduled for this day.</p>';
+        } else {
+            activitiesList.innerHTML = '';
+
+            events.forEach(event => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity_item';
+                activityItem.style.cursor = 'pointer';
+
+                activityItem.innerHTML = `
+                    <div class="activity_time_marker" style="background-color: ${event.color};"></div>
+                    <div class="activity_details">
+                        <div class="activity_title">${event.title}</div>
+                        <div class="activity_meta">${event.startTime} - ${event.endTime} • ${event.subject}</div>
+                    </div>
+                `;
+
+                // Add click event to show details
+                activityItem.addEventListener('click', function() {
+                    showEventDetails(event.id);
+                });
+
+                activitiesList.appendChild(activityItem);
+            });
         }
     }
 }
