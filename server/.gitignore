@@ -1,0 +1,19 @@
+# Environment variables
+.env
+
+# Admin credentials (NEVER COMMIT!)
+ADMIN_CREDENTIALS.txt
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
