@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="../css/settings.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-    <script src="../js/settings.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/settings.js"></script>
 </head>
 <body>
 
@@ -50,30 +52,13 @@
             <div class="folders_section">
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
-                    <button class="add_folder_button">+</button>
+                    <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
                 </div>
 
                 <div class="folder_list">
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon orange"></span>
-                        Biology 101
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon blue"></span>
-                        History Essays
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon green"></span>
-                        Physics Labs
-                    </a>
+                    <!-- Folders loaded from database -->
                 </div>
             </div>
-
-            <button class="create_new_button">
-                + Create New
-            </button>
 
         </aside>
 
