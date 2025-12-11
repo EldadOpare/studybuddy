@@ -6,7 +6,9 @@
     <title>Dashboard - StudyBuddy</title>
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
-    <script src="../js/dashboard.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/dashboard.js"></script>
 </head>
 <body>
 
@@ -49,30 +51,13 @@
             <div class="folders_section">
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
-                    <button class="add_folder_button">+</button>
+                    <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
                 </div>
 
                 <div class="folder_list">
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon orange"></span>
-                        Biology 101
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon blue"></span>
-                        History Essays
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon green"></span>
-                        Physics Labs
-                    </a>
+                    <!-- Folders loaded from database -->
                 </div>
             </div>
-
-            <button class="create_new_button">
-                + Create New
-            </button>
 
         </aside>
 
@@ -104,7 +89,7 @@
 
                     <!-- Welcome Hero Section -->
                     <div class="welcome_hero">
-                        <h2 class="hero_title">Welcome back, Alex!</h2>
+                        <h2 class="hero_title welcome_text">Welcome back!</h2>
                         <p class="hero_subtitle">Ready to continue learning?</p>
                     </div>
 
@@ -114,21 +99,21 @@
 
                         <div class="stat_card materials_stat">
                             <div class="stat_content">
-                                <div class="stat_number">24</div>
+                                <div class="stat_number">0</div>
                                 <div class="stat_label">Materials</div>
                             </div>
                         </div>
 
                         <div class="stat_card quizzes_stat">
                             <div class="stat_content">
-                                <div class="stat_number">18</div>
+                                <div class="stat_number">0</div>
                                 <div class="stat_label">Quizzes Taken</div>
                             </div>
                         </div>
 
                         <div class="stat_card average_stat">
                             <div class="stat_content">
-                                <div class="stat_number">87%</div>
+                                <div class="stat_number">0%</div>
                                 <div class="stat_label">Average Score</div>
                             </div>
                         </div>
@@ -160,76 +145,8 @@
                                 <div class="header_cell material_date_header">Date Added</div>
                             </div>
 
-                            <div class="table_row">
-                                <div class="table_cell row_number">
-                                    <div class="material_icon pdf_icon"></div>
-                                </div>
-
-                                <div class="table_cell material_name_cell">
-                                    <span class="material_name">Introduction to Web Design.pdf</span>
-                                </div>
-
-                                <div class="table_cell material_type_cell">
-                                    <span class="type_badge pdf_badge">PDF</span>
-                                </div>
-
-                                <div class="table_cell material_date_cell">
-                                    <span class="material_date">Oct 26, 2023</span>
-                                </div>
-                            </div>
-
-                            <div class="table_row">
-                                <div class="table_cell row_number">
-                                    <div class="material_icon doc_icon"></div>
-                                </div>
-
-                                <div class="table_cell material_name_cell">
-                                    <span class="material_name">HTML Basics Notes.docx</span>
-                                </div>
-
-                                <div class="table_cell material_type_cell">
-                                    <span class="type_badge doc_badge">DOC</span>
-                                </div>
-
-                                <div class="table_cell material_date_cell">
-                                    <span class="material_date">Oct 24, 2023</span>
-                                </div>
-                            </div>
-
-                            <div class="table_row">
-                                <div class="table_cell row_number">
-                                    <div class="material_icon pdf_icon"></div>
-                                </div>
-
-                                <div class="table_cell material_name_cell">
-                                    <span class="material_name">Python Data Analysis Guide.pdf</span>
-                                </div>
-
-                                <div class="table_cell material_type_cell">
-                                    <span class="type_badge pdf_badge">PDF</span>
-                                </div>
-
-                                <div class="table_cell material_date_cell">
-                                    <span class="material_date">Oct 22, 2023</span>
-                                </div>
-                            </div>
-
-                            <div class="table_row">
-                                <div class="table_cell row_number">
-                                    <div class="material_icon image_icon"></div>
-                                </div>
-
-                                <div class="table_cell material_name_cell">
-                                    <span class="material_name">CSS Flexbox Cheatsheet.png</span>
-                                </div>
-
-                                <div class="table_cell material_type_cell">
-                                    <span class="type_badge image_badge">IMAGE</span>
-                                </div>
-
-                                <div class="table_cell material_date_cell">
-                                    <span class="material_date">Oct 20, 2023</span>
-                                </div>
+                            <div class="materials_table_body">
+                                <!-- Materials will be loaded from database -->
                             </div>
 
                         </div>
@@ -274,55 +191,7 @@
                         <h4 class="upcoming_title">Upcoming</h4>
 
                         <div class="upcoming_list">
-
-                            <div class="upcoming_item">
-                                <div class="upcoming_date">
-                                    <div class="date_day">29</div>
-                                    <div class="date_month">Sept</div>
-                                </div>
-
-                                <div class="upcoming_details">
-                                    <div class="upcoming_task">Practical theory</div>
-                                    <div class="upcoming_type assignments_type">Assignments</div>
-                                </div>
-                            </div>
-
-                            <div class="upcoming_item">
-                                <div class="upcoming_date">
-                                    <div class="date_day">29</div>
-                                    <div class="date_month">Sept</div>
-                                </div>
-
-                                <div class="upcoming_details">
-                                    <div class="upcoming_task">Practical theory 1</div>
-                                    <div class="upcoming_type test_type">Test</div>
-                                </div>
-                            </div>
-
-                            <div class="upcoming_item">
-                                <div class="upcoming_date">
-                                    <div class="date_day">29</div>
-                                    <div class="date_month">Sept</div>
-                                </div>
-
-                                <div class="upcoming_details">
-                                    <div class="upcoming_task">Practical theory 2</div>
-                                    <div class="upcoming_type lessons_type">Lessons</div>
-                                </div>
-                            </div>
-
-                            <div class="upcoming_item">
-                                <div class="upcoming_date">
-                                    <div class="date_day">29</div>
-                                    <div class="date_month">Sept</div>
-                                </div>
-
-                                <div class="upcoming_details">
-                                    <div class="upcoming_task">Practical theory 3</div>
-                                    <div class="upcoming_type assignments_type">Assignments</div>
-                                </div>
-                            </div>
-
+                            <!-- Upcoming events loaded dynamically from database -->
                         </div>
                     </div>
 
@@ -332,6 +201,115 @@
 
         </main>
 
+    </div>
+
+
+    <!-- Create Folder Modal -->
+    <div class="modal_overlay" id="createFolderModal" style="display: none;">
+        <div class="modal_container modal_small">
+            <div class="modal_header">
+                <h2 class="modal_title">Create New Folder</h2>
+                <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <form class="folder_form" id="createFolderForm">
+
+                    <div class="form_group">
+                        <label class="form_label">Folder Name</label>
+                        <input type="text"
+                               class="form_input"
+                               id="folderName"
+                               placeholder="Enter folder name..."
+                               required>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label">Choose Color</label>
+                        <div class="color_picker">
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="yellow" class="color_input">
+                                <span class="color_circle" style="background-color: #FFD63A;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="orange" class="color_input" checked>
+                                <span class="color_circle" style="background-color: #FFA955;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="red" class="color_input">
+                                <span class="color_circle" style="background-color: #F75A5A;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="navy" class="color_input">
+                                <span class="color_circle" style="background-color: #0D1164;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="purple_dark" class="color_input">
+                                <span class="color_circle" style="background-color: #640D5F;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="pink" class="color_input">
+                                <span class="color_circle" style="background-color: #EA2264;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="peach" class="color_input">
+                                <span class="color_circle" style="background-color: #F78D60;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="pink_light" class="color_input">
+                                <span class="color_circle" style="background-color: #F29AAE;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="lavender" class="color_input">
+                                <span class="color_circle" style="background-color: #C47BE4;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="purple" class="color_input">
+                                <span class="color_circle" style="background-color: #7132CA;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="indigo" class="color_input">
+                                <span class="color_circle" style="background-color: #301CA0;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="blue" class="color_input">
+                                <span class="color_circle" style="background-color: #4A90E2;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="teal" class="color_input">
+                                <span class="color_circle" style="background-color: #00B7B5;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="green" class="color_input">
+                                <span class="color_circle" style="background-color: #50C878;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="mint" class="color_input">
+                                <span class="color_circle" style="background-color: #98D8C8;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="slate" class="color_input">
+                                <span class="color_circle" style="background-color: #64748B;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="brown" class="color_input">
+                                <span class="color_circle" style="background-color: #A0522D;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="cancel_modal_button" id="cancelFolderModalButton">
+                    Cancel
+                </button>
+                <button type="submit" form="createFolderForm" class="submit_modal_button" id="submitFolderButton">
+                    Create Folder
+                </button>
+            </div>
+        </div>
     </div>
 
 </body>
