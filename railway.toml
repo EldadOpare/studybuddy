@@ -1,0 +1,11 @@
+# Railway Configuration
+# Tells Railway to deploy the server folder
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "cd server && npm install"
+
+[deploy]
+startCommand = "cd server && npm start"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
