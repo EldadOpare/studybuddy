@@ -8,7 +8,9 @@
     <link rel="icon" type="image/png" href="../images/favicon.png">
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://media-library.cloudinary.com/global/all.js" type="text/javascript"></script>
-    <script src="../js/my_notes.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/my_notes.js"></script>
 </head>
 <body>
 
@@ -52,30 +54,13 @@
             <div class="folders_section">
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
-                    <button class="add_folder_button">+</button>
+                    <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
                 </div>
 
                 <div class="folder_list">
-                    <a href="#" class="folder_item active">
-                        <span class="folder_icon orange"></span>
-                        Biology 101
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon blue"></span>
-                        History Essays
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon green"></span>
-                        Physics Labs
-                    </a>
+                    <!-- Folders loaded from database -->
                 </div>
             </div>
-
-            <button class="create_new_button">
-                + Create New
-            </button>
 
         </aside>
 
@@ -104,88 +89,45 @@
 
 
 
-            <!-- Materials table -->
-            <div class="materials_table">
-                <div class="table_header">
-                    <div class="column_name">Name</div>
-                    <div class="column_type">Type</div>
-                    <div class="column_modified">Last Modified</div>
-                    <div class="column_tags">Tags</div>
-                    <div class="column_actions"></div>
-                </div>
-
-                <!-- Material row 1 - Note -->
-                <div class="material_row">
-                    <div class="material_name">
-                        <span class="file_icon note_icon purple"></span>
-                        <span class="file_name">Cellular Respiration</span>
-                    </div>
-                    <div class="material_type">Note</div>
-                    <div class="material_modified">2 hours ago</div>
-                    <div class="material_tags">
-                        <span class="tag tag_purple">#exam-review</span>
-                        <span class="tag tag_peach">#key-concepts</span>
-                    </div>
-                    <div class="material_actions">
-                        <button class="more_button">...</button>
-                    </div>
-                </div>
-
-                <!-- Material row 2 - Note -->
-                <div class="material_row">
-                    <div class="material_name">
-                        <span class="file_icon note_icon green"></span>
-                        <span class="file_name">Photosynthesis Process</span>
-                    </div>
-                    <div class="material_type">Note</div>
-                    <div class="material_modified">Yesterday</div>
-                    <div class="material_tags">
-                        <span class="tag tag_pink">#lecture</span>
-                        <span class="tag tag_lavender">#chapter-2</span>
-                    </div>
-                    <div class="material_actions">
-                        <button class="more_button">...</button>
+            <!-- My Materials Section -->
+            <div class="my_materials_section">
+                <div class="materials_header">
+                    <h3 class="section_title">My Materials</h3>
+                    
+                    <div class="materials_header_actions">
+                        <div class="filter_dropdown">
+                            <select class="filter_select" id="folderFilter">
+                                <option value="">All Folders</option>
+                                <!-- Folder options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        
+                        <div class="header_buttons">
+                            <a href="note_editor.html" class="create_note_button" id="createNoteButton">
+                                + New Note
+                            </a>
+                            <button class="browse_files_button" id="browseFilesButton">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                </svg>
+                                Upload File
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Material row 3 - Note -->
-                <div class="material_row">
-                    <div class="material_name">
-                        <span class="file_icon note_icon orange"></span>
-                        <span class="file_name">Mitosis vs. Meiosis</span>
+                <!-- This container will be populated by JavaScript with the materials table -->
+                <div class="materials_grid">
+                    <!-- Materials loaded from database -->
+                    <div class="loading_state">
+                        <div class="loading_spinner">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#018790" stroke-width="2" class="spin_animation">
+                                <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                                <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+                            </svg>
+                        </div>
+                        <p>Loading your materials...</p>
                     </div>
-                    <div class="material_type">Note</div>
-                    <div class="material_modified">3 days ago</div>
-                    <div class="material_tags">
-                        <span class="tag tag_yellow">#key-concepts</span>
-                    </div>
-                    <div class="material_actions">
-                        <button class="more_button">...</button>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Upload section -->
-            <div class="upload_section" id="dropZone">
-                <div class="upload_icon">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
-                </div>
-
-                <h3 class="upload_title">Drag & drop to upload</h3>
-                <p class="upload_subtitle">Or, you can browse your files to add new materials.</p>
-
-                <div class="upload_buttons">
-                    <a href="note_editor.html" class="new_note_button">
-                        + New Note
-                    </a>
-                    <button class="browse_files_button" id="browseFilesButton">
-                        Browse Files
-                    </button>
                 </div>
             </div>
 
@@ -343,6 +285,30 @@
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
                             </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="blue" class="color_input">
+                                <span class="color_circle" style="background-color: #4A90E2;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="teal" class="color_input">
+                                <span class="color_circle" style="background-color: #00B7B5;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="green" class="color_input">
+                                <span class="color_circle" style="background-color: #50C878;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="mint" class="color_input">
+                                <span class="color_circle" style="background-color: #98D8C8;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="slate" class="color_input">
+                                <span class="color_circle" style="background-color: #64748B;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="brown" class="color_input">
+                                <span class="color_circle" style="background-color: #A0522D;"></span>
+                            </label>
                         </div>
                     </div>
 
@@ -357,6 +323,37 @@
                     Create Folder
                 </button>
             </div>
+        </div>
+    </div>
+
+
+    <!-- PDF Viewer Modal -->
+    <div class="modal_overlay pdf_viewer_modal" id="pdfViewerModal" style="display: none;">
+        <div class="pdf_modal_container">
+
+            <div class="pdf_modal_header">
+                <h2 class="pdf_modal_title" id="pdfViewerTitle">Document</h2>
+
+                <div class="pdf_header_actions">
+                    <button class="pdf_action_button" onclick="downloadPdf()" title="Open in new tab">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download
+                    </button>
+
+                    <button class="pdf_close_button" onclick="closePdfViewer()" title="Close">
+                        &times;
+                    </button>
+                </div>
+            </div>
+
+            <div class="pdf_modal_body">
+                <iframe id="pdfViewerFrame" class="pdf_viewer_iframe"></iframe>
+            </div>
+
         </div>
     </div>
 

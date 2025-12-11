@@ -1,36 +1,91 @@
-// Logout function
-function logout() {
-    // Clear any stored session data if you're using localStorage/sessionStorage
-    // localStorage.clear();
-    // sessionStorage.clear();
 
-    // Redirect to login page
-    window.location.href = 'login.html';
+if (!requireAuth()) {
+
 }
 
-// Cloudinary configuration for file uploads
-const CLOUDINARY_CLOUD_NAME = 'dbx5yulyl';
 
-const CLOUDINARY_UPLOAD_PRESET = 'studybuddy';
+const cloudinaryCloudName = 'dbx5yulyl';
 
-// Initialize when page loads
-document.addEventListener('DOMContentLoaded', function() {
+const cloudinaryUploadPreset = 'studybuddy';
 
-    // Upload modal
-    const modal = document.getElementById('uploadFileModal');
 
-    // Browse Files button - Open Cloudinary Upload Widget in browse mode
-    const browseFilesBtn = document.getElementById('browseFilesButton');
+function openFolderModal() {
+    const createFolderModal = document.getElementById('createFolderModal');
+    if (createFolderModal) {
+        createFolderModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
 
-    if (browseFilesBtn) {
-        browseFilesBtn.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent triggering dropZone click
 
-            // Open Cloudinary Upload Widget configured for browsing existing files
-            const widget = cloudinary.createUploadWidget(
+function closeFolderModal() {
+    const createFolderModal = document.getElementById('createFolderModal');
+    const createFolderForm = document.getElementById('createFolderForm');
+    if (createFolderModal) {
+        createFolderModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        if (createFolderForm) {
+            createFolderForm.reset();
+        }
+    }
+}
+
+
+
+document.addEventListener('DOMContentLoaded', async function() {
+
+    await loadFoldersToSidebar();
+
+    await loadFoldersToFilterDropdown();
+
+
+    await loadFoldersToUploadModal();
+
+    const urlParameters = new URLSearchParams(window.location.search);
+    const currentFolderId = urlParameters.get('folder');
+
+
+    await loadNotesFromDatabase(currentFolderId);
+    await loadMaterialsFromDatabase(currentFolderId);
+
+
+    const createNoteButton = document.getElementById('createNoteButton');
+    if (createNoteButton && currentFolderId) {
+        createNoteButton.href = `note_editor.html?folder=${currentFolderId}`;
+    }
+
+
+    const folderFilterDropdown = document.getElementById('folderFilter');
+    if (folderFilterDropdown) {
+        folderFilterDropdown.addEventListener('change', function() {
+            const selectedFolderId = this.value;
+            if (selectedFolderId) {
+                window.location.href = `?folder=${selectedFolderId}`;
+            } else {
+                window.location.href = '/pages/my_notes.html';
+            }
+        });
+
+
+        if (currentFolderId) {
+            folderFilterDropdown.value = currentFolderId;
+        }
+    }
+
+
+    const uploadModal = document.getElementById('uploadFileModal');
+
+    const browseFilesButton = document.getElementById('browseFilesButton');
+
+    if (browseFilesButton) {
+        browseFilesButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+
+
+            const uploadWidget = cloudinary.createUploadWidget(
                 {
-                    cloudName: CLOUDINARY_CLOUD_NAME,
-                    uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+                    cloudName: cloudinaryCloudName,
+                    uploadPreset: cloudinaryUploadPreset,
                     sources: ['local', 'url', 'camera', 'dropbox', 'google_drive'],
                     multiple: false,
                     folder: 'studybuddy/materials',
@@ -38,111 +93,106 @@ document.addEventListener('DOMContentLoaded', function() {
                     clientAllowedFormats: ['pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'jpeg'],
                     maxFileSize: 10000000
                 },
-                function(error, result) {
-                    if (!error && result && result.event === 'success') {
-                        console.log('File selected:', result.info);
-                        const fileUrl = result.info.secure_url;
-                        const fileName = result.info.original_filename;
+                function(uploadError, uploadResult) {
+                    if (!uploadError && uploadResult && uploadResult.event === 'success') {
+                        console.log('File selected:', uploadResult.info);
+                        const fileUrlFromCloudinary = uploadResult.info.secure_url;
+                        const originalFileName = uploadResult.info.original_filename;
 
-                        // You can view or download the file
-                        window.open(fileUrl, '_blank');
+
+                        window.open(fileUrlFromCloudinary, '_blank');
                     }
 
-                    if (error) {
-                        console.error('Error:', error);
+                    if (uploadError) {
+                        console.error('Error:', uploadError);
                     }
                 }
             );
 
-            widget.open();
+            uploadWidget.open();
         });
     }
 
 
-    // Modal functionality
+
     const closeModalButton = document.getElementById('closeModalButton');
-    
     const cancelModalButton = document.getElementById('cancelModalButton');
-    
-    const uploadForm = document.getElementById('uploadForm');
-    
+
+    const uploadFormElement = document.getElementById('uploadForm');
     const fileUploadArea = document.getElementById('fileUploadArea');
-    
-    const fileInput = document.getElementById('fileInput');
-    
+
+    const fileInputElement = document.getElementById('fileInput');
     const uploadedFileInfo = document.getElementById('uploadedFileInfo');
-    
+
     const fileNameDisplay = document.getElementById('fileNameDisplay');
-    
     const removeFileButton = document.getElementById('removeFileButton');
-    
-    const dropZone = document.getElementById('dropZone');
+
+    const dropZoneElement = document.getElementById('dropZone');
 
 
-    // Open modal
+
     function openModal() {
-        if (modal) {
-            modal.style.display = 'flex';
+        if (uploadModal) {
+            uploadModal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
     }
 
-    // Close modal
+
     function closeModal() {
-        if (modal) {
-            modal.style.display = 'none';
+        if (uploadModal) {
+            uploadModal.style.display = 'none';
             document.body.style.overflow = 'auto';
             resetForm();
         }
     }
 
-    // Reset form
+
     function resetForm() {
-        if (uploadForm) {
-            uploadForm.reset();
+        if (uploadFormElement) {
+            uploadFormElement.reset();
         }
         if (uploadedFileInfo) {
             uploadedFileInfo.style.display = 'none';
         }
     }
 
-    // Close modal button
+
     if (closeModalButton) {
         closeModalButton.addEventListener('click', closeModal);
     }
 
-    // Cancel button
     if (cancelModalButton) {
         cancelModalButton.addEventListener('click', closeModal);
     }
 
-    // Close modal when clicking outside
-    if (modal) {
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
+
+    if (uploadModal) {
+        uploadModal.addEventListener('click', function(event) {
+            if (event.target === uploadModal) {
                 closeModal();
             }
         });
     }
 
-    // File upload area click
+
     if (fileUploadArea) {
         fileUploadArea.addEventListener('click', function() {
-            fileInput.click();
+            fileInputElement.click();
         });
     }
 
-    // File input change
-    if (fileInput) {
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                displayUploadedFile(file.name);
+
+    if (fileInputElement) {
+        fileInputElement.addEventListener('change', function(event) {
+            const selectedFile = event.target.files[0];
+            if (selectedFile) {
+                displayUploadedFile(selectedFile.name);
             }
         });
     }
 
-    // Display uploaded file
+
     function displayUploadedFile(fileName) {
         if (fileNameDisplay) {
             fileNameDisplay.textContent = fileName;
@@ -152,11 +202,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Remove file button
+
     if (removeFileButton) {
         removeFileButton.addEventListener('click', function() {
-            if (fileInput) {
-                fileInput.value = '';
+            if (fileInputElement) {
+                fileInputElement.value = '';
             }
             if (uploadedFileInfo) {
                 uploadedFileInfo.style.display = 'none';
@@ -164,271 +214,235 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Form submission
-    if (uploadForm) {
-        uploadForm.addEventListener('submit', function(e) {
-            e.preventDefault();
 
-            // Get form values
-            const fileName = document.getElementById('fileName').value;
-            
-            const fileFolder = document.getElementById('fileFolder').value;
-            
-            const fileTags = document.getElementById('fileTags').value;
-            
-            const fileDescription = document.getElementById('fileDescription').value;
-            
-            const file = fileInput.files[0];
+    if (uploadFormElement) {
+        uploadFormElement.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-            if (!file) {
-                alert('Please select a file to upload');
+            const userFileName = document.getElementById('fileName').value;
+            const userFileFolder = document.getElementById('fileFolder').value;
+
+            const userFileTags = document.getElementById('fileTags').value;
+            const userFileDescription = document.getElementById('fileDescription').value;
+
+            const selectedFile = fileInputElement.files[0];
+
+            if (!selectedFile) {
+                showWarning('Please select a file to upload');
                 return;
             }
 
             console.log('Uploading file:', {
-                name: fileName,
-                folder: fileFolder,
-                tags: fileTags,
-                description: fileDescription,
-                file: file.name
+                name: userFileName,
+                folder: userFileFolder,
+                tags: userFileTags,
+                description: userFileDescription,
+                file: selectedFile.name
             });
 
-            // Upload to Cloudinary
-            uploadToCloudinary(file, fileName, fileFolder, fileTags, fileDescription);
+            uploadToCloudinary(selectedFile, userFileName, userFileFolder, userFileTags, userFileDescription);
         });
     }
 
-    // Upload to Cloudinary
-    function uploadToCloudinary(file, title, folder, tags, description) {
-        const formData = new FormData();
-        
-        formData.append('file', file);
-        
-        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-        
-        formData.append('folder', 'studybuddy/materials');
 
-        // Show uploading message
-        alert('Uploading file...');
+    function uploadToCloudinary(fileToUpload, titleForFile, folderForFile, tagsForFile, descriptionForFile) {
+        const uploadFormData = new FormData();
 
-        fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+        uploadFormData.append('file', fileToUpload);
+        uploadFormData.append('upload_preset', cloudinaryUploadPreset);
+
+        uploadFormData.append('folder', 'studybuddy/materials');
+
+
+        showInfo('Uploading file...');
+
+        fetch(`https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/auto/upload`, {
             method: 'POST',
-            body: formData
+            body: uploadFormData
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('File uploaded:', data);
-            saveNoteToDatabase(title, folder, tags, description, data.secure_url);
+        .then(serverResponse => serverResponse.json())
+        .then(cloudinaryData => {
+            console.log('File uploaded:', cloudinaryData);
+
+            const determinedFileType = fileToUpload.type.includes('pdf') ? 'pdf' :
+                           fileToUpload.type.includes('word') || fileToUpload.type.includes('document') ? 'doc' :
+                           fileToUpload.type.includes('text') ? 'txt' :
+                           fileToUpload.type.includes('image') ? 'image' : 'file';
+
+            saveMaterialToDatabase(titleForFile, folderForFile, tagsForFile, descriptionForFile, cloudinaryData.secure_url, determinedFileType, cloudinaryData.bytes);
         })
-        .catch(error => {
-            console.error('Upload error:', error);
-            alert('Upload failed. Please try again.');
+        .catch(uploadError => {
+            console.error('Upload error:', uploadError);
+            showError('Upload failed. Please try again.');
         });
     }
 
-    // Save file to database
-    function saveFileToDatabase(title, folder, tags, description, fileUrl) {
-        // Here you would save to your backend
+
+    function saveFileToDatabase(titleText, folderText, tagsText, descriptionText, fileUrlText) {
         console.log('Saving file to database:', {
-            title,
-            folder,
-            tags,
-            description,
-            fileUrl
+            title: titleText,
+            folder: folderText,
+            tags: tagsText,
+            description: descriptionText,
+            fileUrl: fileUrlText
         });
 
-        // Show success message
-        alert(`File "${title}" uploaded successfully!`);
+        showSuccess(`File "${titleText}" uploaded successfully!`);
 
-        // Close modal
         closeModal();
 
-        // Here you would refresh the materials list or add the new item to the UI
     }
 
 
-    // Click and drag-and-drop functionality for upload section
-    if (dropZone) {
-        // Click anywhere on upload box to open upload modal
-        dropZone.addEventListener('click', function(e) {
-            // Don't trigger if clicking the buttons
-            if (!e.target.classList.contains('new_note_button') &&
-                !e.target.classList.contains('browse_files_button') &&
-                e.target.id !== 'browseFilesButton') {
+
+    if (dropZoneElement) {
+        dropZoneElement.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('new_note_button') &&
+                !event.target.classList.contains('browse_files_button') &&
+                event.target.id !== 'browseFilesButton') {
                 openModal();
             }
         });
 
-        // Prevent default drag behaviors
+
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
+            dropZoneElement.addEventListener(eventName, preventDefaults, false);
         });
 
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        function preventDefaults(event) {
+            event.preventDefault();
+            event.stopPropagation();
         }
 
-        // Highlight drop zone when dragging over it
+
         ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, highlight, false);
+            dropZoneElement.addEventListener(eventName, highlight, false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, unhighlight, false);
+            dropZoneElement.addEventListener(eventName, unhighlight, false);
         });
 
         function highlight() {
-            dropZone.style.borderColor = '#5E4DB2';
-            dropZone.style.backgroundColor = '#F8F8FF';
+            dropZoneElement.style.borderColor = '#5E4DB2';
+            dropZoneElement.style.backgroundColor = '#F8F8FF';
         }
 
         function unhighlight() {
-            dropZone.style.borderColor = '#CFCFCF';
-            dropZone.style.backgroundColor = 'white';
+            dropZoneElement.style.borderColor = '#CFCFCF';
+            dropZoneElement.style.backgroundColor = 'white';
         }
 
-        // Handle dropped files
-        dropZone.addEventListener('drop', handleDrop, false);
 
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
+        dropZoneElement.addEventListener('drop', handleDrop, false);
 
-            if (files.length > 0) {
-                const file = files[0];
+        function handleDrop(event) {
+            const dataTransferObject = event.dataTransfer;
+            const droppedFiles = dataTransferObject.files;
 
-                // Check file type
-                const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'image/png', 'image/jpeg', 'image/jpg'];
+            if (droppedFiles.length > 0) {
+                const droppedFile = droppedFiles[0];
 
-                if (allowedTypes.includes(file.type)) {
-                    // Auto-fill the file name
-                    document.getElementById('fileName').value = file.name.replace(/\.[^/.]+$/, '');
+                const allowedFileTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain', 'image/png', 'image/jpeg', 'image/jpg'];
 
-                    // Set the file to the input
-                    const dataTransfer = new DataTransfer();
-                    dataTransfer.items.add(file);
-                    fileInput.files = dataTransfer.files;
+                if (allowedFileTypes.includes(droppedFile.type)) {
+                    document.getElementById('fileName').value = droppedFile.name.replace(/\.[^/.]+$/, '');
 
-                    // Display uploaded file
-                    displayUploadedFile(file.name);
 
-                    // Open modal
+                    const newDataTransfer = new DataTransfer();
+                    newDataTransfer.items.add(droppedFile);
+                    fileInputElement.files = newDataTransfer.files;
+
+                    displayUploadedFile(droppedFile.name);
+
                     openModal();
                 } else {
-                    alert('File type not supported. Please upload PDF, DOC, DOCX, TXT, PNG, or JPG files.');
+                    showWarning('File type not supported. Please upload PDF, DOC, DOCX, TXT, PNG, or JPG files.');
                 }
             }
         }
     }
 
 
-    // Material row click handling
-    const materialRows = document.querySelectorAll('.material_row');
 
-    materialRows.forEach(function(row) {
-        row.addEventListener('click', function(e) {
-            // Don't trigger if clicking the more button
-            if (e.target.classList.contains('more_button')) {
+    const materialRowElements = document.querySelectorAll('.material_row');
+
+    materialRowElements.forEach(function(rowElement) {
+        rowElement.addEventListener('click', function(event) {
+            if (event.target.classList.contains('more_button')) {
                 return;
             }
 
-            // Open note in editor for viewing/editing
-            const fileName = row.querySelector('.file_name').textContent;
-            console.log('Opening note:', fileName);
+            const clickedFileName = rowElement.querySelector('.file_name').textContent;
+            console.log('Opening note:', clickedFileName);
 
-            // Navigate to note editor
             window.location.href = 'note_editor.html';
         });
     });
 
 
-    // More button handling
-    const moreButtons = document.querySelectorAll('.more_button');
 
-    moreButtons.forEach(function(button) {
-        button.addEventListener('click', function(e) {
-            e.stopPropagation();
+    const moreButtonElements = document.querySelectorAll('.more_button');
 
-            // Here you would show a context menu with options like:
-            // - Download
-            // - Rename
-            // - Move to folder
-            // - Delete
-            alert('More options: Download, Rename, Move, Delete');
+    moreButtonElements.forEach(function(buttonElement) {
+        buttonElement.addEventListener('click', function(event) {
+            event.stopPropagation();
+
+            showInfo('More options coming soon!');
         });
     });
 
 
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
 
-    if (searchInput) {
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('.material_row');
+    const searchInputElement = document.getElementById('searchInput');
 
-            // Filter materials based on search term
-            rows.forEach(function(row) {
-                const fileName = row.querySelector('.file_name').textContent.toLowerCase();
+    if (searchInputElement) {
+        searchInputElement.addEventListener('input', function(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            const materialRowElements = document.querySelectorAll('.material_row');
 
-                if (fileName.includes(searchTerm)) {
-                    row.style.display = 'grid';
+            materialRowElements.forEach(function(rowElement) {
+                const fileNameText = rowElement.querySelector('.file_name').textContent.toLowerCase();
+
+                if (fileNameText.includes(searchTerm)) {
+                    rowElement.style.display = 'grid';
                 } else {
-                    row.style.display = 'none';
+                    rowElement.style.display = 'none';
                 }
             });
         });
     }
 
 
-    // Folder click handling
-    const folderItems = document.querySelectorAll('.folder_item');
 
-    folderItems.forEach(function(folder) {
-        folder.addEventListener('click', function(e) {
-            e.preventDefault();
+    const folderItemElements = document.querySelectorAll('.folder_item');
 
-            // Remove active class from all folders
-            folderItems.forEach(function(item) {
-                item.classList.remove('active');
+    folderItemElements.forEach(function(folderElement) {
+        folderElement.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            folderItemElements.forEach(function(itemElement) {
+                itemElement.classList.remove('active');
             });
 
-            // Add active class to clicked folder
-            folder.classList.add('active');
+            folderElement.classList.add('active');
 
-            // Here you would load materials for the selected folder
-            const folderName = folder.textContent.trim();
-            console.log('Loading folder:', folderName);
+            const clickedFolderName = folderElement.textContent.trim();
+            console.log('Loading folder:', clickedFolderName);
         });
     });
 
 
-    // Add folder button and modal
+
     const addFolderButton = document.querySelector('.add_folder_button');
+    
     const createFolderModal = document.getElementById('createFolderModal');
+    
     const closeFolderModalButton = document.getElementById('closeFolderModalButton');
+    
     const cancelFolderModalButton = document.getElementById('cancelFolderModalButton');
+    
     const createFolderForm = document.getElementById('createFolderForm');
-
-    // Open create folder modal
-    function openFolderModal() {
-        if (createFolderModal) {
-            createFolderModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    // Close create folder modal
-    function closeFolderModal() {
-        if (createFolderModal) {
-            createFolderModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            if (createFolderForm) {
-                createFolderForm.reset();
-            }
-        }
-    }
 
     if (addFolderButton) {
         addFolderButton.addEventListener('click', function() {
@@ -444,65 +458,586 @@ document.addEventListener('DOMContentLoaded', function() {
         cancelFolderModalButton.addEventListener('click', closeFolderModal);
     }
 
-    // Close modal when clicking outside
     if (createFolderModal) {
-        createFolderModal.addEventListener('click', function(e) {
-            if (e.target === createFolderModal) {
+        createFolderModal.addEventListener('click', function(event) {
+            if (event.target === createFolderModal) {
                 closeFolderModal();
             }
         });
     }
 
-    // Handle folder form submission
     if (createFolderForm) {
-        createFolderForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        createFolderForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
 
-            const folderName = document.getElementById('folderName').value;
-            const folderColor = document.querySelector('input[name="folderColor"]:checked').value;
+            const newFolderName = document.getElementById('folderName').value;
+            const selectedFolderColor = document.querySelector('input[name="folderColor"]:checked').value;
 
-            console.log('Creating folder:', { name: folderName, color: folderColor });
+            try {
+                await createFolder({ name: newFolderName, color: selectedFolderColor });
+                closeFolderModal();
+                await loadFoldersToSidebar();
 
-            // Here you would create a new folder in the database
-            alert(`Folder "${folderName}" created with color ${folderColor}!`);
-
-            closeFolderModal();
+            } catch (creationError) {
+                console.error('Error creating folder:', creationError);
+                showError('Failed to create folder. Please try again.');
+            }
         });
     }
 
 
-    // Create New button
     const createNewButton = document.querySelector('.create_new_button');
 
     if (createNewButton) {
         createNewButton.addEventListener('click', function() {
-            // Show options for what to create (note, folder, quiz, etc.)
-            alert('Create: Note, Folder, Quiz, or Study Plan');
+            const urlParameters = new URLSearchParams(window.location.search);
+            const currentFolderId = urlParameters.get('folder');
+            if (currentFolderId) {
+                window.location.href = `/pages/note_editor.html?folder=${currentFolderId}`;
+            } else {
+                window.location.href = '/pages/note_editor.html';
+            }
         });
     }
 
 });
 
 
-// Function to save file info to database
-// This is a placeholder - you'll implement this when you have your backend
+
 function saveFileToDatabase(fileName, fileUrl, fileType, fileSize) {
-    // Example:
-    // fetch('/api/materials', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({
-    //         name: fileName,
-    //         url: fileUrl,
-    //         type: fileType,
-    //         size: fileSize,
-    //         folder: 'Biology 101'
-    //     })
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     console.log('File saved to database:', data);
-    //     // Refresh the materials list
-    // })
-    // .catch(error => console.error('Error:', error));
+
+}
+
+
+
+async function saveMaterialToDatabase(materialTitle, materialFolderId, materialTags, materialDescription, materialFileUrl, materialFileType, materialFileSize) {
+    try {
+        console.log('Saving material to database...');
+
+        const serverResponse = await uploadMaterial({
+            name: materialTitle,
+            fileType: materialFileType,
+            fileUrl: materialFileUrl,
+            fileSize: materialFileSize,
+            folderId: materialFolderId || null
+        });
+
+        console.log('Material saved successfully:', serverResponse);
+        showSuccess(`File "${materialTitle}" uploaded successfully!`);
+
+        const uploadModal = document.getElementById('uploadFileModal');
+        if (uploadModal) {
+            uploadModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        const uploadFormElement = document.getElementById('uploadForm');
+        if (uploadFormElement) {
+            uploadFormElement.reset();
+        }
+
+
+        const urlParameters = new URLSearchParams(window.location.search);
+        const currentFolderId = urlParameters.get('folder');
+
+        const materialsContainer = document.querySelector('.materials_grid');
+        if (materialsContainer) {
+            materialsContainer.innerHTML = '';
+        }
+
+        await loadNotesFromDatabase(currentFolderId);
+        await loadMaterialsFromDatabase(currentFolderId);
+
+    } catch (savingError) {
+        console.error('Error saving material:', savingError);
+        showError('Failed to save material to database. Please try again.');
+    }
+}
+
+
+
+async function loadNotesFromDatabase(folderIdFilter) {
+    try {
+        console.log('Loading notes from database...');
+        const serverResponse = await getUserNotes();
+        let userNotes = serverResponse.notes || [];
+
+        if (folderIdFilter) {
+            userNotes = userNotes.filter(noteItem => noteItem.folderId == folderIdFilter);
+            console.log(`Filtered to ${userNotes.length} notes for folder ${folderIdFilter}`);
+        }
+
+        const materialsContainer = document.querySelector('.materials_grid');
+
+        if (!materialsContainer) {
+            console.log('Materials container not found');
+            return;
+        }
+
+        materialsContainer.innerHTML = '';
+
+
+        if (userNotes.length === 0) {
+            showEmptyState(materialsContainer, folderIdFilter);
+            return;
+        }
+
+        createMaterialsTable(materialsContainer, userNotes);
+
+        console.log(`Displayed ${userNotes.length} notes successfully`);
+
+    } catch (loadingError) {
+        console.error('Error loading notes:', loadingError);
+        const materialsContainer = document.querySelector('.materials_grid');
+        if (materialsContainer) {
+            materialsContainer.innerHTML = '<div class="error_state">Failed to load materials. Please try again.</div>';
+        }
+    }
+}
+
+
+function showEmptyState(containerElement, folderIdFilter) {
+    const emptyStateElement = document.createElement('div');
+    emptyStateElement.className = 'empty_state_container';
+
+    const folderDescriptionText = folderIdFilter ? 'this folder' : 'your library';
+    const createNoteLinkUrl = folderIdFilter ? `note_editor.html?folder=${folderIdFilter}` : 'note_editor.html';
+
+    emptyStateElement.innerHTML = `
+        <div class="empty_state_icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#86868B" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+        </div>
+        <h3 class="empty_state_title">No materials in ${folderDescriptionText} yet</h3>
+        <p class="empty_state_subtitle">Start by creating your first note or uploading a file!</p>
+        <div class="empty_state_actions">
+            <a href="${createNoteLinkUrl}" class="empty_action_button primary">+ Create Note</a>
+            <button class="empty_action_button secondary" onclick="document.getElementById('browseFilesButton').click()">Upload File</button>
+        </div>
+    `;
+
+    containerElement.appendChild(emptyStateElement);
+}
+
+
+function createMaterialsTable(containerElement, notesArray) {
+    const tableWrapperElement = document.createElement('div');
+    tableWrapperElement.className = 'materials_table_wrapper';
+
+
+    const tableHeaderElement = document.createElement('div');
+    tableHeaderElement.className = 'materials_table_header';
+    tableHeaderElement.innerHTML = `
+        <div class="header_col name_col">Name</div>
+        <div class="header_col date_col">Last Modified</div>
+        <div class="header_col actions_col">Actions</div>
+    `;
+
+    const tableBodyElement = document.createElement('div');
+    tableBodyElement.className = 'materials_table_body';
+
+    notesArray.forEach((noteItem, noteIndex) => {
+        const materialRowElement = createMaterialRow(noteItem, noteIndex);
+        tableBodyElement.appendChild(materialRowElement);
+    });
+
+    tableWrapperElement.appendChild(tableHeaderElement);
+    tableWrapperElement.appendChild(tableBodyElement);
+    containerElement.appendChild(tableWrapperElement);
+}
+
+
+function createMaterialRow(noteData, rowIndex) {
+    const rowElement = document.createElement('div');
+    rowElement.className = 'material_row';
+    rowElement.dataset.noteId = noteData.id;
+
+    const noteDateObject = new Date(noteData.updatedAt || noteData.createdAt || noteData.updated_at || noteData.created_at);
+    const humanReadableDate = getHumanReadableDate(noteDateObject);
+
+    const previewTextContent = getSimplePreview(noteData.content);
+
+
+    const noteColorOptions = ['#7132CA', '#4A90E2', '#50C878', '#FB923C', '#EC4899', '#6366F1', '#22C55E', '#F59E0B'];
+    const assignedNoteColor = noteData.color || noteColorOptions[noteData.id % noteColorOptions.length];
+
+    rowElement.innerHTML = `
+        <div class="material_name_section">
+            <div class="material_icon" style="background-color: ${assignedNoteColor}; border-radius: 6px;"></div>
+            <div class="material_info">
+                <div class="material_title">${noteData.title || 'Untitled Note'}</div>
+                <div class="material_preview">${previewTextContent}</div>
+            </div>
+        </div>
+
+        <div class="material_date_section">
+            <span class="date_text">${humanReadableDate}</span>
+        </div>
+
+        <div class="material_actions_section">
+            <button class="material_action_btn edit_btn" onclick="editNote(${noteData.id})" title="Edit note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Edit
+            </button>
+            <button class="material_action_btn delete_btn" onclick="confirmDeleteNote(${noteData.id}, '${(noteData.title || 'Untitled Note').replace(/'/g, "\\'")}')" title="Delete note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Delete
+            </button>
+        </div>
+    `;
+
+    rowElement.addEventListener('click', function(event) {
+        if (event.target.classList.contains('material_action_btn')) return;
+
+        window.location.href = `/pages/note_editor.html?id=${noteData.id}`;
+    });
+
+    return rowElement;
+}
+
+
+function getHumanReadableDate(dateObject) {
+    if (!dateObject || isNaN(dateObject.getTime())) {
+        return 'Recently';
+    }
+
+    const currentDate = new Date();
+    const timeDifference = currentDate - dateObject;
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (daysDifference === 0) return 'Today';
+    if (daysDifference === 1) return 'Yesterday';
+    if (daysDifference < 7) return `${daysDifference} days ago`;
+    if (daysDifference < 30) return `${Math.floor(daysDifference / 7)} weeks ago`;
+
+
+    return dateObject.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: dateObject.getFullYear() !== currentDate.getFullYear() ? 'numeric' : undefined
+    });
+}
+
+
+function getSimplePreview(contentHtml) {
+    if (!contentHtml) return 'No content yet...';
+
+    const tempDivElement = document.createElement('div');
+    tempDivElement.innerHTML = contentHtml;
+    const plainTextContent = tempDivElement.textContent || tempDivElement.innerText || '';
+
+    const previewText = plainTextContent.trim().substring(0, 50);
+    return previewText ? (previewText + (plainTextContent.length > 50 ? '...' : '')) : 'No content yet...';
+}
+
+
+function editNote(noteIdentifier) {
+    window.location.href = `/pages/note_editor.html?id=${noteIdentifier}`;
+}
+
+
+function confirmDeleteNote(noteIdentifier, noteTitle) {
+    showConfirmDialog(
+        'Delete Note',
+        `Are you sure you want to delete "${noteTitle || 'this note'}"? This action cannot be undone.`,
+        function() {
+            deleteNoteById(noteIdentifier);
+        }
+    );
+}
+
+
+async function deleteNoteById(noteIdentifier) {
+    try {
+        await deleteNote(noteIdentifier);
+        showSuccess('Note deleted successfully');
+
+        const urlParameters = new URLSearchParams(window.location.search);
+        const currentFolderId = urlParameters.get('folder');
+        await loadNotesFromDatabase(currentFolderId);
+
+    } catch (deletionError) {
+        console.error('Error deleting note:', deletionError);
+        showError('Failed to delete note: ' + deletionError.message);
+    }
+}
+
+
+
+async function loadFoldersToFilterDropdown() {
+    try {
+        const serverResponse = await getUserFolders();
+        const userFolders = serverResponse.folders || [];
+
+        const folderFilterDropdown = document.getElementById('folderFilter');
+        if (!folderFilterDropdown) return;
+
+        folderFilterDropdown.innerHTML = '<option value="">All Folders</option>';
+
+
+        userFolders.forEach(folderItem => {
+            const optionElement = document.createElement('option');
+            optionElement.value = folderItem.id;
+            optionElement.textContent = folderItem.name;
+            folderFilterDropdown.appendChild(optionElement);
+        });
+
+        console.log(`Loaded ${userFolders.length} folders into filter dropdown`);
+
+    } catch (loadingError) {
+        console.error('Error loading folders for filter:', loadingError);
+    }
+}
+
+
+
+async function loadMaterialsFromDatabase(folderIdFilter) {
+    try {
+        console.log('Loading materials from database...');
+
+        const serverResponse = await getUserMaterials(folderIdFilter);
+        const userMaterials = serverResponse.materials || [];
+
+        console.log(`Found ${userMaterials.length} materials`);
+
+        const materialsContainer = document.querySelector('.materials_grid');
+        if (!materialsContainer) {
+            console.log('Materials container not found');
+            return;
+        }
+
+
+        if (userMaterials.length === 0) {
+            return;
+        }
+
+        let tableBodyElement = document.querySelector('.materials_table_body');
+
+        if (!tableBodyElement) {
+            const tableWrapperElement = document.createElement('div');
+            tableWrapperElement.className = 'materials_table_wrapper';
+
+            const tableHeaderElement = document.createElement('div');
+            tableHeaderElement.className = 'materials_table_header';
+            tableHeaderElement.innerHTML = `
+                <div class="header_col name_col">Name</div>
+                <div class="header_col date_col">Last Modified</div>
+                <div class="header_col actions_col">Actions</div>
+            `;
+
+            tableBodyElement = document.createElement('div');
+            tableBodyElement.className = 'materials_table_body';
+
+            tableWrapperElement.appendChild(tableHeaderElement);
+            tableWrapperElement.appendChild(tableBodyElement);
+            materialsContainer.appendChild(tableWrapperElement);
+        }
+
+        userMaterials.forEach((materialItem, materialIndex) => {
+            const materialRowElement = createPdfMaterialRow(materialItem, materialIndex);
+            tableBodyElement.appendChild(materialRowElement);
+        });
+
+        console.log(`Displayed ${userMaterials.length} materials successfully`);
+
+    } catch (loadingError) {
+        console.error('Error loading materials:', loadingError);
+    }
+}
+
+
+
+function createPdfMaterialRow(materialData, rowIndex) {
+    const rowElement = document.createElement('div');
+    rowElement.className = 'material_row pdf_material_row';
+    rowElement.dataset.materialId = materialData.id;
+
+    const materialDateObject = new Date(materialData.createdAt);
+    const humanReadableDate = getHumanReadableDate(materialDateObject);
+
+
+    const pdfIconColor = '#E63946';
+
+    const materialFileType = materialData.fileType || 'pdf';
+    const fileTypeUppercase = materialFileType.toUpperCase();
+
+    rowElement.innerHTML = `
+        <div class="material_name_section">
+            <div class="material_icon pdf_icon" style="background-color: ${pdfIconColor}; border-radius: 6px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <text x="7" y="17" font-size="6" fill="${pdfIconColor}" font-weight="bold">${fileTypeUppercase}</text>
+                </svg>
+            </div>
+            <div class="material_info">
+                <div class="material_title">${materialData.name || 'Untitled Document'}</div>
+                <div class="material_preview">${fileTypeUppercase} Document</div>
+            </div>
+        </div>
+
+        <div class="material_date_section">
+            <span class="date_text">${humanReadableDate}</span>
+        </div>
+
+        <div class="material_actions_section">
+            <button class="material_action_btn view_pdf_btn" onclick="openPdfViewer('${materialData.fileUrl}', '${(materialData.name || 'Document').replace(/'/g, "\\'")}', '${materialFileType}')" title="View document">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                View
+            </button>
+            <button class="material_action_btn delete_btn" onclick="confirmDeleteMaterial(${materialData.id}, '${(materialData.name || 'this document').replace(/'/g, "\\'")}')" title="Delete document">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Delete
+            </button>
+        </div>
+    `;
+
+    rowElement.addEventListener('click', function(event) {
+        if (event.target.classList.contains('material_action_btn') ||
+            event.target.closest('.material_action_btn')) {
+            return;
+        }
+
+        openPdfViewer(materialData.fileUrl, materialData.name, materialFileType);
+    });
+
+    return rowElement;
+}
+
+
+
+function openPdfViewer(documentUrl, documentName, documentType) {
+    const viewerModal = document.getElementById('pdfViewerModal');
+    const viewerIframe = document.getElementById('pdfViewerFrame');
+    const viewerTitleElement = document.getElementById('pdfViewerTitle');
+
+    if (!viewerModal || !viewerIframe) {
+        console.error('PDF viewer modal not found');
+        return;
+    }
+
+    if (viewerTitleElement) {
+        viewerTitleElement.textContent = documentName || 'Document';
+    }
+
+    if (documentType === 'pdf' || documentUrl.toLowerCase().includes('.pdf')) {
+        viewerIframe.src = documentUrl;
+    } else {
+        window.open(documentUrl, '_blank');
+        return;
+    }
+
+    viewerModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+
+
+function closePdfViewer() {
+    const viewerModal = document.getElementById('pdfViewerModal');
+    const viewerIframe = document.getElementById('pdfViewerFrame');
+
+    if (viewerModal) {
+        viewerModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    if (viewerIframe) {
+        viewerIframe.src = '';
+    }
+}
+
+
+
+function downloadPdf() {
+    const viewerIframe = document.getElementById('pdfViewerFrame');
+    if (viewerIframe && viewerIframe.src) {
+        window.open(viewerIframe.src, '_blank');
+    }
+}
+
+
+
+function confirmDeleteMaterial(materialIdentifier, materialName) {
+    showConfirmDialog(
+        'Delete Document',
+        `Are you sure you want to delete "${materialName}"? This action cannot be undone.`,
+        function() {
+            deleteMaterialById(materialIdentifier);
+        }
+    );
+}
+
+
+
+async function deleteMaterialById(materialIdentifier) {
+    try {
+        await deleteMaterial(materialIdentifier);
+        showSuccess('Document deleted successfully');
+
+        const urlParameters = new URLSearchParams(window.location.search);
+        
+        const currentFolderId = urlParameters.get('folder');
+
+        const materialsContainer = document.querySelector('.materials_grid');
+        if (materialsContainer) {
+            materialsContainer.innerHTML = '';
+        }
+
+        await loadNotesFromDatabase(currentFolderId);
+        await loadMaterialsFromDatabase(currentFolderId);
+
+    } catch (deletionError) {
+        console.error('Error deleting material:', deletionError);
+        showError('Failed to delete document: ' + deletionError.message);
+    }
+}
+
+
+
+async function loadFoldersToUploadModal() {
+    try {
+        const serverResponse = await getUserFolders();
+        
+        const userFolders = serverResponse.folders || [];
+
+        const fileFolderDropdownElement = document.getElementById('fileFolder');
+        if (!fileFolderDropdownElement) return;
+
+        fileFolderDropdownElement.innerHTML = '<option value="">No Folder</option>';
+
+        userFolders.forEach(folderItem => {
+            
+            const optionElement = document.createElement('option');
+            
+            optionElement.value = folderItem.id;
+            
+            optionElement.textContent = folderItem.name;
+            
+            fileFolderDropdownElement.appendChild(optionElement);
+        });
+
+        console.log(`Loaded ${userFolders.length} folders into upload modal`);
+
+    } catch (loadingError) {
+        
+        console.error('Error loading folders for upload modal:', loadingError);
+    }
 }
