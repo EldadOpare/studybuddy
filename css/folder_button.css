@@ -1,0 +1,24 @@
+
+
+.add_folder_button_small {
+    background: none;
+    border: none;
+    color: #86868B;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+.add_folder_button_small:hover {
+    color: #00B7B5;
+    background-color: #EBEBEB;
+}
+
+.folders_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
