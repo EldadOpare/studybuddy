@@ -6,7 +6,9 @@
     <title>New Note - StudyBuddy</title>
     <link rel="stylesheet" href="../css/note_editor.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
-    <script src="../js/note_editor.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/note_editor.js"></script>
 </head>
 <body>
 
@@ -21,11 +23,8 @@
             </div>
 
             <div class="toolbar_right">
-                <button class="save_draft_button" id="saveDraftButton">
-                    Save Draft
-                </button>
                 <button class="publish_button" id="publishButton">
-                    Publish Note
+                    Save Note
                 </button>
             </div>
         </div>
@@ -48,9 +47,7 @@
                 <div class="metadata_item">
                     <label class="metadata_label">Folder</label>
                     <select class="metadata_select" id="folderSelect">
-                        <option value="biology">Biology 101</option>
-                        <option value="history">History Essays</option>
-                        <option value="physics">Physics Labs</option>
+                        <!-- Folders loaded from database -->
                     </select>
                 </div>
 
