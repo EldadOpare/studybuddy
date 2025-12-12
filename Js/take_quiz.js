@@ -1,76 +1,12 @@
-// Logout function
-function logout() {
-    window.location.href = 'login.html';
+// Check auth on page load
+if (!requireAuth()) {
+    // Will redirect to login if not authenticated
 }
 
-// Sample quiz data (will be replaced with actual data from Groq AI)
-const sampleQuiz = {
-    id: 'quiz_001',
-    title: 'Biology 101 - Cell Structure',
-    difficulty: 'Medium',
-    questions: [
-        {
-            id: 1,
-            question: 'What is the powerhouse of the cell?',
-            options: ['Nucleus', 'Mitochondria', 'Ribosome', 'Endoplasmic Reticulum'],
-            correctAnswer: 1
-        },
-        {
-            id: 2,
-            question: 'Which organelle is responsible for protein synthesis?',
-            options: ['Golgi Apparatus', 'Lysosome', 'Ribosome', 'Vacuole'],
-            correctAnswer: 2
-        },
-        {
-            id: 3,
-            question: 'What contains the genetic material of the cell?',
-            options: ['Nucleus', 'Cytoplasm', 'Cell Membrane', 'Mitochondria'],
-            correctAnswer: 0
-        },
-        {
-            id: 4,
-            question: 'Which structure controls what enters and leaves the cell?',
-            options: ['Cell Wall', 'Cell Membrane', 'Nucleus', 'Cytoplasm'],
-            correctAnswer: 1
-        },
-        {
-            id: 5,
-            question: 'What is the jelly-like substance inside the cell?',
-            options: ['Nucleus', 'Vacuole', 'Cytoplasm', 'Chloroplast'],
-            correctAnswer: 2
-        },
-        {
-            id: 6,
-            question: 'Which organelle is found only in plant cells?',
-            options: ['Mitochondria', 'Chloroplast', 'Ribosome', 'Nucleus'],
-            correctAnswer: 1
-        },
-        {
-            id: 7,
-            question: 'What packages and distributes proteins in the cell?',
-            options: ['Golgi Apparatus', 'Endoplasmic Reticulum', 'Lysosome', 'Peroxisome'],
-            correctAnswer: 0
-        },
-        {
-            id: 8,
-            question: 'Which organelle breaks down waste materials?',
-            options: ['Ribosome', 'Vacuole', 'Lysosome', 'Chloroplast'],
-            correctAnswer: 2
-        },
-        {
-            id: 9,
-            question: 'What is the site of photosynthesis in plant cells?',
-            options: ['Mitochondria', 'Chloroplast', 'Nucleus', 'Vacuole'],
-            correctAnswer: 1
-        },
-        {
-            id: 10,
-            question: 'Which organelle stores water and nutrients?',
-            options: ['Lysosome', 'Ribosome', 'Vacuole', 'Golgi Apparatus'],
-            correctAnswer: 2
-        }
-    ]
-};
+
+// Current quiz data loaded from database
+let currentQuiz = null;
+
 
 // Quiz state
 let currentQuestionIndex = 0;
@@ -79,11 +15,14 @@ let startTime = null;
 let timerInterval = null;
 
 // Run when page loads
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     console.log('Quiz page loaded');
 
+    // Load folders in sidebar
+    await loadFoldersToSidebar();
+
     // Initialize quiz
-    initializeQuiz();
+    await initializeQuiz();
 
     // Set up event listeners
     setupEventListeners();
@@ -92,32 +31,47 @@ document.addEventListener('DOMContentLoaded', function() {
     startTimer();
 });
 
-function initializeQuiz() {
-    // Try to load quiz from localStorage first
-    const storedQuiz = localStorage.getItem('current_quiz');
-    if (storedQuiz) {
-        const parsedQuiz = JSON.parse(storedQuiz);
-        // Update sampleQuiz with the loaded quiz
-        Object.assign(sampleQuiz, parsedQuiz);
+async function initializeQuiz() {
+    // Get quiz ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const quizId = urlParams.get('id');
+
+    if (!quizId) {
+        showWarning('No quiz selected');
+        window.location.href = '/pages/quizzes.html';
+        return;
     }
 
-    // Initialize user answers array
-    userAnswers = new Array(sampleQuiz.questions.length).fill(null);
+    try {
+        // Load quiz from database
+        // The API returns the quiz directly (id, title, difficulty, questions, etc)
+        currentQuiz = await getQuizById(quizId);
 
-    // Update quiz header
-    document.getElementById('quizTitle').textContent = sampleQuiz.title;
+        console.log('Quiz loaded:', currentQuiz);
 
-    // Capitalize difficulty
-    const difficultyText = sampleQuiz.difficulty.charAt(0).toUpperCase() + sampleQuiz.difficulty.slice(1);
-    document.getElementById('quizMeta').textContent = `${sampleQuiz.questions.length} Questions • ${difficultyText} Difficulty`;
+        // Initialize user answers array
+        userAnswers = new Array(currentQuiz.questions.length).fill(null);
 
-    // Load first question
-    loadQuestion(0);
+        // Update quiz header
+        document.getElementById('quizTitle').textContent = currentQuiz.title;
+
+        // Capitalize difficulty
+        const difficultyText = currentQuiz.difficulty.charAt(0).toUpperCase() + currentQuiz.difficulty.slice(1);
+        document.getElementById('quizMeta').textContent = `${currentQuiz.questions.length} Questions • ${difficultyText} Difficulty`;
+
+        // Load first question
+        loadQuestion(0);
+
+    } catch (error) {
+        console.error('Error loading quiz:', error);
+        showError('Failed to load quiz: ' + error.message);
+        window.location.href = '/pages/quizzes.html';
+    }
 }
 
 function loadQuestion(index) {
     currentQuestionIndex = index;
-    const question = sampleQuiz.questions[index];
+    const question = currentQuiz.questions[index];
 
     // Update question number and text
     document.getElementById('questionNumber').textContent = `Question ${index + 1}`;
@@ -174,7 +128,7 @@ function selectOption(optionIndex) {
 }
 
 function updateProgress() {
-    const totalQuestions = sampleQuiz.questions.length;
+    const totalQuestions = currentQuiz.questions.length;
     const currentQuestion = currentQuestionIndex + 1;
     const progressPercentage = (currentQuestion / totalQuestions) * 100;
 
@@ -194,7 +148,7 @@ function updateNavigationButtons() {
     }
 
     // Update Next button text
-    if (currentQuestionIndex === sampleQuiz.questions.length - 1) {
+    if (currentQuestionIndex === currentQuiz.questions.length - 1) {
         nextButton.textContent = 'Submit Quiz';
     } else {
         nextButton.textContent = 'Next';
@@ -223,7 +177,7 @@ function setupEventListeners() {
 
     // Next button
     document.getElementById('nextButton').addEventListener('click', function() {
-        if (currentQuestionIndex < sampleQuiz.questions.length - 1) {
+        if (currentQuestionIndex < currentQuiz.questions.length - 1) {
             loadQuestion(currentQuestionIndex + 1);
         } else {
             // Last question - show submit confirmation
@@ -285,6 +239,14 @@ function setupEventListeners() {
             submitConfirmModal.style.display = 'none';
         }
     });
+
+    // Create new button
+    const createNewButton = document.querySelector('.create_new_button');
+    if (createNewButton) {
+        createNewButton.addEventListener('click', function() {
+            window.location.href = '/pages/note_editor.html';
+        });
+    }
 }
 
 function showExitConfirmation() {
@@ -293,7 +255,7 @@ function showExitConfirmation() {
 
 function showSubmitConfirmation() {
     const answeredCount = userAnswers.filter(answer => answer !== null).length;
-    const totalQuestions = sampleQuiz.questions.length;
+    const totalQuestions = currentQuiz.questions.length;
 
     const confirmText = `You have answered ${answeredCount} out of ${totalQuestions} questions. Are you sure you want to submit?`;
     document.getElementById('submitConfirmText').textContent = confirmText;
@@ -304,59 +266,62 @@ function showSubmitConfirmation() {
 function saveProgress() {
     // Save quiz progress to localStorage
     const progress = {
-        quizId: sampleQuiz.id,
+        quizId: currentQuiz.id,
         currentQuestion: currentQuestionIndex,
         answers: userAnswers,
         startTime: startTime,
         lastUpdated: Date.now()
     };
 
-    localStorage.setItem('quiz_progress_' + sampleQuiz.id, JSON.stringify(progress));
+    localStorage.setItem('quiz_progress_' + currentQuiz.id, JSON.stringify(progress));
     console.log('Progress saved');
 }
 
-function submitQuiz() {
+async function submitQuiz() {
     // Stop timer
     clearInterval(timerInterval);
 
-    // Calculate score
-    let correctAnswers = 0;
-    sampleQuiz.questions.forEach((question, index) => {
-        if (userAnswers[index] === question.correctAnswer) {
-            correctAnswers++;
-        }
-    });
-
-    const score = Math.round((correctAnswers / sampleQuiz.questions.length) * 100);
+    // Calculate time spent
     const timeSpent = Math.floor((Date.now() - startTime) / 1000);
 
-    // Save quiz results
-    const result = {
-        quizId: sampleQuiz.id,
-        quizTitle: sampleQuiz.title,
-        score: score,
-        correctAnswers: correctAnswers,
-        totalQuestions: sampleQuiz.questions.length,
-        timeSpent: timeSpent,
-        answers: userAnswers,
-        questions: sampleQuiz.questions,
-        completedAt: new Date().toISOString(),
-        dateTaken: new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        })
-    };
+    try {
+        // Submit results to the database
+        const response = await submitQuizResult(currentQuiz.id, userAnswers, timeSpent);
+        
+        console.log('Quiz submitted successfully:', response);
 
-    // Store result in localStorage
-    const existingResults = JSON.parse(localStorage.getItem('quiz_results') || '[]');
-    existingResults.push(result);
-    localStorage.setItem('quiz_results', JSON.stringify(existingResults));
+        // Build result object with all the data we need for the results page
+        const result = {
+            quizId: currentQuiz.id,
+            quizTitle: currentQuiz.title,
+            score: response.score,
+            correctAnswers: response.correctAnswers,
+            totalQuestions: response.totalQuestions,
+            timeSpent: timeSpent,
+            answers: userAnswers,
+            questions: currentQuiz.questions,
+            completedAt: response.completedAt,
+            dateTaken: new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            })
+        };
 
-    // Clear progress
-    localStorage.removeItem('quiz_progress_' + sampleQuiz.id);
+        // Store result in localStorage for the results page to use
+        localStorage.setItem('current_quiz_result', JSON.stringify(result));
 
-    // Redirect to results page
-    localStorage.setItem('current_quiz_result', JSON.stringify(result));
-    window.location.href = 'quiz_results.html';
+        // Clear any saved progress
+        localStorage.removeItem('quiz_progress_' + currentQuiz.id);
+
+        // Redirect to results page
+        window.location.href = `quiz_results.html?id=${currentQuiz.id}`;
+
+    } catch (error) {
+        console.error('Error submitting quiz:', error);
+        showError('Failed to submit quiz: ' + error.message);
+        
+        // Hide the modal so user can try again
+        document.getElementById('submitConfirmModal').style.display = 'none';
+    }
 }
