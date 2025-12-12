@@ -1,17 +1,11 @@
-
-
-
-// Configuration
 const GROQ_API_KEY = 'YOUR_GROQ_API_KEY_HERE';
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-
-// Recommended model: llama-3.3-70b-versatile (fast and accurate)
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 
-
+// i'm using this to generate quiz questions when user gives me a topic
 async function generateQuizFromPrompt({ title, topic, questionCount, difficulty }) {
-    const systemPrompt = `You are a quiz generation expert. Generate educational multiple-choice quizzes based on the given topic.
+    const aiSystemPrompt = `You are a quiz generation expert. Generate educational multiple-choice quizzes based on the given topic.
 
 Your response MUST be a valid JSON object with this exact structure:
 {
@@ -35,7 +29,7 @@ Rules:
 - Difficulty should match the requested level
 - Return ONLY the JSON object, no additional text`;
 
-    const userPrompt = `Generate a ${difficulty} difficulty quiz about: ${topic}
+    const userRequest = `Generate a ${difficulty} difficulty quiz about: ${topic}
 
 Requirements:
 - Generate exactly ${questionCount} questions
@@ -45,7 +39,7 @@ Requirements:
 - Make questions educational and accurate`;
 
     try {
-        const response = await fetch(GROQ_API_URL, {
+        const apiResponse = await fetch(GROQ_API_URL, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${GROQ_API_KEY}`,
@@ -54,8 +48,8 @@ Requirements:
             body: JSON.stringify({
                 model: GROQ_MODEL,
                 messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: userPrompt }
+                    { role: 'system', content: aiSystemPrompt },
+                    { role: 'user', content: userRequest }
                 ],
                 temperature: 0.7,
                 max_tokens: 4096,
@@ -63,24 +57,24 @@ Requirements:
             })
         });
 
-        if (!response.ok) {
-            throw new Error(`Groq API error: ${response.status} ${response.statusText}`);
+        if (!apiResponse.ok) {
+            throw new Error(`Groq API error: ${apiResponse.status} ${apiResponse.statusText}`);
         }
 
-        const data = await response.json();
-        const quizData = JSON.parse(data.choices[0].message.content);
+        const responseData = await apiResponse.json();
+        const generatedQuiz = JSON.parse(responseData.choices[0].message.content);
 
-        // Add unique ID to the quiz
-        quizData.id = 'quiz_' + Date.now();
-        quizData.type = 'prompt';
-        quizData.createdAt = new Date().toISOString();
-        quizData.dateCreated = new Date().toLocaleDateString('en-US', {
+        generatedQuiz.id = 'quiz_' + Date.now();
+        generatedQuiz.type = 'prompt';
+        generatedQuiz.createdAt = new Date().toISOString();
+        generatedQuiz.dateCreated = new Date().toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
         });
 
-        return quizData;
+        return generatedQuiz;
+
     } catch (error) {
         console.error('Error generating quiz from prompt:', error);
         throw error;
@@ -89,8 +83,9 @@ Requirements:
 
 
 
+// this generates quiz from PDF or note content the user provides
 async function generateQuizFromPDF({ title, pdfText, questionCount, difficulty }) {
-    const systemPrompt = `You are a quiz generation expert. Generate educational multiple-choice quizzes based on the provided document content.
+    const aiSystemPrompt = `You are a quiz generation expert. Generate educational multiple-choice quizzes based on the provided document content.
 
 Your response MUST be a valid JSON object with this exact structure:
 {
@@ -114,7 +109,7 @@ Rules:
 - Difficulty should match the requested level
 - Return ONLY the JSON object, no additional text`;
 
-    const userPrompt = `Based on the following document content, generate a ${difficulty} difficulty quiz:
+    const userRequest = `Based on the following document content, generate a ${difficulty} difficulty quiz:
 
 DOCUMENT CONTENT:
 ${pdfText.substring(0, 6000)}
@@ -128,7 +123,7 @@ Requirements:
 - Make questions educational and test comprehension of the material`;
 
     try {
-        const response = await fetch(GROQ_API_URL, {
+        const apiResponse = await fetch(GROQ_API_URL, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${GROQ_API_KEY}`,
@@ -137,8 +132,8 @@ Requirements:
             body: JSON.stringify({
                 model: GROQ_MODEL,
                 messages: [
-                    { role: 'system', content: systemPrompt },
-                    { role: 'user', content: userPrompt }
+                    { role: 'system', content: aiSystemPrompt },
+                    { role: 'user', content: userRequest }
                 ],
                 temperature: 0.7,
                 max_tokens: 4096,
@@ -146,24 +141,24 @@ Requirements:
             })
         });
 
-        if (!response.ok) {
-            throw new Error(`Groq API error: ${response.status} ${response.statusText}`);
+        if (!apiResponse.ok) {
+            throw new Error(`Groq API error: ${apiResponse.status} ${apiResponse.statusText}`);
         }
 
-        const data = await response.json();
-        const quizData = JSON.parse(data.choices[0].message.content);
+        const responseData = await apiResponse.json();
+        const generatedQuiz = JSON.parse(responseData.choices[0].message.content);
 
-        // Add unique ID to the quiz
-        quizData.id = 'quiz_' + Date.now();
-        quizData.type = 'pdf';
-        quizData.createdAt = new Date().toISOString();
-        quizData.dateCreated = new Date().toLocaleDateString('en-US', {
+        generatedQuiz.id = 'quiz_' + Date.now();
+        generatedQuiz.type = 'pdf';
+        generatedQuiz.createdAt = new Date().toISOString();
+        generatedQuiz.dateCreated = new Date().toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
         });
 
-        return quizData;
+        return generatedQuiz;
+
     } catch (error) {
         console.error('Error generating quiz from PDF:', error);
         throw error;
@@ -171,14 +166,11 @@ Requirements:
 }
 
 
-
 async function extractTextFromPDF(pdfFile) {
-
-
     throw new Error('PDF text extraction not implemented. Please add a PDF parsing library.');
 }
 
-// Export functions for use in the application
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         generateQuizFromPrompt,
