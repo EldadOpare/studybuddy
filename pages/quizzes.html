@@ -11,7 +11,10 @@
         // Configure PDF.js worker
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
-    <script src="../js/quizzes.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/config.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/quizzes.js"></script>
 </head>
 <body>
 
@@ -54,24 +57,11 @@
             <div class="folders_section">
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
-                    <button class="add_folder_button">+</button>
+                    <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
                 </div>
 
                 <div class="folder_list">
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon orange"></span>
-                        Biology 101
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon blue"></span>
-                        History Essays
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon green"></span>
-                        Physics Labs
-                    </a>
+                    <!-- Folders loaded from database -->
                 </div>
             </div>
 
@@ -113,17 +103,17 @@
                 <!-- Stats Cards -->
                 <div class="stats_section">
                     <div class="stat_card">
-                        <div class="stat_number" id="totalQuizzes">12</div>
+                        <div class="stat_number" id="totalQuizzes">0</div>
                         <div class="stat_label">Total Quizzes</div>
                     </div>
 
                     <div class="stat_card">
-                        <div class="stat_number" id="quizzesTaken">8</div>
+                        <div class="stat_number" id="quizzesTaken">0</div>
                         <div class="stat_label">Quizzes Taken</div>
                     </div>
 
                     <div class="stat_card">
-                        <div class="stat_number" id="averageScore">87%</div>
+                        <div class="stat_number" id="averageScore">0%</div>
                         <div class="stat_label">Average Score</div>
                     </div>
                 </div>
@@ -157,69 +147,10 @@
                             <div class="header_cell quiz_actions_header">Actions</div>
                         </div>
 
-                        <!-- Sample Quiz Rows -->
-                        <div class="table_row">
-                            <div class="table_cell quiz_name_cell">
-                                <span class="quiz_name">Introduction to Biology</span>
-                            </div>
-                            <div class="table_cell quiz_type_cell">
-                                <span class="type_badge prompt_badge">Prompt</span>
-                            </div>
-                            <div class="table_cell quiz_questions_cell">
-                                <span class="quiz_questions">10</span>
-                            </div>
-                            <div class="table_cell quiz_score_cell">
-                                <span class="quiz_score completed_score">92%</span>
-                            </div>
-                            <div class="table_cell quiz_date_cell">
-                                <span class="quiz_date">Nov 15, 2024</span>
-                            </div>
-                            <div class="table_cell quiz_actions_cell">
-                                <button class="action_button retake_button">Retake</button>
-                                <button class="action_button view_button">View Results</button>
-                            </div>
-                        </div>
-
-                        <div class="table_row">
-                            <div class="table_cell quiz_name_cell">
-                                <span class="quiz_name">Python Programming Basics</span>
-                            </div>
-                            <div class="table_cell quiz_type_cell">
-                                <span class="type_badge pdf_badge">PDF</span>
-                            </div>
-                            <div class="table_cell quiz_questions_cell">
-                                <span class="quiz_questions">15</span>
-                            </div>
-                            <div class="table_cell quiz_score_cell">
-                                <span class="quiz_score completed_score">85%</span>
-                            </div>
-                            <div class="table_cell quiz_date_cell">
-                                <span class="quiz_date">Nov 12, 2024</span>
-                            </div>
-                            <div class="table_cell quiz_actions_cell">
-                                <button class="action_button retake_button">Retake</button>
-                                <button class="action_button view_button">View Results</button>
-                            </div>
-                        </div>
-
-                        <div class="table_row">
-                            <div class="table_cell quiz_name_cell">
-                                <span class="quiz_name">World War II History</span>
-                            </div>
-                            <div class="table_cell quiz_type_cell">
-                                <span class="type_badge prompt_badge">Prompt</span>
-                            </div>
-                            <div class="table_cell quiz_questions_cell">
-                                <span class="quiz_questions">20</span>
-                            </div>
-                            <div class="table_cell quiz_score_cell">
-                                <span class="quiz_score not_started">Not Started</span>
-                            </div>
-                            <div class="table_cell quiz_date_cell">
-                                <span class="quiz_date">Nov 10, 2024</span>
-                            </div>
-                            <div class="table_cell quiz_actions_cell">
-                                <button class="action_button start_button">Start Quiz</button>
+                        <!-- Quiz rows will be loaded from database by JavaScript -->
+                        <div class="table_body" id="quizzesTableBody">
+                            <div class="loading_state">
+                                <p>Loading your quizzes...</p>
                             </div>
                         </div>
 
@@ -365,19 +296,8 @@
                     <div class="form_group" id="cloudinarySection">
                         <label class="form_label">Select from Your Notes</label>
                         <select class="form_input" id="cloudinaryPdfSelect" required>
-                            <option value="">Choose a note or PDF...</option>
-                            <optgroup label="Notes">
-                                <option value="note1">Biology 101 - Cell Structure</option>
-                                <option value="note2">History - World War II Summary</option>
-                                <option value="note3">Python Programming - Functions</option>
-                                <option value="note4">Chemistry - Periodic Table</option>
-                            </optgroup>
-                            <optgroup label="PDFs">
-                                <option value="pdf1">Introduction to Web Design.pdf</option>
-                                <option value="pdf2">Python Data Analysis Guide.pdf</option>
-                                <option value="pdf3">Biology Chapter 5.pdf</option>
-                                <option value="pdf4">History Notes - WWII.pdf</option>
-                            </optgroup>
+                            <option value="">Choose a note...</option>
+                            <!-- Notes will be loaded from database by JavaScript -->
                         </select>
                     </div>
 
@@ -502,6 +422,18 @@
                             <label class="color_option">
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="teal" class="color_input">
+                                <span class="color_circle" style="background-color: #018790;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="blue_light" class="color_input">
+                                <span class="color_circle" style="background-color: #4A90E2;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="green" class="color_input">
+                                <span class="color_circle" style="background-color: #22C55E;"></span>
                             </label>
                         </div>
                     </div>
