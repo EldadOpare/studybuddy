@@ -1,53 +1,124 @@
-// Logout function
-function logout() {
-    window.location.href = 'login.html';
+
+
+if (!requireAuth()) {
+    
 }
 
-// Run when page loads
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', async function() {
     console.log('Quiz results page loaded');
 
-    // Load quiz results
-    loadResults();
+    
+    await loadFoldersToSidebar();
 
-    // Set up event listeners
+    
+    await loadResults();
+
+    
     setupEventListeners();
 });
 
-function loadResults() {
-    // Get quiz results from localStorage
+async function loadResults() {
+
+    
     const resultData = localStorage.getItem('current_quiz_result');
 
-    if (!resultData) {
-        console.error('No quiz result found');
-        window.location.href = 'quizzes.html';
+    if (resultData) {
+        
+        const result = JSON.parse(resultData);
+        displayResults(result);
         return;
     }
 
-    const result = JSON.parse(resultData);
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const quizId = urlParams.get('id');
 
-    // Update page title
+    if (quizId) {
+        
+        try {
+            
+            const quiz = await getQuizById(quizId);
+            
+            const resultsResponse = await getQuizResults(quizId);
+            
+            const results = resultsResponse.results || [];
+
+            if (results.length > 0) {
+                
+                const latestResult = results[0];
+
+              
+                const result = {
+                    quizId: quizId,
+                    quizTitle: quiz.title,
+                    score: latestResult.score,
+                    correctAnswers: latestResult.correctAnswers,
+                    totalQuestions: latestResult.totalQuestions,
+                    timeSpent: latestResult.timeSpent,
+                    answers: latestResult.userAnswers,
+                    questions: quiz.questions,
+                    completedAt: latestResult.completedAt,
+                    dateTaken: (() => {
+                        const d = new Date(latestResult.completedAt);
+                        if (d && !isNaN(d.getTime())) {
+                            return d.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                        }
+                        return 'Recently';
+                    })()
+                };
+
+                displayResults(result);
+                return;
+            }
+        } 
+        catch (error) {
+            console.error('Error loading quiz results:', error);
+        }
+    }
+
+    
+    console.error('No quiz result found');
+    window.location.href = 'quizzes.html';
+}
+
+function displayResults(result) {
+    
     document.getElementById('quizTitle').textContent = result.quizTitle;
 
-    // Update score circle
+    
     updateScoreCircle(result.score);
 
-    // Update score percentage
+   
     document.getElementById('scorePercentage').textContent = `${result.score}%`;
 
-    // Update summary stats
+   
     document.getElementById('correctCount').textContent = result.correctAnswers;
+   
     document.getElementById('incorrectCount').textContent = result.totalQuestions - result.correctAnswers;
+   
     document.getElementById('timeSpent').textContent = formatTime(result.timeSpent);
 
-    // Format date
+    
     const dateOptions = { month: 'short', day: 'numeric' };
+    
     const completedDate = new Date(result.completedAt);
-    document.getElementById('dateTaken').textContent = completedDate.toLocaleDateString('en-US', dateOptions);
+    
+    if (completedDate && !isNaN(completedDate.getTime())) {
+        document.getElementById('dateTaken').textContent = completedDate.toLocaleDateString('en-US', dateOptions);
+    } else {
+        document.getElementById('dateTaken').textContent = 'Recently';
+    }
 
-    // Populate questions review
+   
     populateQuestionsReview(result);
 }
+
 
 function updateScoreCircle(score) {
     const circle = document.getElementById('scoreProgress');
@@ -58,7 +129,7 @@ function updateScoreCircle(score) {
     circle.style.strokeDasharray = circumference;
     circle.style.strokeDashoffset = offset;
 
-    // Change color based on score
+    
     if (score >= 80) {
         circle.style.stroke = '#38a169'; // Green
     } else if (score >= 60) {
@@ -88,7 +159,7 @@ function populateQuestionsReview(result) {
         const card = document.createElement('div');
         card.className = `question_review_card ${isCorrect ? 'correct' : 'incorrect'}`;
 
-        // Question header
+       
         const header = document.createElement('div');
         header.className = 'question_header';
 
@@ -100,7 +171,9 @@ function populateQuestionsReview(result) {
         questionNumber.textContent = `Question ${index + 1}`;
 
         const questionText = document.createElement('div');
+        
         questionText.className = 'question_text';
+        
         questionText.textContent = question.question;
 
         questionInfo.appendChild(questionNumber);
@@ -121,7 +194,7 @@ function populateQuestionsReview(result) {
             const optionDiv = document.createElement('div');
             optionDiv.className = 'option_review';
 
-            // Determine option styling
+           
             if (optionIndex === correctAnswer) {
                 optionDiv.classList.add('correct_answer');
             }
@@ -134,19 +207,24 @@ function populateQuestionsReview(result) {
             }
 
             const letter = document.createElement('div');
+           
             letter.className = 'option_letter';
+           
             letter.textContent = String.fromCharCode(65 + optionIndex);
 
             const content = document.createElement('div');
+           
             content.className = 'option_content';
 
             const text = document.createElement('div');
+            
             text.className = 'option_text';
+            
             text.textContent = option;
 
             content.appendChild(text);
 
-            // Add badges
+          
             if (optionIndex === correctAnswer) {
                 const badge = document.createElement('span');
                 badge.className = 'option_badge correct_badge';
@@ -175,6 +253,7 @@ function populateQuestionsReview(result) {
         });
 
         card.appendChild(header);
+        
         card.appendChild(optionsContainer);
 
         container.appendChild(card);
@@ -182,19 +261,36 @@ function populateQuestionsReview(result) {
 }
 
 function setupEventListeners() {
-    // Retake quiz button
+
     document.getElementById('retakeQuizButton').addEventListener('click', function() {
-        // Clear current result and redirect to quiz page
+
         const result = JSON.parse(localStorage.getItem('current_quiz_result'));
+
         localStorage.removeItem('current_quiz_result');
 
-        // TODO: In production, this would redirect to the actual quiz with the quiz ID
+
+
         window.location.href = 'take_quiz.html';
+
     });
 
-    // Back to quizzes button
+
     document.getElementById('backToQuizzesButton').addEventListener('click', function() {
+
         localStorage.removeItem('current_quiz_result');
+
         window.location.href = 'quizzes.html';
+
     });
+
+
+    const createNewButton = document.querySelector('.create_new_button');
+    if (createNewButton) {
+
+        createNewButton.addEventListener('click', function() {
+
+            window.location.href = '/pages/note_editor.html';
+
+        });
+    }
 }

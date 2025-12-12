@@ -6,7 +6,9 @@
     <title>Quiz Results - StudyBuddy</title>
     <link rel="stylesheet" href="../css/quiz_results.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
-    <script src="../js/quiz_results.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/quiz_results.js"></script>
 </head>
 <body>
 
@@ -49,8 +51,13 @@
             <div class="folders_section">
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
-                    <button class="add_folder_button">+</button>
+                    <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
                 </div>
+
+                <div class="folder_list">
+                    <!-- Folders loaded from database -->
+                </div>
+            </div>
 
                 <div class="folder_list">
                     <a href="#" class="folder_item">
@@ -70,8 +77,6 @@
                 </div>
             </div>
 
-            <button class="create_new_button">
-                + Create New
             </button>
 
         </aside>
