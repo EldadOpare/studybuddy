@@ -6,7 +6,9 @@
     <title>Study Plan - StudyBuddy</title>
     <link rel="stylesheet" href="../css/study_plan.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
-    <script src="../js/study_plan.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/study_plan.js"></script>
 </head>
 <body>
 
@@ -49,30 +51,13 @@
             <div class="folders_section">
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
-                    <button class="add_folder_button">+</button>
+                    <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
                 </div>
 
                 <div class="folder_list">
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon orange"></span>
-                        Biology 101
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon blue"></span>
-                        History Essays
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon green"></span>
-                        Physics Labs
-                    </a>
+                    <!-- Folders loaded from database -->
                 </div>
             </div>
-
-            <button class="create_new_button">
-                + Create New
-            </button>
 
         </aside>
 
@@ -249,28 +234,10 @@
 
                     <!-- Selected Day Activities -->
                     <div class="day_details_widget">
-                        <h3 class="widget_title">Friday, October 25</h3>
+                        <h3 class="widget_title">Select a day</h3>
 
                         <div class="activities_list">
-
-                            <div class="activity_item blue_activity">
-                                <div class="activity_time">9:00 AM - 11:00 AM</div>
-                                <div class="activity_info">
-                                    <h4 class="activity_title">Calculus Chapter 3</h4>
-                                    <p class="activity_subject">Calculus</p>
-                                </div>
-                                <button class="activity_options">...</button>
-                            </div>
-
-                            <div class="activity_item pink_activity">
-                                <div class="activity_time">2:00 PM - 3:30 PM</div>
-                                <div class="activity_info">
-                                    <h4 class="activity_title">Physics: Kinematics</h4>
-                                    <p class="activity_subject">Physics</p>
-                                </div>
-                                <button class="activity_options">...</button>
-                            </div>
-
+                            <!-- Activities loaded from database -->
                         </div>
 
                         <button class="add_to_day_button">+ Add to this day</button>
@@ -282,43 +249,7 @@
                         <h3 class="widget_title">Upcoming</h3>
 
                         <div class="deadlines_list">
-
-                            <div class="deadline_item">
-                                <div class="deadline_date">
-                                    <div class="date_day">23</div>
-                                    <div class="date_month">Oct</div>
-                                </div>
-
-                                <div class="deadline_info">
-                                    <div class="deadline_title">Calculus Quiz</div>
-                                    <div class="deadline_type assignments_type">Assignments</div>
-                                </div>
-                            </div>
-
-                            <div class="deadline_item">
-                                <div class="deadline_date">
-                                    <div class="date_day">25</div>
-                                    <div class="date_month">Oct</div>
-                                </div>
-
-                                <div class="deadline_info">
-                                    <div class="deadline_title">History Paper Final Draft</div>
-                                    <div class="deadline_type test_type">Test</div>
-                                </div>
-                            </div>
-
-                            <div class="deadline_item">
-                                <div class="deadline_date">
-                                    <div class="date_day">28</div>
-                                    <div class="date_month">Oct</div>
-                                </div>
-
-                                <div class="deadline_info">
-                                    <div class="deadline_title">Physics Lab Report</div>
-                                    <div class="deadline_type lessons_type">Lessons</div>
-                                </div>
-                            </div>
-
+                            <!-- Upcoming events loaded from database -->
                         </div>
                     </div>
 
@@ -398,6 +329,30 @@
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
                             </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="blue" class="color_input">
+                                <span class="color_circle" style="background-color: #4A90E2;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="teal" class="color_input">
+                                <span class="color_circle" style="background-color: #00B7B5;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="green" class="color_input">
+                                <span class="color_circle" style="background-color: #50C878;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="mint" class="color_input">
+                                <span class="color_circle" style="background-color: #98D8C8;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="slate" class="color_input">
+                                <span class="color_circle" style="background-color: #64748B;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="brown" class="color_input">
+                                <span class="color_circle" style="background-color: #A0522D;"></span>
+                            </label>
                         </div>
                     </div>
 
@@ -436,27 +391,14 @@
                                required>
                     </div>
 
-                    <div class="form_row">
-                        <div class="form_group">
-                            <label class="form_label">Subject</label>
-                            <select class="form_select" id="activitySubject" required>
-                                <option value="">Select subject</option>
-                                <option value="calculus">Calculus</option>
-                                <option value="physics">Physics</option>
-                                <option value="history">History</option>
-                                <option value="biology">Biology</option>
-                            </select>
-                        </div>
-
-                        <div class="form_group">
-                            <label class="form_label">Color</label>
-                            <select class="form_select" id="activityColor" required>
-                                <option value="blue">Blue</option>
-                                <option value="orange">Orange</option>
-                                <option value="pink">Pink</option>
-                                <option value="green">Green</option>
-                            </select>
-                        </div>
+                    <div class="form_group">
+                        <label class="form_label">Color</label>
+                        <select class="form_select" id="activityColor" required>
+                            <option value="blue">Blue</option>
+                            <option value="orange">Orange</option>
+                            <option value="pink">Pink</option>
+                            <option value="green">Green</option>
+                        </select>
                     </div>
 
                     <div class="form_row">
@@ -526,10 +468,6 @@
             <div class="modal_body">
                 <div class="event_details_content">
                     <div class="detail_row">
-                        <span class="detail_label">Subject:</span>
-                        <span class="detail_value" id="eventSubject"></span>
-                    </div>
-                    <div class="detail_row">
                         <span class="detail_label">Date:</span>
                         <span class="detail_value" id="eventDate"></span>
                     </div>
@@ -577,27 +515,14 @@
                                required>
                     </div>
 
-                    <div class="form_row">
-                        <div class="form_group">
-                            <label class="form_label">Subject</label>
-                            <select class="form_select" id="editActivitySubject" required>
-                                <option value="">Select subject</option>
-                                <option value="calculus">Calculus</option>
-                                <option value="physics">Physics</option>
-                                <option value="history">History</option>
-                                <option value="biology">Biology</option>
-                            </select>
-                        </div>
-
-                        <div class="form_group">
-                            <label class="form_label">Color</label>
-                            <select class="form_select" id="editActivityColor" required>
-                                <option value="blue">Blue</option>
-                                <option value="orange">Orange</option>
-                                <option value="pink">Pink</option>
-                                <option value="green">Green</option>
-                            </select>
-                        </div>
+                    <div class="form_group">
+                        <label class="form_label">Color</label>
+                        <select class="form_select" id="editActivityColor" required>
+                            <option value="blue">Blue</option>
+                            <option value="orange">Orange</option>
+                            <option value="pink">Pink</option>
+                            <option value="green">Green</option>
+                        </select>
                     </div>
 
                     <div class="form_row">
