@@ -6,7 +6,9 @@
     <title>Users - StudyBuddy Admin</title>
     <link rel="stylesheet" href="../css/admin_students.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
-    <script src="../js/admin_students.js"></script>
+    <script src="../Js/toast.js"></script>
+    <script src="../Js/api.js"></script>
+    <script src="../Js/admin_students.js"></script>
 </head>
 <body>
 
@@ -72,94 +74,13 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Files Uploaded</th>
                                 <th>Notes Created</th>
-                                <th>Quizzes Generated</th>
+                                <th>Quizzes Taken</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- User rows - mock data for now -->
-                            <tr class="student_row" data-student-id="1">
-                                <td class="student_name">
-                                    <div class="name_cell">
-                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
-                                        <span>John Mensah</span>
-                                    </div>
-                                </td>
-                                <td>john.mensah@student.com</td>
-                                <td>12</td>
-                                <td>8</td>
-                                <td>5</td>
-                                <td>
-                                    <button class="view_button" onclick="viewStudent(1)">View</button>
-                                </td>
-                            </tr>
-
-                            <tr class="student_row" data-student-id="2">
-                                <td class="student_name">
-                                    <div class="name_cell">
-                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
-                                        <span>Ama Asante</span>
-                                    </div>
-                                </td>
-                                <td>ama.asante@student.com</td>
-                                <td>18</td>
-                                <td>15</td>
-                                <td>9</td>
-                                <td>
-                                    <button class="view_button" onclick="viewStudent(2)">View</button>
-                                </td>
-                            </tr>
-
-                            <tr class="student_row" data-student-id="3">
-                                <td class="student_name">
-                                    <div class="name_cell">
-                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
-                                        <span>Kwame Boateng</span>
-                                    </div>
-                                </td>
-                                <td>kwame.boateng@student.com</td>
-                                <td>7</td>
-                                <td>5</td>
-                                <td>3</td>
-                                <td>
-                                    <button class="view_button" onclick="viewStudent(3)">View</button>
-                                </td>
-                            </tr>
-
-                            <tr class="student_row" data-student-id="4">
-                                <td class="student_name">
-                                    <div class="name_cell">
-                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
-                                        <span>Efua Owusu</span>
-                                    </div>
-                                </td>
-                                <td>efua.owusu@student.com</td>
-                                <td>21</td>
-                                <td>18</td>
-                                <td>12</td>
-                                <td>
-                                    <button class="view_button" onclick="viewStudent(4)">View</button>
-                                </td>
-                            </tr>
-
-                            <tr class="student_row" data-student-id="5">
-                                <td class="student_name">
-                                    <div class="name_cell">
-                                        <img src="../images/user.jpg" alt="User" class="student_avatar">
-                                        <span>Yaw Agyeman</span>
-                                    </div>
-                                </td>
-                                <td>yaw.agyeman@student.com</td>
-                                <td>9</td>
-                                <td>6</td>
-                                <td>4</td>
-                                <td>
-                                    <button class="view_button" onclick="viewStudent(5)">View</button>
-                                </td>
-                            </tr>
-
+                        <tbody class="students_table_body">
+                            <!-- User rows loaded from database -->
                         </tbody>
                     </table>
                 </div>
@@ -184,7 +105,7 @@
                 <!-- User info -->
                 <div class="student_detail_section">
                     <div class="student_header">
-                        <img src="../images/user.jpg" alt="User" class="student_detail_avatar">
+                        <img src="../images/user.jpg" alt="User" class="student_detail_avatar" id="studentAvatar">
                         <div class="student_header_info">
                             <h4 class="student_detail_name" id="studentName">User Name</h4>
                             <p class="student_detail_email" id="studentEmail">user@email.com</p>

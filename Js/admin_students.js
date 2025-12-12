@@ -1,104 +1,103 @@
-// Logout function
-function logout() {
-    // Redirect to login page
-    window.location.href = 'login.html';
+
+
+if (!requireAdmin()) {
+
 }
 
 
-// Mock user data for details
-const studentsData = {
-    1: {
-        name: 'John Mensah',
-        email: 'john.mensah@student.com',
-        files: 12,
-        notes: 8,
-        quizzes: 5
-    },
-    2: {
-        name: 'Ama Asante',
-        email: 'ama.asante@student.com',
-        files: 18,
-        notes: 15,
-        quizzes: 9
-    },
-    3: {
-        name: 'Kwame Boateng',
-        email: 'kwame.boateng@student.com',
-        files: 7,
-        notes: 5,
-        quizzes: 3
-    },
-    4: {
-        name: 'Efua Owusu',
-        email: 'efua.owusu@student.com',
-        files: 21,
-        notes: 18,
-        quizzes: 12
-    },
-    5: {
-        name: 'Yaw Agyeman',
-        email: 'yaw.agyeman@student.com',
-        files: 9,
-        notes: 6,
-        quizzes: 4
-    }
-};
+
+let allUsers = [];
 
 
-// Variable to store current viewing user ID
 let currentUserId = null;
 
 
-// View user details function
-function viewStudent(studentId) {
+
+async function viewStudent(studentId) {
     const modal = document.getElementById('studentDetailModal');
-    const student = studentsData[studentId];
 
-    if (student) {
-        // Store current user ID for delete functionality
-        currentUserId = studentId;
+    try {
+        const response = await getUserById(studentId);
+        const student = response.user;
 
-        // Fill in the modal with user data
-        document.getElementById('studentName').textContent = student.name;
-        document.getElementById('studentEmail').textContent = student.email;
-        document.getElementById('studentFiles').textContent = student.files;
-        document.getElementById('studentNotes').textContent = student.notes;
-        document.getElementById('studentQuizzes').textContent = student.quizzes;
+        if (student) {
+            
+            currentUserId = studentId;
 
-        // Show the modal
-        modal.style.display = 'flex';
+            
+            document.getElementById('studentName').textContent = student.firstName + ' ' + student.lastName;
+            
+            document.getElementById('studentEmail').textContent = student.email;
+            
+            document.getElementById('studentFiles').textContent = student.fileCount || 0;
+            
+            document.getElementById('studentNotes').textContent = student.noteCount || 0;
+            
+            document.getElementById('studentQuizzes').textContent = student.quizCount || 0;
+            
+            
+            const avatarElement = document.getElementById('studentAvatar');
+            
+            if (avatarElement) {
+            
+                avatarElement.src = student.profilePicture || '../images/user.jpg';
+            
+            }
+
+           
+            modal.style.display = 'flex';
+        }
+
+    } 
+    catch (error) {
+    
+        console.error('Error loading student details:', error);
+    
+        showError('Failed to load student details');
     }
 }
 
 
-// Run when page loads
+
 document.addEventListener('DOMContentLoaded', function() {
 
     console.log('Admin users page loaded');
 
 
-    // Modal elements
+   
     const modal = document.getElementById('studentDetailModal');
+   
     const closeModalButton = document.getElementById('closeStudentModal');
+   
     const closeModalFooterButton = document.getElementById('closeStudentModalButton');
+   
     const deleteUserButton = document.getElementById('deleteUserButton');
 
 
-    // Search functionality
+    
     const searchInput = document.getElementById('studentSearch');
+    
     if (searchInput) {
+    
+    
         searchInput.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
+    
             const rows = document.querySelectorAll('.student_row');
 
             rows.forEach(function(row) {
+    
                 const name = row.querySelector('.name_cell span').textContent.toLowerCase();
+    
                 const email = row.querySelectorAll('td')[1].textContent.toLowerCase();
 
-                // Show or hide row based on search match
+               
                 if (name.includes(searchTerm) || email.includes(searchTerm)) {
+    
                     row.style.display = '';
+    
                 } else {
+    
                     row.style.display = 'none';
                 }
             });
@@ -106,23 +105,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // Close modal when X button is clicked
+
     if (closeModalButton) {
+
         closeModalButton.addEventListener('click', function() {
+
             modal.style.display = 'none';
+
         });
     }
 
 
-    // Close modal when footer close button is clicked
+
     if (closeModalFooterButton) {
+
         closeModalFooterButton.addEventListener('click', function() {
+
             modal.style.display = 'none';
+
         });
     }
 
 
-    // Close modal when clicking outside
+
     if (modal) {
         modal.addEventListener('click', function(e) {
             if (e.target === modal) {
@@ -132,42 +137,122 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // Delete user functionality
+ 
     if (deleteUserButton) {
         deleteUserButton.addEventListener('click', function() {
             if (!currentUserId) {
                 return;
             }
 
-            const user = studentsData[currentUserId];
-            const userName = user ? user.name : 'this user';
+            const userName = document.getElementById('studentName').textContent;
 
             // Confirmation dialog
-            const confirmed = confirm(`Are you sure you want to delete ${userName}'s account? This action cannot be undone.`);
+            showConfirmDialog(`Are you sure you want to delete ${userName}'s account? This action cannot be undone.`, async () => {
+                try {
+                    await deleteUser(currentUserId);
 
-            if (confirmed) {
-                // Here you would call your API to delete the user
-                console.log('Deleting user with ID:', currentUserId);
+                    // Remove the user from the table
+                    const userRow = document.querySelector(`.student_row[data-student-id="${currentUserId}"]`);
+                    if (userRow) {
+                        userRow.remove();
+                    }
 
-                // Remove the user from the table
-                const userRow = document.querySelector(`.student_row[data-student-id="${currentUserId}"]`);
-                if (userRow) {
-                    userRow.remove();
+                    // Close the modal
+                    modal.style.display = 'none';
+
+                    // Show success message
+                    showSuccess(`${userName}'s account has been deleted successfully.`);
+
+                    // Reset current user ID
+                    currentUserId = null;
+
+                    // Reload the users list
+                    await loadAllUsers();
+
+                } catch (error) {
+                    console.error('Error deleting user:', error);
+                    showError('Failed to delete user: ' + error.message);
                 }
-
-                // Remove from data
-                delete studentsData[currentUserId];
-
-                // Close the modal
-                modal.style.display = 'none';
-
-                // Show success message
-                alert(`${userName}'s account has been deleted successfully.`);
-
-                // Reset current user ID
-                currentUserId = null;
-            }
+            });
         });
     }
 
+    // Load all users on page load
+    loadAllUsers();
 });
+
+
+// Load all users from database
+async function loadAllUsers() {
+    try {
+        console.log('Loading all users...');
+        const response = await getAllUsers();
+        
+        if (response && response.users) {
+            allUsers = response.users;
+            console.log('Users loaded:', allUsers.length, 'users found');
+        } else {
+            allUsers = [];
+            console.log('No users data received');
+        }
+
+        const tableBody = document.querySelector('.students_table_body');
+        if (!tableBody) {
+            console.error('Students table body not found');
+            return;
+        }
+
+        
+        tableBody.innerHTML = '';
+
+        if (allUsers.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #86868B;">No users found</td></tr>';
+            return;
+        }
+
+       
+        allUsers.forEach(user => {
+            const row = document.createElement('tr');
+       
+            row.className = 'student_row';
+       
+            row.setAttribute('data-student-id', user.id);
+
+            const firstName = user.firstName || user.first_name || '';
+       
+            const lastName = user.lastName || user.last_name || '';
+       
+            const fullName = `${firstName} ${lastName}`.trim();
+            
+            const initials = firstName ? firstName.charAt(0).toUpperCase() : 'U';
+
+            row.innerHTML = `
+                <td class="name_cell">
+                    <div class="user_avatar">${initials}</div>
+                    <span>${fullName || 'Unknown User'}</span>
+                </td>
+                <td>${user.email || ''}</td>
+                <td>${user.noteCount || 0}</td>
+                <td>${user.quizCount || 0}</td>
+                <td>
+                    <button class="view_button" onclick="viewStudent(${user.id})">View</button>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+        console.log('User table populated successfully');
+
+    } catch (error) {
+        console.error('Error loading users:', error);
+        
+        const tableBody = document.querySelector('.students_table_body');
+       
+        if (tableBody) {
+       
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: #F75A5A;">Failed to load users. Please check server connection.</td></tr>';
+       
+        }
+    }
+}
