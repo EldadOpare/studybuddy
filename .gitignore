@@ -1,1 +1,34 @@
+# OS Files
 .DS_Store
+*.DS_Store
+
+# Environment Variables (SECRETS!)
+.env
+*.env
+server/.env
+
+# Config with API URLs
+# config.js can be committed now since it only contains the API_URL (no secrets)
+# The GROQ_API_KEY is stored server-side in .env
+
+# Admin Credentials (NEVER COMMIT!)
+server/ADMIN_CREDENTIALS.txt
+ADMIN_CREDENTIALS.txt
+
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Logs
+*.log
+server/*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude
+.claude/
