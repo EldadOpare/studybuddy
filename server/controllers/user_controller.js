@@ -1,5 +1,3 @@
-
-
 const db = require('../database/connection');
 
 const bcrypt = require('bcrypt');
@@ -119,24 +117,35 @@ async function getUserStats(req, res) {
 
 
         const quizzesResult = await db.query(
-            'SELECT COUNT(*) as quizzes_taken FROM quiz_results WHERE user_id = $1',
+            'SELECT COUNT(DISTINCT quiz_id) as quizzes_taken FROM quiz_results WHERE user_id = $1',
             [userId]
         );
 
-        const avgScoreResult = await db.query(
-            `SELECT AVG((correct_answers::float / total_questions::float) * 100) as avg_score
-             FROM quiz_results
-             WHERE user_id = $1`,
+        
+        const recentResults = await db.query(
+            `SELECT qr.score
+             FROM quiz_results qr
+             INNER JOIN (
+                 SELECT quiz_id, MAX(completed_at) as max_completed
+                 FROM quiz_results
+                 WHERE user_id = $1
+                 GROUP BY quiz_id
+             ) latest
+             ON qr.quiz_id = latest.quiz_id AND qr.completed_at = latest.max_completed
+             WHERE qr.user_id = $1`,
             [userId]
         );
+
+        let averageScore = 0;
+        if (recentResults.rows.length > 0) {
+            const total = recentResults.rows.reduce((sum, row) => sum + row.score, 0);
+            averageScore = total / recentResults.rows.length;
+        }
 
         const materialsCount = parseInt(materialsResult.rows[0].materials_count) || 0;
        
         const quizzesTaken = parseInt(quizzesResult.rows[0].quizzes_taken) || 0;
        
-        const averageScore = parseFloat(avgScoreResult.rows[0].avg_score) || 0;
-
-
         res.json({
             stats: {
                 materialsCount,

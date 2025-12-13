@@ -83,7 +83,9 @@ async function signup(req, res) {
                 firstName: newUser.first_name,
                 lastName: newUser.last_name,
                 email: newUser.email,
-                role: newUser.role
+                role: newUser.role,
+                bio: null,
+                profilePicture: null
             }
         });
 
@@ -115,7 +117,7 @@ async function login(req, res) {
 
 
         const result = await db.query(
-            `SELECT id, first_name, last_name, email, password_hash, role, profile_picture_url
+            `SELECT id, first_name, last_name, email, password_hash, role, bio, profile_picture_url
              FROM users
              WHERE email = $1`,
             [email]
@@ -153,6 +155,7 @@ async function login(req, res) {
                 lastName: user.last_name,
                 email: user.email,
                 role: user.role,
+                bio: user.bio,
                 profilePicture: user.profile_picture_url
             }
         });
