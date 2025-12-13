@@ -12,11 +12,49 @@ document.addEventListener('DOMContentLoaded', async function() {
     await loadFoldersToSidebar();
 
     
+    setupFolderModal();
+
+    
     await loadResults();
 
     
     setupEventListeners();
 });
+
+
+
+function setupFolderModal() {
+
+    const folderModal = document.getElementById('createFolderModal');
+
+    const closeButton = document.getElementById('closeFolderModalButton');
+
+    const cancelButton = document.getElementById('cancelFolderModalButton');
+
+    const folderForm = document.getElementById('createFolderForm');
+
+    if (closeButton) {
+
+        closeButton.addEventListener('click', closeFolderModal);
+    }
+
+    if (cancelButton) {
+        cancelButton.addEventListener('click', closeFolderModal);
+    }
+
+    if (folderModal) {
+
+        folderModal.addEventListener('click', function(e) {
+            if (e.target === folderModal) {
+                closeFolderModal();
+            }
+        });
+    }
+
+    if (folderForm) {
+        folderForm.addEventListener('submit', handleCreateFolder);
+    }
+}
 
 async function loadResults() {
 
@@ -268,9 +306,8 @@ function setupEventListeners() {
 
         localStorage.removeItem('current_quiz_result');
 
-
-
-        window.location.href = 'take_quiz.html';
+        // go back to the same quiz with the quiz id
+        window.location.href = `take_quiz.html?id=${result.quizId}`;
 
     });
 

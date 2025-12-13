@@ -59,26 +59,6 @@
                 </div>
             </div>
 
-                <div class="folder_list">
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon orange"></span>
-                        Biology 101
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon blue"></span>
-                        History Essays
-                    </a>
-
-                    <a href="#" class="folder_item">
-                        <span class="folder_icon green"></span>
-                        Physics Labs
-                    </a>
-                </div>
-            </div>
-
-            </button>
-
         </aside>
 
 
@@ -86,16 +66,8 @@
         <main class="main_content">
 
             <header class="page_header">
-                <div class="header_left">
-                </div>
-
                 <div class="header_right">
-                    <div class="search_container">
-                        <input type="text" class="search_input" placeholder="Search decks, quizzes...">
-                    </div>
-
                     <img src="../images/user.jpg" alt="Profile" class="profile_picture">
-
                     <button class="logout_button" onclick="logout()">
                         Logout
                     </button>
@@ -198,6 +170,115 @@
             <div class="modal_footer">
                 <button class="modal_button secondary_button" id="cancelSubmitButton">Cancel</button>
                 <button class="modal_button primary_button" id="confirmSubmitButton">Submit Quiz</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Create Folder Modal -->
+    <div class="modal_overlay" id="createFolderModal" style="display: none;">
+        <div class="modal_container modal_small">
+            <div class="modal_header">
+                <h2 class="modal_title">Create New Folder</h2>
+                <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
+            </div>
+
+            <div class="modal_body">
+                <form class="folder_form" id="createFolderForm">
+
+                    <div class="form_group">
+                        <label class="form_label">Folder Name</label>
+                        <input type="text"
+                               class="form_input"
+                               id="folderName"
+                               placeholder="Enter folder name..."
+                               required>
+                    </div>
+
+                    <div class="form_group">
+                        <label class="form_label">Choose Color</label>
+                        <div class="color_picker">
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="yellow" class="color_input">
+                                <span class="color_circle" style="background-color: #FFD63A;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="orange" class="color_input" checked>
+                                <span class="color_circle" style="background-color: #FFA955;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="red" class="color_input">
+                                <span class="color_circle" style="background-color: #F75A5A;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="navy" class="color_input">
+                                <span class="color_circle" style="background-color: #0D1164;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="purple_dark" class="color_input">
+                                <span class="color_circle" style="background-color: #640D5F;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="pink" class="color_input">
+                                <span class="color_circle" style="background-color: #EA2264;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="peach" class="color_input">
+                                <span class="color_circle" style="background-color: #F78D60;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="pink_light" class="color_input">
+                                <span class="color_circle" style="background-color: #F29AAE;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="lavender" class="color_input">
+                                <span class="color_circle" style="background-color: #C47BE4;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="purple" class="color_input">
+                                <span class="color_circle" style="background-color: #7132CA;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="indigo" class="color_input">
+                                <span class="color_circle" style="background-color: #301CA0;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="blue" class="color_input">
+                                <span class="color_circle" style="background-color: #4A90E2;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="teal" class="color_input">
+                                <span class="color_circle" style="background-color: #00B7B5;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="green" class="color_input">
+                                <span class="color_circle" style="background-color: #50C878;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="mint" class="color_input">
+                                <span class="color_circle" style="background-color: #98D8C8;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="slate" class="color_input">
+                                <span class="color_circle" style="background-color: #64748B;"></span>
+                            </label>
+                            <label class="color_option">
+                                <input type="radio" name="folderColor" value="brown" class="color_input">
+                                <span class="color_circle" style="background-color: #A0522D;"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal_footer">
+                <button type="button" class="cancel_modal_button" id="cancelFolderModalButton">
+                    Cancel
+                </button>
+                <button type="submit" form="createFolderForm" class="submit_modal_button" id="submitFolderButton">
+                    Create Folder
+                </button>
             </div>
         </div>
     </div>

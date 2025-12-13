@@ -1,38 +1,74 @@
-// Check auth on page load
+
 if (!requireAuth()) {
-    // Will redirect to login if not authenticated
+    
 }
-
-
-// Current quiz data loaded from database
 let currentQuiz = null;
 
 
-// Quiz state
 let currentQuestionIndex = 0;
+
 let userAnswers = [];
+
 let startTime = null;
+
 let timerInterval = null;
 
-// Run when page loads
+
 document.addEventListener('DOMContentLoaded', async function() {
     console.log('Quiz page loaded');
 
-    // Load folders in sidebar
+    
     await loadFoldersToSidebar();
 
-    // Initialize quiz
+    
+    setupFolderModal();
+
+    
     await initializeQuiz();
 
-    // Set up event listeners
+    
     setupEventListeners();
 
-    // Start timer
+    
     startTimer();
 });
 
+
+
+function setupFolderModal() {
+
+    const folderModal = document.getElementById('createFolderModal');
+
+    const closeButton = document.getElementById('closeFolderModalButton');
+
+    const cancelButton = document.getElementById('cancelFolderModalButton');
+
+    const folderForm = document.getElementById('createFolderForm');
+
+    if (closeButton) {
+        closeButton.addEventListener('click', closeFolderModal);
+    }
+
+    if (cancelButton) {
+        cancelButton.addEventListener('click', closeFolderModal);
+    }
+
+    if (folderModal) {
+        folderModal.addEventListener('click', function(e) {
+            if (e.target === folderModal) {
+                closeFolderModal();
+            }
+        });
+    }
+
+    if (folderForm) {
+        folderForm.addEventListener('submit', handleCreateFolder);
+    }
+}
+
+
 async function initializeQuiz() {
-    // Get quiz ID from URL
+    
     const urlParams = new URLSearchParams(window.location.search);
     const quizId = urlParams.get('id');
 
@@ -43,23 +79,22 @@ async function initializeQuiz() {
     }
 
     try {
-        // Load quiz from database
-        // The API returns the quiz directly (id, title, difficulty, questions, etc)
+        
         currentQuiz = await getQuizById(quizId);
 
         console.log('Quiz loaded:', currentQuiz);
 
-        // Initialize user answers array
+        
         userAnswers = new Array(currentQuiz.questions.length).fill(null);
 
-        // Update quiz header
+        
         document.getElementById('quizTitle').textContent = currentQuiz.title;
 
-        // Capitalize difficulty
+        // make the difficulty look nice with capital letter
         const difficultyText = currentQuiz.difficulty.charAt(0).toUpperCase() + currentQuiz.difficulty.slice(1);
         document.getElementById('quizMeta').textContent = `${currentQuiz.questions.length} Questions • ${difficultyText} Difficulty`;
 
-        // Load first question
+        
         loadQuestion(0);
 
     } catch (error) {
@@ -73,23 +108,23 @@ function loadQuestion(index) {
     currentQuestionIndex = index;
     const question = currentQuiz.questions[index];
 
-    // Update question number and text
+    
     document.getElementById('questionNumber').textContent = `Question ${index + 1}`;
     document.getElementById('questionText').textContent = question.question;
 
-    // Update progress
+    
     updateProgress();
 
-    // Load options
+    
     const optionsContainer = document.getElementById('optionsContainer');
     optionsContainer.innerHTML = '';
 
     question.options.forEach((option, i) => {
         const optionElement = document.createElement('div');
         optionElement.className = 'option_item';
-        optionElement.dataset.option = String.fromCharCode(65 + i); // A, B, C, D
+        optionElement.dataset.option = String.fromCharCode(65 + i);
 
-        // Check if this option was previously selected
+        // check if this option was previously selected
         if (userAnswers[index] === i) {
             optionElement.classList.add('selected');
         }
@@ -106,16 +141,18 @@ function loadQuestion(index) {
         optionsContainer.appendChild(optionElement);
     });
 
-    // Update navigation buttons
+    
     updateNavigationButtons();
 }
 
+
 function selectOption(optionIndex) {
-    // Save the answer
+    
     userAnswers[currentQuestionIndex] = optionIndex;
 
-    // Update UI
+    
     const optionItems = document.querySelectorAll('.option_item');
+    
     optionItems.forEach((item, index) => {
         if (index === optionIndex) {
             item.classList.add('selected');
@@ -127,6 +164,7 @@ function selectOption(optionIndex) {
     console.log('Selected option:', optionIndex, 'for question', currentQuestionIndex + 1);
 }
 
+
 function updateProgress() {
     const totalQuestions = currentQuiz.questions.length;
     const currentQuestion = currentQuestionIndex + 1;
@@ -136,24 +174,26 @@ function updateProgress() {
     document.getElementById('progressBar').style.width = `${progressPercentage}%`;
 }
 
+
 function updateNavigationButtons() {
     const previousButton = document.getElementById('previousButton');
     const nextButton = document.getElementById('nextButton');
 
-    // Update Previous button
+    
     if (currentQuestionIndex === 0) {
         previousButton.disabled = true;
     } else {
         previousButton.disabled = false;
     }
 
-    // Update Next button text
+    
     if (currentQuestionIndex === currentQuiz.questions.length - 1) {
         nextButton.textContent = 'Submit Quiz';
     } else {
         nextButton.textContent = 'Next';
     }
 }
+
 
 function startTimer() {
     startTime = Date.now();
@@ -167,33 +207,38 @@ function startTimer() {
     }, 1000);
 }
 
+
 function setupEventListeners() {
-    // Previous button
+    
     document.getElementById('previousButton').addEventListener('click', function() {
         if (currentQuestionIndex > 0) {
             loadQuestion(currentQuestionIndex - 1);
         }
     });
 
-    // Next button
+    
     document.getElementById('nextButton').addEventListener('click', function() {
         if (currentQuestionIndex < currentQuiz.questions.length - 1) {
             loadQuestion(currentQuestionIndex + 1);
         } else {
-            // Last question - show submit confirmation
+            
             showSubmitConfirmation();
         }
     });
 
-    // Exit quiz button
+    
     document.getElementById('exitQuizButton').addEventListener('click', function() {
         showExitConfirmation();
     });
 
-    // Exit confirmation modal
+
+    
     const exitConfirmModal = document.getElementById('exitConfirmModal');
+    
     const closeExitModal = document.getElementById('closeExitModal');
+    
     const cancelExitButton = document.getElementById('cancelExitButton');
+    
     const confirmExitButton = document.getElementById('confirmExitButton');
 
     closeExitModal.addEventListener('click', function() {
@@ -205,7 +250,7 @@ function setupEventListeners() {
     });
 
     confirmExitButton.addEventListener('click', function() {
-        // Save progress and exit
+        
         saveProgress();
         window.location.href = 'quizzes.html';
     });
@@ -216,7 +261,8 @@ function setupEventListeners() {
         }
     });
 
-    // Submit confirmation modal
+
+    // submit confirmation modal handlers
     const submitConfirmModal = document.getElementById('submitConfirmModal');
     const closeSubmitModal = document.getElementById('closeSubmitModal');
     const cancelSubmitButton = document.getElementById('cancelSubmitButton');
@@ -240,7 +286,7 @@ function setupEventListeners() {
         }
     });
 
-    // Create new button
+    
     const createNewButton = document.querySelector('.create_new_button');
     if (createNewButton) {
         createNewButton.addEventListener('click', function() {
@@ -249,9 +295,11 @@ function setupEventListeners() {
     }
 }
 
+
 function showExitConfirmation() {
     document.getElementById('exitConfirmModal').style.display = 'flex';
 }
+
 
 function showSubmitConfirmation() {
     const answeredCount = userAnswers.filter(answer => answer !== null).length;
@@ -263,8 +311,9 @@ function showSubmitConfirmation() {
     document.getElementById('submitConfirmModal').style.display = 'flex';
 }
 
+
 function saveProgress() {
-    // Save quiz progress to localStorage
+    // save quiz progress so user can come back later
     const progress = {
         quizId: currentQuiz.id,
         currentQuestion: currentQuestionIndex,
@@ -277,20 +326,21 @@ function saveProgress() {
     console.log('Progress saved');
 }
 
+
 async function submitQuiz() {
-    // Stop timer
+    
     clearInterval(timerInterval);
 
-    // Calculate time spent
+    
     const timeSpent = Math.floor((Date.now() - startTime) / 1000);
 
     try {
-        // Submit results to the database
+        
         const response = await submitQuizResult(currentQuiz.id, userAnswers, timeSpent);
         
         console.log('Quiz submitted successfully:', response);
 
-        // Build result object with all the data we need for the results page
+        // build result object with all the data the results page needs
         const result = {
             quizId: currentQuiz.id,
             quizTitle: currentQuiz.title,
@@ -308,20 +358,20 @@ async function submitQuiz() {
             })
         };
 
-        // Store result in localStorage for the results page to use
+        
         localStorage.setItem('current_quiz_result', JSON.stringify(result));
 
-        // Clear any saved progress
+        
         localStorage.removeItem('quiz_progress_' + currentQuiz.id);
 
-        // Redirect to results page
+        
         window.location.href = `quiz_results.html?id=${currentQuiz.id}`;
 
     } catch (error) {
         console.error('Error submitting quiz:', error);
         showError('Failed to submit quiz: ' + error.message);
         
-        // Hide the modal so user can try again
+        
         document.getElementById('submitConfirmModal').style.display = 'none';
     }
 }
