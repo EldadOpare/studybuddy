@@ -1,5 +1,3 @@
-
-
 if (!requireAdmin()) {
 
 }
@@ -146,34 +144,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const userName = document.getElementById('studentName').textContent;
 
-            // Confirmation dialog
-            showConfirmDialog(`Are you sure you want to delete ${userName}'s account? This action cannot be undone.`, async () => {
-                try {
-                    await deleteUser(currentUserId);
+            
+            showConfirmDialog(
+                'Delete User Account',
+                `Are you sure you want to delete <b>${userName}</b>'s account? This action cannot be undone.`,
+                async () => {
+                    try {
+                        await deleteUser(currentUserId);
 
-                    // Remove the user from the table
-                    const userRow = document.querySelector(`.student_row[data-student-id="${currentUserId}"]`);
-                    if (userRow) {
-                        userRow.remove();
+                        
+                        const userRow = document.querySelector(`.student_row[data-student-id="${currentUserId}"]`);
+                        if (userRow) {
+                            userRow.remove();
+                        }
+
+                        
+                        modal.style.display = 'none';
+
+                       
+                        showSuccess(`${userName}'s account has been deleted successfully.`);
+
+                        
+                        currentUserId = null;
+
+                        
+                        await loadAllUsers();
+
+                    } catch (error) {
+                        console.error('Error deleting user:', error);
+                        showError('Failed to delete user: ' + error.message);
                     }
-
-                    // Close the modal
-                    modal.style.display = 'none';
-
-                    // Show success message
-                    showSuccess(`${userName}'s account has been deleted successfully.`);
-
-                    // Reset current user ID
-                    currentUserId = null;
-
-                    // Reload the users list
-                    await loadAllUsers();
-
-                } catch (error) {
-                    console.error('Error deleting user:', error);
-                    showError('Failed to delete user: ' + error.message);
                 }
-            });
+            );
         });
     }
 
