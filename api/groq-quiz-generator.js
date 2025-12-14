@@ -1,9 +1,12 @@
+
 const GROQ_API_KEY = 'YOUR_GROQ_API_KEY_HERE';
+
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 
-// i'm using this to generate quiz questions when user gives me a topic
+// I'm using this to generate quiz questions when user gives me a topic
 async function generateQuizFromPrompt({ title, topic, questionCount, difficulty }) {
     const aiSystemPrompt = `You are a quiz generation expert. Generate educational multiple-choice quizzes based on the given topic.
 
@@ -171,10 +174,92 @@ async function extractTextFromPDF(pdfFile) {
 }
 
 
+// Handle chat requests from Buddy widget
+async function handleChatRequest(prompt) {
+    const aiSystemPrompt = `You are Buddy, a helpful and friendly study assistant. You help students with their questions, provide explanations, study tips, and encouragement. Be concise, clear, and supportive.`;
+
+    try {
+        const apiResponse = await fetch(GROQ_API_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GROQ_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: GROQ_MODEL,
+                messages: [
+                    { role: 'system', content: aiSystemPrompt },
+                    { role: 'user', content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 500
+            })
+        });
+
+        if (!apiResponse.ok) {
+            throw new Error(`Groq API error: ${apiResponse.status} ${apiResponse.statusText}`);
+        }
+
+        const responseData = await apiResponse.json();
+        return responseData.choices[0].message.content;
+
+    } catch (error) {
+        console.error('Error handling chat request:', error);
+        throw error;
+    }
+}
+
+
+export default async function handler(req, res) {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    try {
+        const { prompt, title, topic, pdfText, questionCount, difficulty } = req.body;
+
+        // If it's a simple chat prompt from the Buddy widget
+        if (prompt && !title && !topic && !pdfText) {
+            const chatResponse = await handleChatRequest(prompt);
+            return res.status(200).json({ result: chatResponse });
+        }
+
+        // If it's a quiz generation from prompt
+        if (topic) {
+            const quiz = await generateQuizFromPrompt({ title, topic, questionCount, difficulty });
+            return res.status(200).json(quiz);
+        }
+
+        // If it's a quiz generation from PDF
+        if (pdfText) {
+            const quiz = await generateQuizFromPDF({ title, pdfText, questionCount, difficulty });
+            return res.status(200).json(quiz);
+        }
+
+        return res.status(400).json({ error: 'Invalid request parameters' });
+
+    } catch (error) {
+        console.error('API Error:', error);
+        return res.status(500).json({ error: error.message || 'Internal server error' });
+    }
+}
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         generateQuizFromPrompt,
         generateQuizFromPDF,
-        extractTextFromPDF
+        extractTextFromPDF,
+        handleChatRequest
     };
 }

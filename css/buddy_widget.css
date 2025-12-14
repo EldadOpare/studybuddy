@@ -2,53 +2,55 @@
 
 .buddy-widget-button {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
-  width: 56px;
-  height: 56px;
-  background: #005461;
+  bottom: 24px;
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  background: #018790;
   color: #fff;
   border-radius: 50%;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 3px 12px rgba(1,135,144,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 600;
   cursor: pointer;
   z-index: 10000;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 .buddy-widget-button:hover {
-  background: #018790;
+  background: #01a0aa;
+  box-shadow: 0 4px 16px rgba(1,135,144,0.4);
+  transform: scale(1.05);
 }
 
 .buddy-widget-popup {
   position: fixed;
-  bottom: 96px;
-  right: 28px;
-  width: 340px;
+  bottom: 84px;
+  right: 24px;
+  width: 320px;
   max-width: 95vw;
-  height: 420px;
-  background: #f4f4f4;
-  border-radius: 18px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  height: 450px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
   z-index: 10001;
   overflow: hidden;
-  animation: buddyPopupIn 0.2s;
+  animation: buddyPopupIn 0.3s ease;
 }
 @keyframes buddyPopupIn {
-  from { transform: translateY(40px); opacity: 0; }
+  from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
 .buddy-widget-header {
-  background: #005461;
+  background: #018790;
   color: #fff;
-  padding: 14px 18px;
-  font-size: 1.1rem;
+  padding: 12px 16px;
+  font-size: 0.95rem;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -58,65 +60,91 @@
   background: none;
   border: none;
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+  line-height: 1;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.buddy-widget-close:hover {
+  opacity: 1;
 }
 
 .buddy-widget-messages {
   flex: 1;
-  padding: 16px;
+  padding: 14px;
   overflow-y: auto;
-  background: #f4f4f4;
+  background: #f9f9f9;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 .buddy-widget-message {
-  max-width: 80%;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 0.98rem;
-  line-height: 1.5;
+  max-width: 85%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  line-height: 1.45;
   word-break: break-word;
+  font-weight: 400;
 }
 .buddy-widget-message.user {
   align-self: flex-end;
   background: #018790;
   color: #fff;
+  box-shadow: 0 1px 2px rgba(1,135,144,0.2);
 }
 .buddy-widget-message.buddy {
   align-self: flex-start;
   background: #fff;
-  color: #222;
-  border: 1px solid #e0e0e0;
+  color: #333;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .buddy-widget-input-area {
   display: flex;
-  padding: 10px 12px;
+  padding: 10px;
   background: #fff;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #e8e8e8;
+  gap: 8px;
 }
 .buddy-widget-input {
   flex: 1;
-  border: none;
+  border: 1px solid #e0e0e0;
   outline: none;
-  font-size: 1rem;
+  font-size: 0.875rem;
   padding: 8px 10px;
   border-radius: 8px;
-  background: #f4f4f4;
-  margin-right: 8px;
+  background: #fafafa;
+  transition: border-color 0.2s, background 0.2s;
+  font-weight: 400;
+}
+.buddy-widget-input:focus {
+  border-color: #018790;
+  background: #fff;
 }
 .buddy-widget-send {
-  background: #005461;
+  background: #018790;
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 1rem;
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
 }
 .buddy-widget-send:hover {
-  background: #018790;
+  background: #01a0aa;
+}
+.buddy-widget-send:active {
+  transform: scale(0.98);
 }
