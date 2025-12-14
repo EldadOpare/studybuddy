@@ -79,20 +79,20 @@
   }
 
   async function sendToBuddy(message) {
-    
+
     addMessage(message, 'user');
-    
+
     addMessage('<span style="opacity:0.7;">Buddy is typing...</span>', 'buddy');
-    
+
     try {
-     
+
       const res = await fetch('/api/groq-quiz-generator', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: message })
       });
       const data = await res.json();
-      
+
 
       messagesDiv.removeChild(messagesDiv.lastChild);
       if (data && data.result) {

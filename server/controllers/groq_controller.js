@@ -180,3 +180,55 @@ Requirements:
         res.status(500).json({ error: error.message || 'Failed to generate quiz' });
     }
 };
+
+
+// Handle chat requests from Buddy widget
+exports.chat = async (req, res) => {
+    try {
+        const { prompt } = req.body;
+
+        if (!prompt) {
+            return res.status(400).json({ error: 'Missing required field: prompt' });
+        }
+
+        const apiKey = process.env.GROQ_API_KEY;
+        if (!apiKey) {
+            return res.status(500).json({ error: 'Groq API key not configured on server' });
+        }
+
+        const systemPrompt = `You are Buddy, a helpful and friendly study assistant. You help students with their questions, provide explanations, study tips, and encouragement. Be concise, clear, and supportive.`;
+
+        const response = await fetch(GROQ_API_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: GROQ_MODEL,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 500
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Groq API error:', errorData);
+            return res.status(response.status).json({
+                error: errorData.error?.message || `Groq API error: ${response.status}`
+            });
+        }
+
+        const data = await response.json();
+        const chatResponse = data.choices[0].message.content;
+
+        res.json({ result: chatResponse });
+    } catch (error) {
+        console.error('Error handling chat request:', error);
+        res.status(500).json({ error: error.message || 'Failed to process chat request' });
+    }
+};
