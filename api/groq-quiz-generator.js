@@ -1,5 +1,4 @@
-
-const GROQ_API_KEY = 'YOUR_GROQ_API_KEY_HERE';
+const GROQ_API_KEY = process.env.GROQ_API_KEY || 'YOUR_GROQ_API_KEY_HERE';
 
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 

@@ -10,7 +10,7 @@ const ADMIN_LAST_NAME = 'Opare';
 
 
 async function createAdminAccount() {
-    console.log('🔧 Creating admin account...\n');
+    console.log(' Creating admin account...\n');
 
     try {
         const existingAdmin = await pool.query(
@@ -22,7 +22,7 @@ async function createAdminAccount() {
             const admin = existingAdmin.rows[0];
 
             if (admin.role === 'admin') {
-                console.log('✅ Admin account already exists!');
+                console.log('   Admin account already exists!');
                 console.log(`   Email: ${admin.email}`);
                 console.log(`   Role: ${admin.role}\n`);
                 return;
@@ -34,7 +34,7 @@ async function createAdminAccount() {
                 ['admin', ADMIN_EMAIL]
             );
 
-            console.log('✅ Existing user upgraded to admin!');
+            console.log('   Existing user upgraded to admin!');
             console.log(`   Email: ${ADMIN_EMAIL}\n`);
             return;
         }
@@ -52,7 +52,7 @@ async function createAdminAccount() {
 
         const admin = result.rows[0];
 
-        console.log('✅ Admin account created successfully!\n');
+        console.log(' Admin account created successfully!\n');
         console.log('Admin Details:');
         console.log(`   ID: ${admin.id}`);
         console.log(`   Email: ${admin.email}`);
@@ -60,13 +60,13 @@ async function createAdminAccount() {
         console.log(`   Created: ${admin.created_at}\n`);
 
 
-        console.log('⚠️  Admin credentials are in ADMIN_CREDENTIALS.txt');
-        console.log('⚠️  Keep this file secure and DO NOT commit to git!\n');
+        console.log('  Admin credentials are in ADMIN_CREDENTIALS.txt');
+        console.log('  Keep this file secure and DO NOT commit to git!\n');
 
         process.exit(0);
 
     } catch (error) {
-        console.error('❌ Error creating admin account:', error);
+        console.error(' Error creating admin account:', error);
         process.exit(1);
     }
 }
