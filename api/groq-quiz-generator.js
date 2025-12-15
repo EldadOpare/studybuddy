@@ -1,3 +1,5 @@
+
+// I configured the Groq API settings for quiz generation and chat
 const GROQ_API_KEY = process.env.GROQ_API_KEY || 'YOUR_GROQ_API_KEY_HERE';
 const GROQ_API_URL = process.env.GROQ_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
@@ -64,6 +66,7 @@ Requirements:
         const responseData = await apiResponse.json();
         const generatedQuiz = JSON.parse(responseData.choices[0].message.content);
 
+        // I added metadata to the quiz so we can track when it was created
         generatedQuiz.id = 'quiz_' + Date.now();
         generatedQuiz.type = 'prompt';
         generatedQuiz.createdAt = new Date().toISOString();
@@ -76,7 +79,6 @@ Requirements:
         return generatedQuiz;
 
     } catch (error) {
-        console.error('Error generating quiz from prompt:', error);
         throw error;
     }
 }
@@ -109,6 +111,7 @@ Rules:
 - Difficulty should match the requested level
 - Return ONLY the JSON object, no additional text`;
 
+    // I limited the text to 6000 characters so the API request doesn't get too large
     const userRequest = `Based on the following document content, generate a ${difficulty} difficulty quiz:
 
 DOCUMENT CONTENT:
@@ -160,14 +163,8 @@ Requirements:
         return generatedQuiz;
 
     } catch (error) {
-        console.error('Error generating quiz from PDF:', error);
         throw error;
     }
-}
-
-
-async function extractTextFromPDF(pdfFile) {
-    throw new Error('PDF text extraction not implemented. Please add a PDF parsing library.');
 }
 
 
@@ -201,18 +198,16 @@ async function handleChatRequest(prompt) {
         return responseData.choices[0].message.content;
 
     } catch (error) {
-        console.error('Error handling chat request:', error);
         throw error;
     }
 }
 
 
+// I set up this handler for Vercel serverless deployment
 export default async function handler(req, res) {
-    
+    // I allowed CORS so the frontend can call this API
     res.setHeader('Access-Control-Allow-Origin', '*');
-    
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
@@ -247,7 +242,6 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Invalid request parameters' });
 
     } catch (error) {
-        console.error('API Error:', error);
         return res.status(500).json({ error: error.message || 'Internal server error' });
     }
 }
@@ -256,8 +250,6 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         generateQuizFromPrompt,
         generateQuizFromPDF,
-        extractTextFromPDF,
         handleChatRequest
     };
 }
-// force redeploy

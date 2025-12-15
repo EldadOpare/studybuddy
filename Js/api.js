@@ -1,8 +1,11 @@
 
+
+// For the backend, I hosted it on Railway so this is the base URL
 const API_BASE_URL = 'https://backend-production-80c2.up.railway.app/api';
 
 
 // I built this helper to handle all my API requests in one place
+
 // It made it easier to add auth headers and handle errors consistently
 async function makeApiCall(endpoint, options = {}) {
 
@@ -18,13 +21,13 @@ async function makeApiCall(endpoint, options = {}) {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || 'Something went wrong');
+            // I checked for both error and message properties since the backend uses 'error'
+            throw new Error(data.error || data.message || 'Something went wrong');
         }
 
         return data;
 
     } catch (error) {
-        console.error('API Error:', error);
         throw error;
     }
 }
@@ -203,8 +206,9 @@ async function getQuizResults(quizId) {
 
 
 
-async function getUserNotes() {
-    return makeAuthApiCall('/notes');
+async function getUserNotes(folderId) {
+    const queryParam = folderId ? `?folderId=${folderId}` : '';
+    return makeAuthApiCall(`/notes${queryParam}`);
 }
 
 async function getNoteById(noteId) {
@@ -276,37 +280,6 @@ async function updateEvent(eventId, eventData) {
 
 async function deleteEvent(eventId) {
     return makeAuthApiCall(`/events/${eventId}`, {
-        method: 'DELETE'
-    });
-}
-
-
-// Materials API calls for PDF and document management
-async function getUserMaterials(folderId = null) {
-    const endpoint = folderId ? `/materials?folderId=${folderId}` : '/materials';
-    return makeAuthApiCall(endpoint);
-}
-
-async function getMaterialById(materialId) {
-    return makeAuthApiCall(`/materials/${materialId}`);
-}
-
-async function uploadMaterial(materialData) {
-    return makeAuthApiCall('/materials', {
-        method: 'POST',
-        body: JSON.stringify(materialData)
-    });
-}
-
-async function updateMaterial(materialId, materialData) {
-    return makeAuthApiCall(`/materials/${materialId}`, {
-        method: 'PUT',
-        body: JSON.stringify(materialData)
-    });
-}
-
-async function deleteMaterial(materialId) {
-    return makeAuthApiCall(`/materials/${materialId}`, {
         method: 'DELETE'
     });
 }
@@ -434,7 +407,6 @@ async function loadFoldersToSidebar() {
         });
 
     } catch (error) {
-        console.error('Error loading folders:', error);
     }
 }
 
@@ -474,76 +446,5 @@ async function handleCreateFolder(e) {
         closeFolderModal();
         await loadFoldersToSidebar();
     } catch (error) {
-        console.error('Error creating folder:', error);
     }
-}
-
-
-// Material API calls for PDF and document management
-
-async function getUserMaterials(folderId = null) {
-    const token = getAuthToken();
-
-    let endpoint = '/materials';
-
-    if (folderId) {
-        endpoint += `?folderId=${folderId}`;
-    }
-
-    return makeApiCall(endpoint, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-}
-
-
-async function getMaterialById(materialId) {
-    const token = getAuthToken();
-
-    return makeApiCall(`/materials/${materialId}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-}
-
-
-async function uploadMaterial(materialData) {
-    const token = getAuthToken();
-
-    return makeApiCall('/materials', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(materialData)
-    });
-}
-
-
-async function deleteMaterial(materialId) {
-    const token = getAuthToken();
-
-    return makeApiCall(`/materials/${materialId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-}
-
-
-async function updateMaterial(materialId, updates) {
-    const token = getAuthToken();
-
-    return makeApiCall(`/materials/${materialId}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(updates)
-    });
 }
