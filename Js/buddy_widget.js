@@ -1,9 +1,13 @@
 
+
+
+// I built Buddy the chatbot widget that appears on every page to help students
+
 (function() {
   if (window.BuddyWidgetLoaded) return;
   window.BuddyWidgetLoaded = true;
 
-
+  // I loaded the widget styles dynamically so it works on any page
   if (!document.querySelector('link[href*="buddy_widget.css"]')) {
 
     const link = document.createElement('link');
@@ -15,7 +19,7 @@
     document.head.appendChild(link);
   }
 
-
+  // I created the floating button that users click to open the chat
   const button = document.createElement('div');
 
   button.className = 'buddy-widget-button';
@@ -86,7 +90,7 @@
 
     try {
 
-      const res = await fetch('/api/groq-quiz-generator', {
+      const res = await fetch('https://backend-production-80c2.up.railway.app/api/groq/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: message })

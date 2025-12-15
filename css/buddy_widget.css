@@ -19,6 +19,8 @@
   z-index: 10000;
   transition: all 0.2s ease;
 }
+
+
 .buddy-widget-button:hover {
   background: #01a0aa;
   box-shadow: 0 4px 16px rgba(1,135,144,0.4);
@@ -41,6 +43,8 @@
   overflow: hidden;
   animation: buddyPopupIn 0.3s ease;
 }
+
+
 @keyframes buddyPopupIn {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
@@ -56,6 +60,8 @@
   align-items: center;
   justify-content: space-between;
 }
+
+
 .buddy-widget-close {
   background: none;
   border: none;
@@ -72,6 +78,8 @@
   align-items: center;
   justify-content: center;
 }
+
+
 .buddy-widget-close:hover {
   opacity: 1;
 }
@@ -85,6 +93,8 @@
   flex-direction: column;
   gap: 12px;
 }
+
+
 .buddy-widget-message {
   max-width: 85%;
   padding: 8px 12px;
@@ -94,12 +104,16 @@
   word-break: break-word;
   font-weight: 400;
 }
+
+
 .buddy-widget-message.user {
   align-self: flex-end;
   background: #018790;
   color: #fff;
   box-shadow: 0 1px 2px rgba(1,135,144,0.2);
 }
+
+
 .buddy-widget-message.buddy {
   align-self: flex-start;
   background: #fff;
@@ -115,6 +129,8 @@
   border-top: 1px solid #e8e8e8;
   gap: 8px;
 }
+
+
 .buddy-widget-input {
   flex: 1;
   border: 1px solid #e0e0e0;
@@ -126,10 +142,12 @@
   transition: border-color 0.2s, background 0.2s;
   font-weight: 400;
 }
+
 .buddy-widget-input:focus {
   border-color: #018790;
   background: #fff;
 }
+
 .buddy-widget-send {
   background: #018790;
   color: #fff;
@@ -142,9 +160,11 @@
   transition: background 0.2s, transform 0.1s;
   white-space: nowrap;
 }
+
 .buddy-widget-send:hover {
   background: #01a0aa;
 }
+
 .buddy-widget-send:active {
   transform: scale(0.98);
 }
