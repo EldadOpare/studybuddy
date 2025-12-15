@@ -1,16 +1,13 @@
-
-
+// I handle all quiz-related database operations
 const db = require('../database/connection');
 
 
 async function createQuiz(req, res) {
-    
+    // I used a transaction to make sure both the quiz and questions are saved together
     const client = await db.getClient();
-
 
     try {
         const userId = req.userId;
-    
         const { title, difficulty, type, questions, folderId } = req.body;
 
         if (!title || !difficulty || !questions || questions.length === 0) {
@@ -58,7 +55,6 @@ async function createQuiz(req, res) {
 
     } catch (error) {
         await client.query('ROLLBACK');
-        console.error('Create quiz error:', error);
         res.status(500).json({ error: 'Failed to create quiz' });
 
     } finally {
@@ -104,7 +100,6 @@ async function getUserQuizzes(req, res) {
         res.json({ quizzes });
 
     } catch (error) {
-        console.error('Get quizzes error:', error);
         res.status(500).json({ error: 'Failed to fetch quizzes' });
     }
 }
@@ -155,7 +150,6 @@ async function getQuizById(req, res) {
         });
 
     } catch (error) {
-        console.error('Get quiz error:', error);
         res.status(500).json({ error: 'Failed to fetch quiz' });
     }
 }
@@ -214,7 +208,6 @@ async function submitQuizResult(req, res) {
         });
 
     } catch (error) {
-        console.error('Submit quiz error:', error);
         res.status(500).json({ error: 'Failed to submit quiz' });
     }
 }
@@ -257,7 +250,6 @@ async function getQuizResults(req, res) {
         res.json({ results });
 
     } catch (error) {
-        console.error('Get results error:', error);
         res.status(500).json({ error: 'Failed to fetch results' });
     }
 }
@@ -281,7 +273,6 @@ async function deleteQuiz(req, res) {
         res.json({ message: 'Quiz deleted successfully' });
 
     } catch (error) {
-        console.error('Delete quiz error:', error);
         res.status(500).json({ error: 'Failed to delete quiz' });
     }
 }

@@ -1,3 +1,4 @@
+// I created middleware to check if the user has a valid login token
 const jwt = require('jsonwebtoken');
 
 
@@ -19,7 +20,7 @@ function requireAuth(req, res, next) {
             });
         }
 
-
+        // I verified the JWT token to make sure it's valid and not expired
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         req.userId = decoded.userId;
@@ -28,7 +29,6 @@ function requireAuth(req, res, next) {
         next();
 
     } catch (error) {
-        console.error('Auth middleware error:', error);
 
         if (error.name === 'JsonWebTokenError') {
             return res.status(401).json({ error: 'Invalid token' });

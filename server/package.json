@@ -1,6 +1,7 @@
 {
   "name": "studybuddy-backend",
   "version": "1.0.0",
+  "type": "commonjs",
   "description": "StudyBuddy backend API with PostgreSQL",
   "main": "server.js",
   "scripts": {

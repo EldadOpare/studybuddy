@@ -1,7 +1,9 @@
+// I loaded environment variables first so they're available everywhere
 require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 
 const authRoutes = require('./routes/auth_routes');
@@ -12,28 +14,26 @@ const userRoutes = require('./routes/user_routes');
 const eventRoutes = require('./routes/event_routes');
 const adminRoutes = require('./routes/admin_routes');
 const groqRoutes = require('./routes/groq_routes');
-const materialRoutes = require('./routes/material_routes');
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 
+// I set up middleware to handle CORS and JSON requests
 app.use(cors());
 app.use(express.json());
 
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
-    next();
-});
+// I configured the server to serve static files from the parent directory
+app.use(express.static(path.join(__dirname, '..')));
 
-
+// I created a health check endpoint to verify the API is running
 app.get('/', (req, res) => {
     res.json({
-        message: 'StudyBuddy API is running! 🚀',
-        version: '1.0.3',
+        message: 'StudyBuddy API is running! ',
+        version: '1.0.4',
         status: 'healthy',
-        routes: ['auth', 'quizzes', 'notes', 'folders', 'users', 'events', 'admin', 'groq', 'materials']
+        routes: ['auth', 'quizzes', 'notes', 'folders', 'users', 'events', 'admin', 'groq']
     });
 });
 
@@ -46,7 +46,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/groq', groqRoutes);
-app.use('/api/materials', materialRoutes);
 
 
 app.use((req, res) => {
@@ -58,8 +57,6 @@ app.use((req, res) => {
 
 
 app.use((err, req, res, next) => {
-    console.error('Error:', err);
-
     res.status(err.status || 500).json({
         error: err.message || 'Something went wrong',
         ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
@@ -68,6 +65,4 @@ app.use((err, req, res, next) => {
 
 
 app.listen(PORT, () => {
-    console.log(`\n🎓 StudyBuddy server running on port ${PORT}`);
-    console.log(`📍 http://localhost:${PORT}\n`);
 });

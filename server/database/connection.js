@@ -1,6 +1,7 @@
+// I set up the PostgreSQL connection pool for the database
 const { Pool } = require('pg');
 
-
+// I configured the pool to connect to the database with SSL in production
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
@@ -8,14 +9,13 @@ const pool = new Pool({
 
 
 pool.on('connect', () => {
-    console.log(' Connected to PostgreSQL database');
 });
 
 pool.on('error', (err) => {
-    console.error(' Database connection error:', err);
 });
 
 
+// I created a helper function to run database queries
 async function query(text, params) {
     const start = Date.now();
 
@@ -23,11 +23,9 @@ async function query(text, params) {
         const result = await pool.query(text, params);
         const duration = Date.now() - start;
 
-        console.log('Query executed', { text, duration, rows: result.rowCount });
         return result;
 
     } catch (error) {
-        console.error('Query error:', error);
         throw error;
     }
 }

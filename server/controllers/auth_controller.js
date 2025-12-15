@@ -1,4 +1,5 @@
 
+// I imported bcrypt to hash passwords securely
 const bcrypt = require('bcrypt');
 
 const jwt = require('jsonwebtoken');
@@ -45,6 +46,7 @@ async function signup(req, res) {
             });
         }
 
+        // I checked if someone already registered with this email
         const existingUser = await db.query(
             'SELECT id FROM users WHERE email = $1',
             [email]
@@ -56,6 +58,7 @@ async function signup(req, res) {
             });
         }
 
+        // I hashed the password so it's stored securely in the database
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
@@ -69,6 +72,7 @@ async function signup(req, res) {
 
         const newUser = result.rows[0];
 
+        // I created a JWT token so the user can stay logged in for 7 days
         const token = jwt.sign(
             { userId: newUser.id, email: newUser.email },
             process.env.JWT_SECRET,
@@ -90,7 +94,6 @@ async function signup(req, res) {
         });
 
     } catch (error) {
-        console.error('Signup error:', error);
         res.status(500).json({ error: 'Failed to create account' });
     }
 }
@@ -131,6 +134,7 @@ async function login(req, res) {
 
         const user = result.rows[0];
 
+        // I compared the hashed password to check if it's correct
         const passwordMatches = await bcrypt.compare(password, user.password_hash);
 
         if (!passwordMatches) {
@@ -161,7 +165,6 @@ async function login(req, res) {
         });
 
     } catch (error) {
-        console.error('Login error:', error);
         res.status(500).json({ error: 'Failed to login' });
     }
 }
@@ -197,7 +200,6 @@ async function getCurrentUser(req, res) {
         });
 
     } catch (error) {
-        console.error('Get user error:', error);
         res.status(500).json({ error: 'Failed to get user info' });
     }
 }

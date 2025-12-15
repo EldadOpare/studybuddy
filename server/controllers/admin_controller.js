@@ -1,19 +1,18 @@
 
 
+// I built all the admin dashboard features here to help admins monitor student activity
+
 const db = require('../database/connection');
 
 
 async function getAdminStats(req, res) {
-
     try {
-
+        // I counted all the students in the system
         const usersResult = await db.query(
-
             "SELECT COUNT(*) as total FROM users WHERE role = 'student'"
         );
 
         const notesResult = await db.query(
-
             'SELECT COUNT(*) as total FROM notes'
         );
 
@@ -21,7 +20,7 @@ async function getAdminStats(req, res) {
             'SELECT COUNT(*) as total FROM quiz_results'
         );
 
-
+        // I checked how many unique users were active today
         const activeTodayResult = await db.query(
             `SELECT COUNT(DISTINCT user_id) as total
              FROM (
@@ -47,7 +46,6 @@ async function getAdminStats(req, res) {
     } 
     catch (error) {
     
-        console.error('Get admin stats error:', error);
     
         res.status(500).json({ error: 'Failed to fetch admin statistics' });
     
@@ -140,7 +138,6 @@ async function getRecentActivity(req, res) {
         res.json({ activities });
 
     } catch (error) {
-        console.error('Get recent activity error:', error);
         res.status(500).json({ error: 'Failed to fetch recent activity' });
     }
 }
@@ -179,7 +176,6 @@ async function getAllUsers(req, res) {
         res.json({ users });
 
     } catch (error) {
-        console.error('Get all users error:', error);
         res.status(500).json({ error: 'Failed to fetch users' });
     }
 }
@@ -253,7 +249,6 @@ async function getUserDetails(req, res) {
         res.json({ user });
 
     } catch (error) {
-        console.error('Get user details error:', error);
         res.status(500).json({ error: 'Failed to fetch user details' });
     }
 }
@@ -286,7 +281,6 @@ async function deleteUser(req, res) {
         });
 
     } catch (error) {
-        console.error('Delete user error:', error);
         res.status(500).json({ error: 'Failed to delete user' });
     }
 }

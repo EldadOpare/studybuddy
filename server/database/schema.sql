@@ -130,25 +130,6 @@ CREATE TABLE IF NOT EXISTS study_plans (
 );
 
 
--- Materials table - stores uploaded PDFs and documents
-CREATE TABLE IF NOT EXISTS materials (
-    id SERIAL PRIMARY KEY,
-
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    folder_id INTEGER REFERENCES folders(id) ON DELETE SET NULL,
-
-    name VARCHAR(255) NOT NULL,
-    file_type VARCHAR(50) NOT NULL,
-
-    -- Cloudinary URL or file path
-    file_url TEXT NOT NULL,
-
-    file_size INTEGER,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-
 -- Events table - stores calendar events and activities
 CREATE TABLE IF NOT EXISTS events (
     id SERIAL PRIMARY KEY,

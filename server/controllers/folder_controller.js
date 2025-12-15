@@ -1,14 +1,10 @@
-
-
+// I manage folder operations for organizing notes and quizzes
 const db = require('../database/connection');
 
 
 async function createFolder(req, res) {
-
     try {
-
         const userId = req.userId;
-
         const { name, color } = req.body;
 
         if (!name) {
@@ -36,18 +32,16 @@ async function createFolder(req, res) {
         });
 
     } catch (error) {
-        console.error('Create folder error:', error);
         res.status(500).json({ error: 'Failed to create folder' });
     }
 }
 
 
 async function getUserFolders(req, res) {
-    
     try {
-    
         const userId = req.userId;
 
+        // I counted how many notes and quizzes are in each folder
         const result = await db.query(
             `SELECT
                 f.id,
@@ -78,7 +72,6 @@ async function getUserFolders(req, res) {
         res.json({ folders });
 
     } catch (error) {
-        console.error('Get folders error:', error);
         res.status(500).json({ error: 'Failed to fetch folders' });
     }
 }
@@ -102,7 +95,6 @@ async function deleteFolder(req, res) {
         res.json({ message: 'Folder deleted successfully' });
 
     } catch (error) {
-        console.error('Delete folder error:', error);
         res.status(500).json({ error: 'Failed to delete folder' });
     }
 }

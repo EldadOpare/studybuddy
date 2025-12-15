@@ -1,3 +1,7 @@
+
+
+// I handle all calendar event operations so students can track their schedules
+
 const db = require('../database/connection');
 
 
@@ -10,6 +14,7 @@ async function createEvent(req, res) {
             return res.status(400).json({ error: 'Title and date are required' });
         }
 
+        // I saved the event with all the details including optional repeat settings
         const result = await db.query(
             `INSERT INTO events (user_id, title, color, event_date, start_time, end_time, repeat_weekly, repeat_until)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -36,7 +41,6 @@ async function createEvent(req, res) {
         });
 
     } catch (error) {
-        console.error('Create event error:', error);
         res.status(500).json({ error: 'Failed to create event' });
     }
 }
@@ -69,7 +73,6 @@ async function getUserEvents(req, res) {
         res.json({ events });
 
     } catch (error) {
-        console.error('Get events error:', error);
         res.status(500).json({ error: 'Failed to fetch events' });
     }
 }
@@ -107,7 +110,6 @@ async function getEventById(req, res) {
         });
 
     } catch (error) {
-        console.error('Get event error:', error);
         res.status(500).json({ error: 'Failed to fetch event' });
     }
 }
@@ -163,7 +165,6 @@ async function updateEvent(req, res) {
         });
 
     } catch (error) {
-        console.error('Update event error:', error);
         res.status(500).json({ error: 'Failed to update event' });
     }
 }
@@ -187,7 +188,6 @@ async function deleteEvent(req, res) {
         res.json({ message: 'Event deleted successfully' });
 
     } catch (error) {
-        console.error('Delete event error:', error);
         res.status(500).json({ error: 'Failed to delete event' });
     }
 }

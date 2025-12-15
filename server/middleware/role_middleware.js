@@ -1,3 +1,4 @@
+// I created middleware to check user roles and permissions
 const db = require('../database/connection');
 
 
@@ -5,6 +6,7 @@ function requireAdmin(req, res, next) {
     try {
         const userId = req.userId;
 
+        // I checked if the user has admin role before allowing access
         db.query(
             'SELECT role FROM users WHERE id = $1',
             [userId]
@@ -22,16 +24,13 @@ function requireAdmin(req, res, next) {
                 });
             }
 
-
             next();
         })
         .catch(error => {
-            console.error('Role check error:', error);
             res.status(500).json({ error: 'Authorization check failed' });
         });
 
     } catch (error) {
-        console.error('Role middleware error:', error);
         res.status(500).json({ error: 'Authorization failed' });
     }
 }
@@ -44,6 +43,7 @@ async function requireOwnership(resourceType) {
             const userId = req.userId;
             const resourceId = req.params.id;
 
+            // I let admins access everything, but students can only access their own content
             const userResult = await db.query(
                 'SELECT role FROM users WHERE id = $1',
                 [userId]
@@ -52,7 +52,6 @@ async function requireOwnership(resourceType) {
             if (userResult.rows.length > 0 && userResult.rows[0].role === 'admin') {
                 return next();
             }
-
 
             let query;
             let params;
@@ -95,7 +94,6 @@ async function requireOwnership(resourceType) {
             next();
 
         } catch (error) {
-            console.error('Ownership check error:', error);
             res.status(500).json({ error: 'Authorization check failed' });
         }
     };
@@ -126,7 +124,6 @@ function preventStudentAccess(req, res, next) {
         next();
     })
     .catch(error => {
-        console.error('Role check error:', error);
         res.status(500).json({ error: 'Authorization failed' });
     });
 }

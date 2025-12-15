@@ -1,9 +1,13 @@
+
+
+// I handle all AI features using Groq for the quiz generation and the Buddy chatbot
+
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 
-// i proxy the Groq API through my server so i can keep the API key secure
-// users send their quiz topic here and get back generated questions
+// I proxy the Groq API through my server so I can keep the API key secure
+// Users send their quiz topic here and get back generated questions
 exports.generateFromTopic = async (req, res) => {
     try {
         const { title, topic, questionCount, difficulty } = req.body;
@@ -70,7 +74,6 @@ Requirements:
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('Groq API error:', errorData);
             return res.status(response.status).json({
                 error: errorData.error?.message || `Groq API error: ${response.status}`
             });
@@ -81,7 +84,6 @@ Requirements:
 
         res.json(quizData);
     } catch (error) {
-        console.error('Error generating quiz from topic:', error);
         res.status(500).json({ error: error.message || 'Failed to generate quiz' });
     }
 };
@@ -165,7 +167,6 @@ Requirements:
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('Groq API error:', errorData);
             return res.status(response.status).json({
                 error: errorData.error?.message || `Groq API error: ${response.status}`
             });
@@ -176,7 +177,6 @@ Requirements:
 
         res.json(quizData);
     } catch (error) {
-        console.error('Error generating quiz from text:', error);
         res.status(500).json({ error: error.message || 'Failed to generate quiz' });
     }
 };
@@ -217,7 +217,6 @@ exports.chat = async (req, res) => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('Groq API error:', errorData);
             return res.status(response.status).json({
                 error: errorData.error?.message || `Groq API error: ${response.status}`
             });
@@ -228,7 +227,6 @@ exports.chat = async (req, res) => {
 
         res.json({ result: chatResponse });
     } catch (error) {
-        console.error('Error handling chat request:', error);
         res.status(500).json({ error: error.message || 'Failed to process chat request' });
     }
 };

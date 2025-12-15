@@ -1,5 +1,8 @@
 
 
+
+// I handle study materials like PDFs and documents that students upload
+
 const db = require('../database/connection');
 
 
@@ -53,7 +56,6 @@ async function getUserMaterials(req, res) {
         res.json({ materials });
 
     } catch (error) {
-        console.error('Get materials error:', error);
         res.status(500).json({ error: 'Failed to fetch materials' });
     }
 }
@@ -104,7 +106,6 @@ async function getMaterialById(req, res) {
         });
 
     } catch (error) {
-        console.error('Get material error:', error);
         res.status(500).json({ error: 'Failed to fetch material' });
     }
 }
@@ -144,9 +145,7 @@ async function uploadMaterial(req, res) {
 
     }
      catch (error) {
-    
-        console.error('Upload material error:', error);
-    
+
         res.status(500).json({ error: 'Failed to upload material' });
     
     }
@@ -179,7 +178,6 @@ async function deleteMaterial(req, res) {
         res.json({ message: 'Material deleted successfully' });
 
     } catch (error) {
-        console.error('Delete material error:', error);
         res.status(500).json({ error: 'Failed to delete material' });
     }
 }
@@ -232,7 +230,6 @@ async function updateMaterial(req, res) {
         });
 
     } catch (error) {
-        console.error('Update material error:', error);
         res.status(500).json({ error: 'Failed to update material' });
     }
 }

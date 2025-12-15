@@ -1,3 +1,4 @@
+// I handle user profile updates and password changes
 const db = require('../database/connection');
 
 const bcrypt = require('bcrypt');
@@ -9,6 +10,7 @@ async function updateProfile(req, res) {
 
         const { firstName, lastName, bio, profilePicture } = req.body;
 
+        // I used COALESCE so only provided fields get updated
         const result = await db.query(
             `UPDATE users
              SET first_name = COALESCE($1, first_name),
@@ -38,7 +40,6 @@ async function updateProfile(req, res) {
     }
      catch (error) {
     
-        console.error('Update profile error:', error);
     
         res.status(500).json({ error: 'Failed to update profile' });
     
@@ -48,23 +49,15 @@ async function updateProfile(req, res) {
 
 
 async function changePassword(req, res) {
-   
     try {
-   
         const userId = req.userId;
-   
         const { currentPassword, newPassword } = req.body;
 
-
         if (!currentPassword || !newPassword) {
-        
             return res.status(400).json({
-        
                 error: 'Current and new password are required'
-        
             });
         }
-
 
         const userResult = await db.query(
             'SELECT password_hash FROM users WHERE id = $1',
@@ -73,6 +66,7 @@ async function changePassword(req, res) {
 
         const user = userResult.rows[0];
 
+        // I verified the current password before allowing the change
         const passwordMatches = await bcrypt.compare(currentPassword, user.password_hash);
 
         if (!passwordMatches) {
@@ -96,16 +90,15 @@ async function changePassword(req, res) {
         res.json({ message: 'Password changed successfully!' });
 
     } catch (error) {
-        console.error('Change password error:', error);
         res.status(500).json({ error: 'Failed to change password' });
     }
 }
 
 
 async function getUserStats(req, res) {
-    
+
     try {
-    
+
         const userId = req.userId;
 
         const materialsResult = await db.query(
@@ -121,7 +114,7 @@ async function getUserStats(req, res) {
             [userId]
         );
 
-        
+
         const recentResults = await db.query(
             `SELECT qr.score
              FROM quiz_results qr
@@ -143,9 +136,9 @@ async function getUserStats(req, res) {
         }
 
         const materialsCount = parseInt(materialsResult.rows[0].materials_count) || 0;
-       
+
         const quizzesTaken = parseInt(quizzesResult.rows[0].quizzes_taken) || 0;
-       
+
         res.json({
             stats: {
                 materialsCount,
@@ -154,13 +147,35 @@ async function getUserStats(req, res) {
             }
         });
 
-    } 
+    }
     catch (error) {
-    
-        console.error('Get user stats error:', error);
-    
+
+
         res.status(500).json({ error: 'Failed to fetch user stats' });
-    
+
+    }
+}
+
+
+async function deleteAccount(req, res) {
+    try {
+        const userId = req.userId;
+
+        // Delete all user data in order (respecting foreign key constraints)
+        await db.query('DELETE FROM quiz_results WHERE user_id = $1', [userId]);
+        await db.query('DELETE FROM quizzes WHERE user_id = $1', [userId]);
+        await db.query('DELETE FROM notes WHERE user_id = $1', [userId]);
+        await db.query('DELETE FROM materials WHERE user_id = $1', [userId]);
+        await db.query('DELETE FROM events WHERE user_id = $1', [userId]);
+        await db.query('DELETE FROM folders WHERE user_id = $1', [userId]);
+
+        // Finally delete the user
+        await db.query('DELETE FROM users WHERE id = $1', [userId]);
+
+        res.json({ message: 'Account deleted successfully' });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete account' });
     }
 }
 
@@ -168,5 +183,6 @@ async function getUserStats(req, res) {
 module.exports = {
     updateProfile,
     changePassword,
-    getUserStats
+    getUserStats,
+    deleteAccount
 };
