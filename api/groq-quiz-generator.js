@@ -1,8 +1,6 @@
 const GROQ_API_KEY = process.env.GROQ_API_KEY || 'YOUR_GROQ_API_KEY_HERE';
-
-const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
+const GROQ_API_URL = process.env.GROQ_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 
 
 // I'm using this to generate quiz questions when user gives me a topic
@@ -262,3 +260,4 @@ if (typeof module !== 'undefined' && module.exports) {
         handleChatRequest
     };
 }
+// force redeploy
