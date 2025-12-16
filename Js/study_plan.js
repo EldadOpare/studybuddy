@@ -1,8 +1,8 @@
+// I made sure the user is logged in before they can access the study planner
+requireAuth();
 
 
-if (!requireAuth()) {
 
-}
 
 
 let currentDate = new Date();
@@ -24,17 +24,13 @@ const monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
 
 document.addEventListener('DOMContentLoaded', async function() {
 
-
+    // I checked if the user clicked on an event from the dashboard
     const selectedEventDate = sessionStorage.getItem('selectedEventDate');
     if (selectedEventDate) {
-       
         const dateParts = selectedEventDate.split('-');
-       
         selectedDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-       
-        currentDate = new Date(selectedDate); 
-       
-        sessionStorage.removeItem('selectedEventDate'); 
+        currentDate = new Date(selectedDate);
+        sessionStorage.removeItem('selectedEventDate');
     }
 
 
@@ -157,9 +153,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             }
              catch (error) {
-            
-                console.error('Error creating folder:', error);
-            
+
                 showError('Failed to create folder. Please try again.');
             
             }
@@ -288,7 +282,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                 repeatUntil: repeatUntilDate || null
             };
 
-            console.log('Creating activity with data:', activity);
 
             try {
                 await saveActivity(activity);
@@ -304,9 +297,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                 await updateSelectedDayPanel();
                 
                 await loadUpcomingEvents();
-                
+
             } catch (error) {
-                console.error('Failed to create activity:', error);
                 showError('Failed to create activity: ' + (error.message || 'Unknown error'));
             }
         });
@@ -446,7 +438,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             await updateActivity(updatedActivity);
 
-            console.log('Activity updated:', updatedActivity);
 
             closeEditModal();
             await renderCalendar();
@@ -477,18 +468,12 @@ async function saveActivity(activity) {
     try {
 
         const result = await createEvent(activity);
-        
-        console.log('Activity saved to database:', result);
-        
+
         showSuccess('Activity added successfully!');
     }
     
     catch (error) {
-    
-        console.error('Error saving activity:', error);
-    
-        console.error('Activity data:', activity);
-    
+
         showError('Failed to save activity: ' + (error.message || 'Something went wrong'));
     
         throw error;
@@ -500,11 +485,9 @@ async function getActivities() {
         const response = await getUserEvents();
         
         return response.events || [];
-    } 
+    }
     catch (error) {
-    
-        console.error('Error getting activities:', error);
-    
+
         return [];
     }
 }
@@ -512,9 +495,7 @@ async function getActivities() {
 async function updateActivity(updatedActivity) {
     try {
         await updateEvent(updatedActivity.id, updatedActivity);
-        console.log('Activity updated in database');
     } catch (error) {
-        console.error('Error updating activity:', error);
         showError('Failed to update activity: ' + error.message);
     }
 }
@@ -522,9 +503,7 @@ async function updateActivity(updatedActivity) {
 async function deleteActivity(eventId) {
     try {
         await deleteEvent(eventId);
-        console.log('Event deleted from database');
     } catch (error) {
-        console.error('Error deleting event:', error);
         showError('Failed to delete event: ' + error.message);
     }
 }
@@ -541,10 +520,9 @@ async function getEventsForDate(date) {
 
 function getEventsForDateSync(date, activities) {
     const events = [];
-    
 
+    // I needed to match events with the selected date, including repeating events
     const targetDate = new Date(date);
-
     targetDate.setHours(0, 0, 0, 0);
 
     activities.forEach(activity => {
@@ -997,21 +975,7 @@ async function loadUpcomingEvents() {
             
             deadlinesList.appendChild(deadlineItem);
         });
-        
+
     } catch (error) {
-        console.error('Error loading upcoming events:', error);
     }
-}
-
-
-function clearForm() {
-    const inputs = document.querySelectorAll('.form_input');
-    inputs.forEach(input => {
-        input.value = '';
-    });
-
-    const selects = document.querySelectorAll('.form_select');
-    selects.forEach(select => {
-        select.selectedIndex = 0;
-    });
 }

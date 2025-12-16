@@ -42,7 +42,7 @@ body {
 
 .logo_text {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
 }
 
@@ -209,7 +209,7 @@ body {
 }
 
 
-/* Main content */
+
 .main_content {
     flex: 1;
     display: flex;
@@ -301,7 +301,7 @@ body {
 }
 
 
-/* Add Activity Form */
+
 .add_activity_form {
     background-color: white;
     padding: 24px;
@@ -382,7 +382,7 @@ body {
 }
 
 
-/* Calendar Section */
+
 .schedule_section {
     background-color: white;
     border-radius: 12px;
@@ -527,7 +527,7 @@ body {
 }
 
 
-/* Sidebar Widgets */
+
 .sidebar_widgets {
     display: flex;
     flex-direction: column;
@@ -535,7 +535,7 @@ body {
 }
 
 
-/* Day Details Widget */
+
 .day_details_widget {
     background-color: white;
     border-radius: 12px;
@@ -637,7 +637,7 @@ body {
 }
 
 
-/* Deadlines Widget */
+
 .deadlines_widget {
     background-color: white;
     border-radius: 12px;
@@ -730,7 +730,7 @@ body {
 }
 
 
-/* Responsive */
+
 @media (max-width: 1200px) {
     .content_grid {
         grid-template-columns: 1fr;
@@ -756,7 +756,7 @@ body {
 }
 
 
-/* Modal Styles */
+
 .modal_overlay {
     position: fixed;
     top: 0;
@@ -863,12 +863,12 @@ body {
     background-color: #018790;
 }
 
-/* Smaller modal for simple forms */
+
 .modal_small {
     max-width: 450px;
 }
 
-/* Color Picker */
+
 .color_picker {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -914,14 +914,14 @@ body {
     gap: 20px;
 }
 
-/* Activity Form Styles */
+
 .activity_form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Checkbox Styles */
+
 .checkbox_label {
     display: flex;
     align-items: center;
