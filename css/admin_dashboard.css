@@ -17,7 +17,7 @@ body {
 }
 
 
-/* Sidebar styling - simpler for admin */
+
 .sidebar {
     width: 280px;
     background-color: #F5F5F5;
@@ -37,7 +37,7 @@ body {
 
 .logo_text {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
 }
 
@@ -87,7 +87,7 @@ body {
 }
 
 
-/* Main content */
+
 .main_content {
     flex: 1;
     display: flex;
@@ -147,14 +147,13 @@ body {
 }
 
 
-/* Dashboard content */
+
 .dashboard_content {
     flex: 1;
     padding: 40px;
 }
 
 
-/* Welcome section */
 .welcome_section {
     margin-bottom: 40px;
 }
@@ -173,7 +172,7 @@ body {
 }
 
 
-/* Stats grid - shows the 4 stat cards */
+
 .stats_grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -186,7 +185,6 @@ body {
     border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 20px;
 
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
@@ -195,29 +193,6 @@ body {
 .stat_card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.stat_icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    flex-shrink: 0;
-}
-
-.students_icon {
-    background-color: #E0F4F5;
-}
-
-.files_icon {
-    background-color: #FFF4E6;
-}
-
-.notes_icon {
-    background-color: #F3E8FF;
-}
-
-.quizzes_icon {
-    background-color: #FFE7E7;
 }
 
 .stat_info {
@@ -239,7 +214,7 @@ body {
 }
 
 
-/* Recent Activity Section */
+
 .recent_activity_section {
     margin-top: 40px;
 }
@@ -320,7 +295,7 @@ body {
 }
 
 
-/* Responsive design */
+
 @media (max-width: 1200px) {
     .stats_grid {
         grid-template-columns: repeat(2, 1fr);

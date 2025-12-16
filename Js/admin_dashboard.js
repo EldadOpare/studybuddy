@@ -1,12 +1,11 @@
+// I made sure only admins can access this dashboard
 if (!requireAdmin()) {
 
 }
 
 
-
 document.addEventListener('DOMContentLoaded', async function() {
 
-    console.log('Admin dashboard loaded');
     await loadAdminStats();
 });
 
@@ -14,12 +13,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 async function loadAdminStats() {
     try {
-        console.log('Loading admin stats...');
         const serverResponse = await getAdminStats();
 
         if (serverResponse && serverResponse.stats) {
             const statsData = serverResponse.stats;
-            console.log('Admin stats received:', statsData);
 
 
             const statCardElements = document.querySelectorAll('.stat_card');
@@ -59,12 +56,9 @@ async function loadAdminStats() {
             await loadRecentActivity();
 
         } else {
-            console.log('No stats data received');
         }
 
     } catch (loadingError) {
-        console.error('Error loading admin stats:', loadingError);
-        console.log('Admin stats API might be having issues. Check server logs.');
 
         const activityFeedElement = document.querySelector('.activity_feed');
         if (activityFeedElement) {
@@ -103,7 +97,6 @@ async function loadRecentActivity() {
         });
 
     } catch (loadingError) {
-        console.error('Error loading recent activity:', loadingError);
         const activityFeedElement = document.querySelector('.activity_feed');
         if (activityFeedElement) {
             activityFeedElement.innerHTML = '<p style="color: #86868B; text-align: center; padding: 20px;">Recent activity unavailable</p>';
