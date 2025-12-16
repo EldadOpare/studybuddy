@@ -1,12 +1,11 @@
+// I made sure the user is logged in before they can see their results
+requireAuth();
 
 
-if (!requireAuth()) {
-    
-}
+
 
 
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('Quiz results page loaded');
 
     
     await loadFoldersToSidebar();
@@ -58,19 +57,17 @@ function setupFolderModal() {
 
 async function loadResults() {
 
-    
+    // I checked if the user just submitted the quiz or is coming back to see old results
     const resultData = localStorage.getItem('current_quiz_result');
 
     if (resultData) {
-        
         const result = JSON.parse(resultData);
         displayResults(result);
         return;
     }
 
-    
+    // If no saved result, I tried to load it from the server using the quiz ID
     const urlParams = new URLSearchParams(window.location.search);
-    
     const quizId = urlParams.get('id');
 
     if (quizId) {
@@ -116,12 +113,10 @@ async function loadResults() {
             }
         } 
         catch (error) {
-            console.error('Error loading quiz results:', error);
         }
     }
 
     
-    console.error('No quiz result found');
     window.location.href = 'quizzes.html';
 }
 
@@ -167,7 +162,7 @@ function updateScoreCircle(score) {
     circle.style.strokeDasharray = circumference;
     circle.style.strokeDashoffset = offset;
 
-    
+    // I changed the circle color based on how well the user did
     if (score >= 80) {
         circle.style.stroke = '#38a169'; // Green
     } else if (score >= 60) {

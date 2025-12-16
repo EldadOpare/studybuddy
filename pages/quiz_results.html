@@ -16,135 +16,195 @@
 
     <div class="app_container">
 
-        <!-- Left sidebar -->
+       
         <aside class="sidebar">
 
             <div class="logo_section">
                 <span class="logo_text"><span class="logo_text_study">Study</span><span class="logo_text_buddy">Buddy</span></span>
+          
             </div>
 
             <nav class="sidebar_navigation">
+          
                 <a href="dashboard.html" class="nav_item">
                     <span class="nav_icon"></span>
                     Dashboard
                 </a>
 
                 <a href="my_notes.html" class="nav_item">
+          
                     <span class="nav_icon"></span>
-                    My Materials
+                    My Notes
+          
                 </a>
 
                 <a href="quizzes.html" class="nav_item active">
+          
                     <span class="nav_icon"></span>
+          
                     Quizzes
+          
                 </a>
 
                 <a href="study_plan.html" class="nav_item">
+          
                     <span class="nav_icon"></span>
                     Study Plan
+          
                 </a>
 
+          
                 <a href="settings.html" class="nav_item">
+          
                     <span class="nav_icon"></span>
                     Settings
                 </a>
+          
             </nav>
 
             <div class="folders_section">
+          
                 <div class="folders_header">
+          
                     <span class="folders_title">FOLDERS</span>
                     <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
+          
                 </div>
 
                 <div class="folder_list">
-                    <!-- Folders loaded from database -->
+                
                 </div>
             </div>
 
         </aside>
 
 
-        <!-- Main content area -->
+     
         <main class="main_content">
 
             <header class="page_header">
+     
                 <div class="header_right">
+     
                     <img src="../images/user.jpg" alt="Profile" class="profile_picture">
+     
                     <button class="logout_button" onclick="logout()">
                         Logout
                     </button>
                 </div>
+     
             </header>
 
             <div class="results_content">
 
-                <!-- Results Header -->
+               
+               
                 <div class="results_header">
-                    <h2 class="results_title" id="quizTitle">Biology 101 - Cell Structure</h2>
+               
+                    <h2 class="results_title" id="quizTitle"></h2>
+               
                     <div class="results_actions">
+               
                         <button class="action_button secondary_button" id="retakeQuizButton">Retake Quiz</button>
                         <button class="action_button primary_button" id="backToQuizzesButton">Back to Quizzes</button>
+               
                     </div>
+               
                 </div>
 
-                <!-- Score Summary -->
+             
                 <div class="score_summary">
+             
                     <div class="score_card">
+             
                         <div class="score_circle" id="scoreCircle">
+             
                             <svg width="180" height="180">
+             
                                 <circle cx="90" cy="90" r="80" fill="none" stroke="#e2e8f0" stroke-width="12"></circle>
                                 <circle id="scoreProgress" cx="90" cy="90" r="80" fill="none" stroke="#018790" stroke-width="12"
-                                    stroke-dasharray="502.4" stroke-dashoffset="125.6"
+                                    
+                                stroke-dasharray="502.4" stroke-dashoffset="125.6"
+             
                                     transform="rotate(-90 90 90)" stroke-linecap="round"></circle>
                             </svg>
+             
                             <div class="score_text">
+             
                                 <div class="score_percentage" id="scorePercentage">75%</div>
                                 <div class="score_label">Score</div>
+             
                             </div>
+             
                         </div>
+             
                     </div>
 
                     <div class="summary_stats">
+             
                         <div class="stat_item">
+             
                             <div class="stat_icon correct_icon"></div>
+             
                             <div class="stat_info">
+                                
                                 <div class="stat_value" id="correctCount">8</div>
+
                                 <div class="stat_label">Correct</div>
+                            
                             </div>
+                        
                         </div>
 
                         <div class="stat_item">
+                        
                             <div class="stat_icon incorrect_icon"></div>
+                        
                             <div class="stat_info">
+                        
                                 <div class="stat_value" id="incorrectCount">2</div>
+                        
                                 <div class="stat_label">Incorrect</div>
+                        
                             </div>
+                        
+                        
                         </div>
 
+                        
                         <div class="stat_item">
+                        
                             <div class="stat_icon time_icon"></div>
+                        
                             <div class="stat_info">
+                        
                                 <div class="stat_value" id="timeSpent">5:42</div>
                                 <div class="stat_label">Time Spent</div>
                             </div>
+                        
                         </div>
 
+                        
                         <div class="stat_item">
+                        
                             <div class="stat_icon date_icon"></div>
                             <div class="stat_info">
+                        
                                 <div class="stat_value" id="dateTaken">Dec 10</div>
+                        
                                 <div class="stat_label">Completed</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Review Section -->
+              
                 <div class="review_section">
+              
                     <h3 class="section_title">Review Answers</h3>
 
                     <div class="questions_review" id="questionsReview">
-                        <!-- Questions will be populated by JavaScript -->
+                       
                     </div>
                 </div>
 
@@ -155,19 +215,27 @@
     </div>
 
 
-    <!-- Create Folder Modal -->
+
     <div class="modal_overlay" id="createFolderModal" style="display: none;">
+
         <div class="modal_container modal_small">
+
             <div class="modal_header">
+
                 <h2 class="modal_title">Create New Folder</h2>
+
                 <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
+
             </div>
 
             <div class="modal_body">
+
                 <form class="folder_form" id="createFolderForm">
 
                     <div class="form_group">
+
                         <label class="form_label">Folder Name</label>
+
                         <input type="text"
                                class="form_input"
                                id="folderName"
@@ -176,92 +244,171 @@
                     </div>
 
                     <div class="form_group">
+
                         <label class="form_label">Choose Color</label>
+
                         <div class="color_picker">
+                 
                             <label class="color_option">
+
                                 <input type="radio" name="folderColor" value="yellow" class="color_input">
                                 <span class="color_circle" style="background-color: #FFD63A;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="orange" class="color_input" checked>
                                 <span class="color_circle" style="background-color: #FFA955;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="red" class="color_input">
                                 <span class="color_circle" style="background-color: #F75A5A;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="navy" class="color_input">
                                 <span class="color_circle" style="background-color: #0D1164;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="purple_dark" class="color_input">
                                 <span class="color_circle" style="background-color: #640D5F;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="pink" class="color_input">
                                 <span class="color_circle" style="background-color: #EA2264;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="peach" class="color_input">
                                 <span class="color_circle" style="background-color: #F78D60;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="pink_light" class="color_input">
                                 <span class="color_circle" style="background-color: #F29AAE;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="lavender" class="color_input">
                                 <span class="color_circle" style="background-color: #C47BE4;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="purple" class="color_input">
                                 <span class="color_circle" style="background-color: #7132CA;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="blue" class="color_input">
                                 <span class="color_circle" style="background-color: #4A90E2;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="teal" class="color_input">
                                 <span class="color_circle" style="background-color: #00B7B5;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="green" class="color_input">
                                 <span class="color_circle" style="background-color: #50C878;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="mint" class="color_input">
                                 <span class="color_circle" style="background-color: #98D8C8;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="slate" class="color_input">
                                 <span class="color_circle" style="background-color: #64748B;"></span>
+                          
                             </label>
+                          
+                          
                             <label class="color_option">
+                          
                                 <input type="radio" name="folderColor" value="brown" class="color_input">
                                 <span class="color_circle" style="background-color: #A0522D;"></span>
+                          
                             </label>
+                        
                         </div>
+                    
                     </div>
 
                 </form>
+            
             </div>
 
             <div class="modal_footer">
+            
                 <button type="button" class="cancel_modal_button" id="cancelFolderModalButton">
                     Cancel
                 </button>
+            
                 <button type="submit" form="createFolderForm" class="submit_modal_button" id="submitFolderButton">
                     Create Folder
                 </button>
+            
             </div>
+        
         </div>
+    
     </div>
 
+
 </body>
+
 </html>

@@ -1,7 +1,25 @@
-if (!requireAuth()) {
-    // this makes sure user is logged in before showing the page
+requireAuth();
+
+
+function openFolderModal() {
+    const modal = document.getElementById('createFolderModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
+function closeFolderModal() {
+    const modal = document.getElementById('createFolderModal');
+    const form = document.getElementById('createFolderForm');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        if (form) {
+            form.reset();
+        }
+    }
+}
 
 
 // I'm using this to generate quiz when user gives me a topic
@@ -31,18 +49,22 @@ async function generateQuizFromPrompt({ title, topic, questionCount, difficulty 
         const quizData = await serverResponse.json();
 
         quizData.id = 'quiz_' + Date.now();
+        
         quizData.type = 'prompt';
+        
         quizData.createdAt = new Date().toISOString();
+        
         quizData.dateCreated = new Date().toLocaleDateString('en-US', {
+        
             year: 'numeric',
             month: 'short',
             day: 'numeric'
+        
         });
 
         return quizData;
 
     } catch (error) {
-        console.error('Error generating quiz:', error);
         throw error;
     }
 }
@@ -75,9 +97,13 @@ async function generateQuizFromText({ title, textContent, questionCount, difficu
         const quizData = await serverResponse.json();
 
         quizData.id = 'quiz_' + Date.now();
+       
         quizData.type = 'pdf';
+       
         quizData.createdAt = new Date().toISOString();
+       
         quizData.dateCreated = new Date().toLocaleDateString('en-US', {
+       
             year: 'numeric',
             month: 'short',
             day: 'numeric'
@@ -86,7 +112,6 @@ async function generateQuizFromText({ title, textContent, questionCount, difficu
         return quizData;
 
     } catch (error) {
-        console.error('Error generating quiz from text:', error);
         throw error;
     }
 }
@@ -94,22 +119,28 @@ async function generateQuizFromText({ title, textContent, questionCount, difficu
 
 async function extractTextFromPDF(file) {
     try {
+      
         const arrayBuffer = await file.arrayBuffer();
+      
         const pdfDocument = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
         let extractedText = '';
 
         for (let pageNumber = 1; pageNumber <= pdfDocument.numPages; pageNumber++) {
+      
             const currentPage = await pdfDocument.getPage(pageNumber);
+      
             const textContent = await currentPage.getTextContent();
+      
             const pageText = textContent.items.map(item => item.str).join(' ');
+      
             extractedText += pageText + '\n\n';
+      
         }
 
         return extractedText.trim();
 
     } catch (error) {
-        console.error('Error extracting text from PDF:', error);
         throw new Error('Failed to extract text from PDF: ' + error.message);
     }
 }
@@ -119,25 +150,34 @@ async function getNoteContent(noteId) {
     try {
         const noteResponse = await getNoteById(noteId);
 
-        // i need to strip out the HTML tags to get clean text for the AI
+        // I need to strip out the HTML tags to get clean text for Buddy
+        
         const temporaryDiv = document.createElement('div');
+        
         temporaryDiv.innerHTML = noteResponse.content || '';
+        
         const cleanText = temporaryDiv.textContent || temporaryDiv.innerText || '';
 
         return cleanText || 'Content not found';
 
-    } catch (error) {
-        console.error('Error fetching note:', error);
+    }
+     catch (error) {
+    
         throw new Error('Failed to load note content');
+    
     }
 }
 
 
 function showLoading(message = 'Generating quiz...') {
+    
     const loadingOverlay = document.createElement('div');
+    
     loadingOverlay.id = 'loadingOverlay';
+    
     loadingOverlay.style.cssText = `
-        position: fixed;
+    
+    position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -148,6 +188,7 @@ function showLoading(message = 'Generating quiz...') {
         justify-content: center;
         z-index: 10000;
     `;
+    
     loadingOverlay.innerHTML = `
         <div style="background: white; padding: 32px; border-radius: 12px; text-align: center;">
             <div style="font-size: 16px; color: #1D1D1F; margin-bottom: 16px;">${message}</div>
@@ -172,11 +213,11 @@ function hideLoading() {
 }
 
 
-// when the page loads i need to set everything up
+// When the page loads i need to set everything up
+
 document.addEventListener('DOMContentLoaded', async function() {
 
     await loadFoldersToSidebar();
-    console.log('Quizzes page loaded');
 
     await loadQuizzesFromDatabase();
 
@@ -185,33 +226,36 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // setting up the folder creation modal
     const folderModal = document.getElementById('createFolderModal');
-    const addFolderButton = document.querySelector('.add_folder_button');
+
+    const addFolderButton = document.querySelector('.add_folder_button_small');
+
     const closeFolderModalButton = document.getElementById('closeFolderModalButton');
+
     const cancelFolderModalButton = document.getElementById('cancelFolderModalButton');
+
     const createFolderForm = document.getElementById('createFolderForm');
 
     if (addFolderButton) {
+
         addFolderButton.addEventListener('click', function() {
-            folderModal.style.display = 'flex';
+
+            openFolderModal();
+
         });
     }
 
     if (closeFolderModalButton) {
-        closeFolderModalButton.addEventListener('click', function() {
-            folderModal.style.display = 'none';
-        });
+        closeFolderModalButton.addEventListener('click', closeFolderModal);
     }
 
     if (cancelFolderModalButton) {
-        cancelFolderModalButton.addEventListener('click', function() {
-            folderModal.style.display = 'none';
-        });
+        cancelFolderModalButton.addEventListener('click', closeFolderModal);
     }
 
     if (folderModal) {
         folderModal.addEventListener('click', function(e) {
             if (e.target === folderModal) {
-                folderModal.style.display = 'none';
+                closeFolderModal();
             }
         });
     }
@@ -225,12 +269,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             try {
                 await createFolder({ name: folderName, color: selectedColor });
-                folderModal.style.display = 'none';
-                createFolderForm.reset();
+                closeFolderModal();
                 await loadFoldersToSidebar();
-
+                showSuccess('Folder created successfully!');
             } catch (error) {
-                console.error('Error creating folder:', error);
                 showError('Failed to create folder. Please try again.');
             }
         });
@@ -238,26 +280,39 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
     // now i'm setting up the quiz generation modal
+    
     const generateQuizModal = document.getElementById('generateQuizModal');
+    
     const generateQuizButton = document.getElementById('generateQuizButton');
+    
     const closeGenerateModalButton = document.getElementById('closeGenerateModalButton');
+    
     const promptQuizOption = document.getElementById('promptQuizOption');
+    
     const pdfQuizOption = document.getElementById('pdfQuizOption');
 
+    
+    
     if (generateQuizButton) {
+    
         generateQuizButton.addEventListener('click', function() {
+    
             generateQuizModal.style.display = 'flex';
+    
         });
     }
 
     if (closeGenerateModalButton) {
+    
         closeGenerateModalButton.addEventListener('click', function() {
             generateQuizModal.style.display = 'none';
         });
     }
 
     if (generateQuizModal) {
+    
         generateQuizModal.addEventListener('click', function(e) {
+    
             if (e.target === generateQuizModal) {
                 generateQuizModal.style.display = 'none';
             }
@@ -267,28 +322,40 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // handling the prompt-based quiz modal
     const promptQuizModal = document.getElementById('promptQuizModal');
+    
     const closePromptModalButton = document.getElementById('closePromptModalButton');
+    
     const cancelPromptModalButton = document.getElementById('cancelPromptModalButton');
+    
     const promptQuizForm = document.getElementById('promptQuizForm');
 
     // Open prompt quiz modal when option is clicked
+    
     if (promptQuizOption) {
+    
         promptQuizOption.addEventListener('click', function() {
+    
             generateQuizModal.style.display = 'none';
+    
             promptQuizModal.style.display = 'flex';
         });
     }
 
     // Close prompt quiz modal
+    
     if (closePromptModalButton) {
+    
         closePromptModalButton.addEventListener('click', function() {
+    
             promptQuizModal.style.display = 'none';
         });
     }
 
     if (cancelPromptModalButton) {
+    
         cancelPromptModalButton.addEventListener('click', function() {
             promptQuizModal.style.display = 'none';
+    
         });
     }
 
@@ -311,15 +378,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 difficulty: document.getElementById('promptQuizDifficulty').value
             };
 
-            console.log('Generating quiz from prompt:', quizData);
-
             promptQuizModal.style.display = 'none';
-            showLoading('Generating quiz with AI...');
+            showLoading('Generating quiz with Buddy...');
 
             try {
                 const generatedQuiz = await generateQuizFromPrompt(quizData);
 
-                console.log('Quiz generated successfully:', generatedQuiz);
 
                 // now i need to save it to the database
                 const savedQuiz = await createQuiz({
@@ -335,13 +399,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
                 hideLoading();
 
-                showSuccess('Quiz generated successfully! Redirecting to quiz...');
                 window.location.href = `take_quiz.html?id=${savedQuiz.quiz.id}`;
 
             } catch (error) {
                 hideLoading();
-                console.error('Error generating quiz:', error);
-
+        
                 let errorMessage = 'Failed to generate quiz. ';
                 if (error.message.includes('API key')) {
                     errorMessage += 'Please add your Groq API key in quizzes.js';
@@ -361,78 +423,130 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
     // handling the PDF/note quiz modal
+    
     const pdfQuizModal = document.getElementById('pdfQuizModal');
+    
     const closePdfModalButton = document.getElementById('closePdfModalButton');
+    
     const cancelPdfModalButton = document.getElementById('cancelPdfModalButton');
+    
     const pdfQuizForm = document.getElementById('pdfQuizForm');
+    
     const pdfFileInput = document.getElementById('pdfFileInput');
+    
     const fileUploadArea = document.getElementById('fileUploadArea');
+    
     const fileSelected = document.getElementById('fileSelected');
+    
     const fileName = document.getElementById('fileName');
+    
     const removeFileButton = document.getElementById('removeFileButton');
+    
     const cloudinaryTab = document.getElementById('cloudinaryTab');
+    
     const uploadTab = document.getElementById('uploadTab');
+    
     const cloudinarySection = document.getElementById('cloudinarySection');
+    
     const uploadSection = document.getElementById('uploadSection');
 
+    
     if (pdfQuizOption) {
+    
         pdfQuizOption.addEventListener('click', function() {
             generateQuizModal.style.display = 'none';
             pdfQuizModal.style.display = 'flex';
+    
         });
     }
 
     // user can choose between their saved notes or uploading a new PDF
+    
     if (cloudinaryTab && uploadTab) {
+    
         const cloudinaryPdfSelect = document.getElementById('cloudinaryPdfSelect');
+    
         const pdfFileInputForTab = document.getElementById('pdfFileInput');
 
+    
         cloudinaryTab.addEventListener('click', function() {
             cloudinaryTab.classList.add('active');
+    
             uploadTab.classList.remove('active');
+    
             cloudinarySection.style.display = 'block';
+    
             uploadSection.style.display = 'none';
+    
             if (cloudinaryPdfSelect) cloudinaryPdfSelect.required = true;
+    
             if (pdfFileInputForTab) pdfFileInputForTab.required = false;
+    
         });
 
+    
         uploadTab.addEventListener('click', function() {
+
             uploadTab.classList.add('active');
+
             cloudinaryTab.classList.remove('active');
+
             uploadSection.style.display = 'block';
+
             cloudinarySection.style.display = 'none';
+
             if (cloudinaryPdfSelect) cloudinaryPdfSelect.required = false;
+
             if (pdfFileInputForTab) pdfFileInputForTab.required = true;
+
         });
     }
 
     
+
     if (closePdfModalButton) {
+
         closePdfModalButton.addEventListener('click', function() {
+
             pdfQuizModal.style.display = 'none';
         });
     }
+
 
     if (cancelPdfModalButton) {
+
         cancelPdfModalButton.addEventListener('click', function() {
+
             pdfQuizModal.style.display = 'none';
+
         });
     }
+
 
     if (pdfQuizModal) {
+
         pdfQuizModal.addEventListener('click', function(e) {
+
             if (e.target === pdfQuizModal) {
+
                 pdfQuizModal.style.display = 'none';
+
             }
+
         });
     }
 
+
     if (pdfFileInput) {
+
         pdfFileInput.addEventListener('change', function(e) {
+
             const uploadedFile = e.target.files[0];
             if (uploadedFile) {
+
                 if (uploadedFile.type !== 'application/pdf') {
                     showWarning('Please upload a PDF file');
+
                     pdfFileInput.value = '';
                     return;
                 }
@@ -505,10 +619,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                 };
             }
 
-            console.log('Generating quiz from PDF/Note:', quizData);
-
             pdfQuizModal.style.display = 'none';
-            showLoading('Processing content and generating quiz with AI...');
+            showLoading('Processing content and generating quiz with Buddy');
 
             try {
                 let extractedContent;
@@ -516,11 +628,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (isCloudinaryActive) {
                     const selectedNoteId = document.getElementById('cloudinaryPdfSelect').value;
 
-                    console.log('Getting content for note ID:', selectedNoteId);
                     extractedContent = await getNoteContent(selectedNoteId);
-                    console.log('Got note content, length:', extractedContent.length);
-                } else {
+                } 
+                else {
+                
                     const fileInput = document.getElementById('pdfFileInput');
+                
                     const uploadedFile = fileInput.files[0];
 
                     if (!uploadedFile) {
@@ -530,12 +643,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                         return;
                     }
 
-                    console.log('Extracting text from PDF:', uploadedFile.name);
                     extractedContent = await extractTextFromPDF(uploadedFile);
-                    console.log('Extracted text length:', extractedContent.length);
                 }
 
-                // now i send this text to the AI to generate quiz questions
+                // Now I send this text to Buddy to generate quiz questions
                 const generatedQuiz = await generateQuizFromText({
                     title: quizTitle,
                     textContent: extractedContent,
@@ -543,7 +654,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                     difficulty: quizDifficulty
                 });
 
-                console.log('Quiz generated successfully:', generatedQuiz);
 
                 const savedQuiz = await createQuiz({
                     title: generatedQuiz.title,
@@ -558,12 +668,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
                 hideLoading();
 
-                showSuccess('Quiz generated successfully! Redirecting to quiz...');
                 window.location.href = `take_quiz.html?id=${savedQuiz.quiz.id}`;
 
             } catch (error) {
                 hideLoading();
-                console.error('Error generating PDF/Note quiz:', error);
                 showError('Failed to generate quiz: ' + error.message);
             }
 
@@ -659,19 +767,15 @@ function filterQuizzesByStatus(statusFilter) {
 
 async function loadQuizzesFromDatabase() {
     try {
-        console.log('Loading quizzes from database...');
-
         const serverResponse = await getUserQuizzes();
         const userQuizzes = serverResponse.quizzes || [];
 
-        console.log(`Found ${userQuizzes.length} quizzes`);
 
         await updateQuizStats(userQuizzes);
 
         const quizTableBody = document.getElementById('quizzesTableBody');
 
         if (!quizTableBody) {
-            console.log('Quiz table body not found');
             return;
         }
 
@@ -693,10 +797,8 @@ async function loadQuizzesFromDatabase() {
             quizTableBody.appendChild(quizRow);
         }
 
-        console.log('Quizzes loaded successfully');
 
     } catch (error) {
-        console.error('Error loading quizzes:', error);
 
         const quizTableBody = document.getElementById('quizzesTableBody');
         if (quizTableBody) {
@@ -730,8 +832,9 @@ async function updateQuizStats(quizzes) {
                     const mostRecentResult = quizResults[0];
                     combinedScore += mostRecentResult.score;
                 }
-            } catch (err) {
-                // this quiz hasn't been taken yet
+            } 
+            catch (err) {
+                
             }
         }
 
@@ -745,7 +848,6 @@ async function updateQuizStats(quizzes) {
         }
 
     } catch (error) {
-        console.error('Error updating quiz stats:', error);
     }
 }
 
@@ -866,9 +968,7 @@ async function loadNotesToDropdown() {
             notesDropdown.appendChild(noteOption);
         });
 
-        console.log(`Loaded ${userNotes.length} notes into dropdown`);
 
     } catch (error) {
-        console.error('Error loading notes for dropdown:', error);
     }
 }

@@ -67,7 +67,7 @@
     background-color: #f7fafc;
 }
 
-/* Score Summary */
+
 .score_summary {
     background-color: white;
     border-radius: 12px;
@@ -80,7 +80,7 @@
     border: 1px solid #e2e8f0;
 }
 
-/* Score Circle */
+
 .score_card {
     display: flex;
     justify-content: center;
@@ -114,7 +114,7 @@
     color: #718096;
 }
 
-/* Summary Stats */
+
 .summary_stats {
     flex: 1;
     display: grid;
@@ -175,7 +175,7 @@
     color: #718096;
 }
 
-/* Review Section */
+
 .review_section {
     margin-bottom: 32px;
 }
@@ -187,7 +187,7 @@
     margin-bottom: 20px;
 }
 
-/* Questions Review */
+
 .questions_review {
     display: flex;
     flex-direction: column;
@@ -354,7 +354,7 @@
     color: #742a2a;
 }
 
-/* Responsive Design */
+
 @media (max-width: 968px) {
     .score_summary {
         flex-direction: column;
@@ -400,7 +400,7 @@
 }
 
 
-/* Small add folder button styling */
+
 .add_folder_button_small {
     background: none;
     border: none;

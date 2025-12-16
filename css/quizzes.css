@@ -17,7 +17,7 @@ body {
 }
 
 
-/* Left Sidebar */
+
 .sidebar {
     width: 280px;
     background-color: #F5F5F5;
@@ -42,7 +42,7 @@ body {
 
 .logo_text {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
 }
 
@@ -209,7 +209,7 @@ body {
 }
 
 
-/* Main Content */
+
 .main_content {
     flex: 1;
     display: flex;
@@ -270,21 +270,21 @@ body {
 }
 
 
-/* Main quizzes content area */
+
 .quizzes_content {
     flex: 1;
     padding: 40px;
 }
 
 
-/* Top Section with Hero and Generate Button */
+
 .top_section {
     display: flex;
     gap: 20px;
     margin-bottom: 24px;
 }
 
-/* Welcome Hero Banner */
+
 .welcome_hero {
     flex: 1;
     background-color: #018790;
@@ -306,7 +306,7 @@ body {
     opacity: 0.9;
 }
 
-/* Generate Quiz Card */
+
 .generate_quiz_card {
     display: flex;
     align-items: center;
@@ -335,7 +335,7 @@ body {
 }
 
 
-/* Stats Section */
+
 .stats_section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -370,7 +370,7 @@ body {
 }
 
 
-/* Quizzes Section */
+
 .quizzes_section {
     background-color: white;
     border-radius: 12px;
@@ -436,7 +436,7 @@ body {
 }
 
 
-/* Quizzes Table */
+
 .quizzes_table {
     width: 100%;
 }
@@ -552,7 +552,7 @@ body {
     background-color: #018790;
 }
 
-/* Empty State and Loading State */
+
 .table_body {
     min-height: 200px;
 }
@@ -587,7 +587,7 @@ body {
 }
 
 
-/* Modal Styles */
+
 .modal_overlay {
     position: fixed;
     top: 0;
@@ -716,13 +716,13 @@ body {
 }
 
 
-/* Smaller modal for simple forms */
+
 .modal_small {
     max-width: 450px;
 }
 
 
-/* Color Picker */
+
 .color_picker {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -769,7 +769,7 @@ body {
 }
 
 
-/* Quiz Type Selection */
+
 .modal_description {
     font-size: 14px;
     color: #86868B;
@@ -830,7 +830,7 @@ body {
 }
 
 
-/* PDF Source Tabs */
+
 .pdf_source_tabs {
     display: flex;
     gap: 8px;
@@ -863,7 +863,7 @@ body {
 }
 
 
-/* Quiz Form Styles */
+
 .quiz_form {
     display: flex;
     flex-direction: column;
@@ -901,7 +901,7 @@ body {
 }
 
 
-/* File Upload Area */
+
 .file_upload_area {
     position: relative;
     border: 2px dashed #D0D0D0;
@@ -977,7 +977,7 @@ body {
 }
 
 
-/* Small add folder button styling */
+
 .add_folder_button_small {
     background: none;
     border: none;
