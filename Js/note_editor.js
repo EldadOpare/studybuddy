@@ -1,11 +1,9 @@
-
-if (!requireAuth()) {
-
-}
+// I made sure the user is logged in before they can see this page
+requireAuth();
 
 
-// i implemented auto-save so users don't lose their work
-// waits 2 seconds after they stop typing before saving
+// I implemented auto-save so users don't lose their work
+// It waits 2 seconds after they stop typing before saving
 let autoSaveTimeout;
 const AUTO_SAVE_DELAY = 2000;
 
@@ -128,7 +126,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             status: 'published'
         };
 
-        console.log('Auto-saving note with folderId:', selectedFolderId);
 
         try {
             if (currentNoteId) {
@@ -138,7 +135,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                 currentNoteId = creationResponse.note.id;
             }
         } catch (saveError) {
-            console.error('Error auto-saving note:', saveError);
         }
     }
 
@@ -157,7 +153,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
 
             const finalContent = noteEditor.innerHTML;
-            const folderSelectValue = document.getElementById('folderSelect')?.value;
+            const folderSelect = document.getElementById('folderSelect');
+            const folderSelectValue = folderSelect?.value;
+
             const selectedFolderId = folderSelectValue && folderSelectValue !== '' ? folderSelectValue : null;
             const selectedColor = document.getElementById('colorSelect')?.value || 'blue';
             const tagsInput = document.getElementById('tagsInput')?.value || '';
@@ -171,8 +169,6 @@ document.addEventListener('DOMContentLoaded', async function() {
                 status: 'published'
             };
 
-            console.log('Publishing note with folderId:', selectedFolderId);
-
             try {
                 if (currentNoteId) {
                     await updateNote(currentNoteId, finalNoteData);
@@ -183,11 +179,17 @@ document.addEventListener('DOMContentLoaded', async function() {
                 showSuccess('Note saved!');
 
                 setTimeout(function() {
-                    window.location.href = '/pages/my_notes.html';
+                    const folderSelect = document.getElementById('folderSelect');
+                    const selectedFolderId = folderSelect?.value;
+
+                    if (selectedFolderId && selectedFolderId !== '') {
+                        window.location.href = `/pages/my_notes.html?folder=${selectedFolderId}`;
+                    } else {
+                        window.location.href = '/pages/my_notes.html';
+                    }
                 }, 1000);
 
             } catch (publishError) {
-                console.error('Error publishing note:', publishError);
                 showError('Failed to publish note: ' + publishError.message);
             }
         });
@@ -289,7 +291,6 @@ async function loadFoldersToDropdown() {
         }
 
     } catch (folderLoadError) {
-        console.error('Error loading folders:', folderLoadError);
     }
 }
 
@@ -323,7 +324,6 @@ async function loadExistingNote(noteId) {
         }
 
     } catch (noteLoadError) {
-        console.error('Error loading note:', noteLoadError);
         showError('Failed to load note: ' + noteLoadError.message);
         window.location.href = '/pages/my_notes.html';
     }

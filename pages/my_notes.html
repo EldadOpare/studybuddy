@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="../css/my_notes.css">
     <link rel="stylesheet" href="/css/buddy_widget.css">
     <link rel="icon" type="image/png" href="../images/favicon.png">
-    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-    <script src="https://media-library.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="../Js/toast.js"></script>
     <script src="../Js/api.js"></script>
     <script src="../Js/my_notes.js"></script>
@@ -18,7 +16,7 @@
 
     <div class="app_container">
 
-        <!-- Left sidebar -->
+       
         <aside class="sidebar">
 
             <div class="logo_section">
@@ -33,7 +31,7 @@
 
                 <a href="my_notes.html" class="nav_item active">
                     <span class="nav_icon">folder_icon</span>
-                    My Materials
+                    My Notes
                 </a>
 
                 <a href="quizzes.html" class="nav_item">
@@ -52,7 +50,7 @@
                 </a>
             </nav>
 
-            <!-- Folders section -->
+           
             <div class="folders_section">
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
@@ -60,17 +58,17 @@
                 </div>
 
                 <div class="folder_list">
-                    <!-- Folders loaded from database -->
+                   
                 </div>
             </div>
 
         </aside>
 
 
-        <!-- Main content area -->
+       
         <main class="main_content">
 
-            <!-- Top header bar -->
+          
             <header class="page_header">
                 <div class="header_left">
                 </div>
@@ -91,16 +89,16 @@
 
 
 
-            <!-- My Materials Section -->
+           
             <div class="my_materials_section">
                 <div class="materials_header">
-                    <h3 class="section_title">My Materials</h3>
+                    <h3 class="section_title">My Notes</h3>
                     
                     <div class="materials_header_actions">
                         <div class="filter_dropdown">
                             <select class="filter_select" id="folderFilter">
                                 <option value="">All Folders</option>
-                                <!-- Folder options will be populated by JavaScript -->
+                                
                             </select>
                         </div>
                         
@@ -108,19 +106,13 @@
                             <a href="note_editor.html" class="create_note_button" id="createNoteButton">
                                 + New Note
                             </a>
-                            <button class="browse_files_button" id="browseFilesButton">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
-                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                                </svg>
-                                Upload File
-                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- This container will be populated by JavaScript with the materials table -->
+                
                 <div class="materials_grid">
-                    <!-- Materials loaded from database -->
+                   
                     <div class="loading_state">
                         <div class="loading_spinner">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#018790" stroke-width="2" class="spin_animation">
@@ -138,91 +130,11 @@
     </div>
 
 
-    <!-- Upload File Modal -->
-    <div class="modal_overlay" id="uploadFileModal" style="display: none;">
-        <div class="modal_container">
-            <div class="modal_header">
-                <h2 class="modal_title">Upload File</h2>
-                <button class="modal_close_button" id="closeModalButton">&times;</button>
-            </div>
-
-            <div class="modal_body">
-                <form class="note_form" id="uploadForm">
-
-                    <div class="form_group">
-                        <label class="form_label">File Name</label>
-                        <input type="text"
-                               class="form_input"
-                               id="fileName"
-                               placeholder="Enter file name..."
-                               required>
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form_label">Folder</label>
-                        <select class="form_select" id="fileFolder">
-                            <option value="biology">Biology 101</option>
-                            <option value="history">History Essays</option>
-                            <option value="physics">Physics Labs</option>
-                        </select>
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form_label">Select File</label>
-                        <div class="file_upload_area" id="fileUploadArea">
-                            <svg class="upload_icon_small" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="17 8 12 3 7 8"></polyline>
-                                <line x1="12" y1="3" x2="12" y2="15"></line>
-                            </svg>
-                            <p class="upload_text">Click to upload or drag and drop</p>
-                            <p class="upload_hint">PDF, DOC, DOCX, TXT, PNG, JPG (Max 10MB)</p>
-                        </div>
-                        <input type="file"
-                               id="fileInput"
-                               class="file_input_hidden"
-                               accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
-                               required>
-                        <div class="uploaded_file_info" id="uploadedFileInfo" style="display: none;">
-                            <span class="file_name_display" id="fileNameDisplay"></span>
-                            <button type="button" class="remove_file_button" id="removeFileButton">&times;</button>
-                        </div>
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form_label">Tags (Optional)</label>
-                        <input type="text"
-                               class="form_input"
-                               id="fileTags"
-                               placeholder="Add tags separated by commas (e.g. exam, chapter-3)">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form_label">Description (Optional)</label>
-                        <textarea class="form_textarea"
-                                  id="fileDescription"
-                                  rows="4"
-                                  placeholder="Add a description for this file..."></textarea>
-                    </div>
-
-                </form>
-            </div>
-
-            <div class="modal_footer">
-                <button type="button" class="cancel_modal_button" id="cancelModalButton">
-                    Cancel
-                </button>
-                <button type="submit" form="uploadForm" class="submit_modal_button" id="submitUploadButton">
-                    Upload File
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Create Folder Modal -->
+    
     <div class="modal_overlay" id="createFolderModal" style="display: none;">
+    
         <div class="modal_container modal_small">
+    
             <div class="modal_header">
                 <h2 class="modal_title">Create New Folder</h2>
                 <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
@@ -232,132 +144,191 @@
                 <form class="folder_form" id="createFolderForm">
 
                     <div class="form_group">
+                        
                         <label class="form_label">Folder Name</label>
+                        
                         <input type="text"
-                               class="form_input"
-                               id="folderName"
-                               placeholder="Enter folder name..."
-                               required>
+                        
+                        class="form_input"
+                        
+                        id="folderName"
+                        
+                        placeholder="Enter folder name..."
+                        
+                        required>
+                    
                     </div>
 
+                    
                     <div class="form_group">
+                    
                         <label class="form_label">Choose Color</label>
+                        
                         <div class="color_picker">
+                        
                             <label class="color_option">
+                    
                                 <input type="radio" name="folderColor" value="yellow" class="color_input">
                                 <span class="color_circle" style="background-color: #FFD63A;"></span>
+                    
                             </label>
+                        
+                    
                             <label class="color_option">
+                    
                                 <input type="radio" name="folderColor" value="orange" class="color_input" checked>
                                 <span class="color_circle" style="background-color: #FFA955;"></span>
+                    
                             </label>
+                        
+                    
                             <label class="color_option">
+                    
                                 <input type="radio" name="folderColor" value="red" class="color_input">
                                 <span class="color_circle" style="background-color: #F75A5A;"></span>
+                    
                             </label>
+                    
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="navy" class="color_input">
                                 <span class="color_circle" style="background-color: #0D1164;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="purple_dark" class="color_input">
                                 <span class="color_circle" style="background-color: #640D5F;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="pink" class="color_input">
                                 <span class="color_circle" style="background-color: #EA2264;"></span>
+                            
                             </label>
+                        
+
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="peach" class="color_input">
                                 <span class="color_circle" style="background-color: #F78D60;"></span>
+                            
                             </label>
+                        
+
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="pink_light" class="color_input">
                                 <span class="color_circle" style="background-color: #F29AAE;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="lavender" class="color_input">
                                 <span class="color_circle" style="background-color: #C47BE4;"></span>
+                            
                             </label>
+                        
+
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="purple" class="color_input">
                                 <span class="color_circle" style="background-color: #7132CA;"></span>
+                            
                             </label>
+                        
+
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
+                            
                             </label>
+                        
+
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="blue" class="color_input">
                                 <span class="color_circle" style="background-color: #4A90E2;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="teal" class="color_input">
                                 <span class="color_circle" style="background-color: #00B7B5;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="green" class="color_input">
                                 <span class="color_circle" style="background-color: #50C878;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="mint" class="color_input">
                                 <span class="color_circle" style="background-color: #98D8C8;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="slate" class="color_input">
                                 <span class="color_circle" style="background-color: #64748B;"></span>
+                            
                             </label>
+                        
+                            
                             <label class="color_option">
+                            
                                 <input type="radio" name="folderColor" value="brown" class="color_input">
                                 <span class="color_circle" style="background-color: #A0522D;"></span>
+                        
+
                             </label>
+                        
                         </div>
+                    
+                    
                     </div>
 
                 </form>
+            
             </div>
 
             <div class="modal_footer">
+                
                 <button type="button" class="cancel_modal_button" id="cancelFolderModalButton">
                     Cancel
                 </button>
+                
                 <button type="submit" form="createFolderForm" class="submit_modal_button" id="submitFolderButton">
                     Create Folder
                 </button>
+            
             </div>
+        
         </div>
+    
     </div>
 
-
-    <!-- PDF Viewer Modal -->
-    <div class="modal_overlay pdf_viewer_modal" id="pdfViewerModal" style="display: none;">
-        <div class="pdf_modal_container">
-
-            <div class="pdf_modal_header">
-                <h2 class="pdf_modal_title" id="pdfViewerTitle">Document</h2>
-
-                <div class="pdf_header_actions">
-                    <button class="pdf_action_button" onclick="downloadPdf()" title="Open in new tab">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        Download
-                    </button>
-
-                    <button class="pdf_close_button" onclick="closePdfViewer()" title="Close">
-                        &times;
-                    </button>
-                </div>
-            </div>
-
-            <div class="pdf_modal_body">
-                <iframe id="pdfViewerFrame" class="pdf_viewer_iframe"></iframe>
-            </div>
-
-        </div>
-    </div>
 
 </body>
+
 </html>

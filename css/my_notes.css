@@ -18,7 +18,7 @@ body {
 }
 
 
-/* Sidebar styling */
+
 .sidebar {
     width: 280px;
     background-color: #F5F5F5;
@@ -43,7 +43,7 @@ body {
 
 .logo_text {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
 }
 
@@ -83,7 +83,7 @@ body {
 .nav_item.active {
     background-color: #E0F4F5;
     color: #018790;
-    font-weight: 500;
+    font-weight: normal;
 }
 
 .nav_icon {
@@ -109,7 +109,7 @@ body {
 
 .folders_title {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: normal;
     color: #86868B;
     letter-spacing: 1px;
 }
@@ -130,7 +130,7 @@ body {
     background-color: #EBEBEB;
 }
 
-/* Small add folder button styling - matches other pages */
+
 .add_folder_button_small {
     background: none;
     border: none;
@@ -154,7 +154,8 @@ body {
     gap: 4px;
 }
 
-/* Modern folder item design - name beside icon */
+
+
 .folder_item {
     display: flex;
     align-items: center;
@@ -209,7 +210,7 @@ body {
     background-color: transparent;
     color: #DC3545;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: normal;
     cursor: pointer;
     border-radius: 4px;
     transition: all 0.15s ease;
@@ -236,7 +237,7 @@ body {
     border: none;
     border-radius: 10px;
     font-size: 15px;
-    font-weight: 500;
+    font-weight: normal;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -341,7 +342,7 @@ body {
 }
 
 
-/* Small profile picture in the header - sits between search and logout */
+
 .header_right .profile_picture {
     width: 40px;
     height: 40px;
@@ -459,7 +460,7 @@ body {
 }
 
 
-/* Materials table */
+
 .materials_table {
     margin: 24px 40px 32px;
     background-color: white;
@@ -580,7 +581,7 @@ body {
 }
 
 
-/* Upload section */
+
 .upload_section {
     margin: 0 40px 40px;
     padding: 60px;
@@ -680,7 +681,7 @@ body {
 
 .section_title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
 }
 
@@ -764,9 +765,16 @@ body {
 
 .empty_state_title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
     margin-bottom: 8px;
+}
+
+.empty_text {
+    font-size: 14px;
+    font-weight: normal;
+    color: #86868B;
+    text-align: center;
 }
 
 .empty_state_subtitle {
@@ -811,7 +819,7 @@ body {
     background-color: #EBEBEB;
 }
 
-/* Materials Table Styling - December 8th Style */
+
 .materials_table_wrapper {
     background-color: white;
     border-radius: 8px;
@@ -821,23 +829,23 @@ body {
 
 .materials_table_header {
     display: grid;
-    grid-template-columns: 1fr 150px 150px;
+    grid-template-columns: 2fr 180px 150px;
     gap: 16px;
     padding: 16px 20px;
     background-color: #FAFAFA;
     border-bottom: 1px solid #F0F0F0;
 }
 
-.header_col {
+.header_cell {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: normal;
     color: #86868B;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-.header_col.actions_col {
-    text-align: right;
+.header_cell:last-child {
+    text-align: center;
 }
 
 .materials_table_body {
@@ -845,10 +853,17 @@ body {
     flex-direction: column;
 }
 
+.materials_table_container {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #F0F0F0;
+}
+
 
 .material_row {
     display: grid;
-    grid-template-columns: 1fr 150px 150px;
+    grid-template-columns: 2fr 180px 150px;
     gap: 16px;
     padding: 16px 20px;
     border-bottom: 1px solid #F8F8F8;
@@ -869,21 +884,6 @@ body {
 .material_name_section {
     display: flex;
     align-items: center;
-    gap: 12px;
-}
-
-.material_icon {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #E8F4F5;
-    border-radius: 8px;
-}
-
-.note_emoji {
-    font-size: 16px;
 }
 
 .material_info {
@@ -893,7 +893,7 @@ body {
 
 .material_title {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: normal;
     color: #1D1D1F;
     margin-bottom: 2px;
     white-space: nowrap;
@@ -909,7 +909,7 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Status Section */
+
 .material_status_section {
     display: flex;
     align-items: center;
@@ -919,7 +919,7 @@ body {
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: normal;
 }
 
 .status_draft {
@@ -932,7 +932,8 @@ body {
     color: #0C5460;
 }
 
-/* Date Section */
+
+
 .material_date_section {
     display: flex;
     align-items: center;
@@ -943,7 +944,8 @@ body {
     color: #86868B;
 }
 
-/* Actions Section */
+
+
 .material_actions_section {
     display: flex;
     align-items: center;
@@ -977,7 +979,7 @@ body {
     background-color: #F8D7DA;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .materials_header {
         flex-direction: column;
@@ -991,7 +993,7 @@ body {
     
     .materials_table_header {
         grid-template-columns: 1fr;
-        display: none; /* Hide header on mobile */
+        display: none; 
     }
     
     .material_row {
@@ -1001,7 +1003,7 @@ body {
     
     .material_status_section,
     .material_date_section {
-        display: none; /* Hide on mobile for cleaner look */
+        display: none; 
     }
     
     .material_actions_section {
@@ -1010,7 +1012,7 @@ body {
     }
 }
 
-/* Error state */
+
 .error_state {
     text-align: center;
     padding: 40px;
@@ -1020,7 +1022,7 @@ body {
     margin: 20px 0;
 }
 
-/* Loading state */
+
 .loading_state {
     display: flex;
     flex-direction: column;
@@ -1043,7 +1045,7 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* Action button icons */
+
 .material_action_btn {
     display: flex;
     align-items: center;
@@ -1055,7 +1057,7 @@ body {
 }
 
 
-/* PDF Viewer Modal Styles */
+
 .pdf_viewer_modal {
     z-index: 10000;
 }
@@ -1083,7 +1085,7 @@ body {
 
 .pdf_modal_title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
     margin: 0;
 }
@@ -1104,7 +1106,7 @@ body {
     border: none;
     border-radius: 6px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: normal;
     cursor: pointer;
     transition: background-color 0.2s;
 }
@@ -1148,7 +1150,7 @@ body {
 }
 
 
-/* PDF Material Row Styles */
+
 .pdf_material_row {
     cursor: pointer;
     transition: background-color 0.15s;
@@ -1173,4 +1175,184 @@ body {
 
 .view_pdf_btn:hover {
     background-color: #016770;
+}
+
+
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal_container {
+    background-color: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 28px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.modal_title {
+    font-size: 20px;
+    font-weight: normal;
+    color: #1D1D1F;
+}
+
+.modal_close_button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #86868B;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.modal_close_button:hover {
+    background-color: #F5F5F5;
+    color: #1D1D1F;
+}
+
+.modal_body {
+    padding: 28px;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form_label {
+    font-size: 14px;
+    font-weight: normal;
+    color: #1D1D1F;
+}
+
+.form_input,
+.form_select,
+.form_textarea {
+    padding: 12px 16px;
+    border: 1px solid #D0D0D0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+}
+
+.form_input:focus,
+.form_select:focus,
+.form_textarea:focus {
+    border-color: #00B7B5;
+}
+
+.modal_footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 28px;
+    border-top: 1px solid #F0F0F0;
+}
+
+.cancel_modal_button,
+.submit_modal_button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel_modal_button {
+    background-color: white;
+    border: 1px solid #D0D0D0;
+    color: #1D1D1F;
+}
+
+.cancel_modal_button:hover {
+    background-color: #F5F5F5;
+}
+
+.submit_modal_button {
+    background-color: #00B7B5;
+    border: none;
+    color: white;
+}
+
+.submit_modal_button:hover {
+    background-color: #018790;
+}
+
+.modal_small {
+    max-width: 450px;
+}
+
+.color_picker {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.color_option {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.color_input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.color_circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.color_circle:hover {
+    transform: scale(1.1);
+}
+
+.color_input:checked + .color_circle {
+    border-color: #1D1D1F;
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #1D1D1F;
+}
+
+.folder_form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

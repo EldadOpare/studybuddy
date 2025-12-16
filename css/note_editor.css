@@ -12,7 +12,7 @@ body {
 }
 
 
-/* Editor Container */
+
 .editor_container {
     max-width: 900px;
     margin: 0 auto;
@@ -22,7 +22,7 @@ body {
 }
 
 
-/* Top Toolbar */
+
 .editor_toolbar {
     display: flex;
     justify-content: space-between;
@@ -79,7 +79,7 @@ body {
 }
 
 
-/* Note Metadata */
+
 .note_metadata {
     padding: 40px 60px 32px;
     border-bottom: 1px solid #F0F0F0;
@@ -138,7 +138,7 @@ body {
 }
 
 
-/* Formatting Toolbar */
+
 .formatting_toolbar {
     display: flex;
     align-items: center;
@@ -185,7 +185,7 @@ body {
 }
 
 
-/* Note Editor */
+
 .note_editor_wrapper {
     padding: 40px 60px 80px;
     min-height: 500px;
