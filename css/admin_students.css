@@ -17,7 +17,7 @@ body {
 }
 
 
-/* Sidebar styling - simpler for admin */
+
 .sidebar {
     width: 280px;
     background-color: #F5F5F5;
@@ -37,7 +37,7 @@ body {
 
 .logo_text {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
 }
 
@@ -88,7 +88,6 @@ body {
 }
 
 
-/* Main content */
 .main_content {
     flex: 1;
     display: flex;
@@ -169,14 +168,13 @@ body {
 }
 
 
-/* Students content */
+
 .students_content {
     flex: 1;
     padding: 40px;
 }
 
 
-/* Page title section */
 .page_title_section {
     margin-bottom: 32px;
     text-align: center;
@@ -196,7 +194,7 @@ body {
 }
 
 
-/* Table container */
+
 .table_container {
     background-color: white;
     border-radius: 12px;

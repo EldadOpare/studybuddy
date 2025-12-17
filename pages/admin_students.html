@@ -15,7 +15,7 @@
 
     <div class="app_container">
 
-        <!-- Left sidebar - simpler for admin -->
+       
         <aside class="sidebar">
 
             <div class="logo_section">
@@ -42,35 +42,45 @@
         </aside>
 
 
-        <!-- Main content area -->
+    
         <main class="main_content">
 
             <header class="page_header">
+    
                 <div class="header_right">
+    
                     <div class="search_container">
                         <input type="text" class="search_input" id="studentSearch" placeholder="Search users...">
                     </div>
+    
                     <img src="../images/user.jpg" alt="Profile" class="profile_picture">
+    
                     <button class="logout_button" onclick="logout()">
                         Logout
                     </button>
+    
                 </div>
+    
             </header>
 
 
-            <!-- Students content -->
+           
             <div class="students_content">
 
-                <!-- Page title section -->
+                
                 <div class="page_title_section">
+                
                     <h2 class="page_title">All Users</h2>
                     <p class="page_subtitle">View and manage user accounts</p>
+                
                 </div>
 
 
-                <!-- Students table -->
+              
                 <div class="table_container">
+              
                     <table class="students_table">
+              
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -80,10 +90,13 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
+                       
                         <tbody class="students_table_body">
-                            <!-- User rows loaded from database -->
+                         
                         </tbody>
+                    
                     </table>
+                
                 </div>
 
             </div>
@@ -93,53 +106,82 @@
     </div>
 
 
-    <!-- User Detail Modal -->
+  
     <div id="studentDetailModal" class="modal_overlay" style="display: none;">
+  
         <div class="modal_container">
+  
             <div class="modal_header">
+  
                 <h3 class="modal_title">User Details</h3>
                 <button class="modal_close_button" id="closeStudentModal">&times;</button>
+  
             </div>
 
             <div class="modal_body">
 
-                <!-- User info -->
+             
                 <div class="student_detail_section">
+             
                     <div class="student_header">
+             
                         <img src="../images/user.jpg" alt="User" class="student_detail_avatar" id="studentAvatar">
+             
                         <div class="student_header_info">
+             
                             <h4 class="student_detail_name" id="studentName">User Name</h4>
                             <p class="student_detail_email" id="studentEmail">user@email.com</p>
+             
                         </div>
+             
                     </div>
+             
                 </div>
 
-                <!-- User stats -->
+              
                 <div class="student_stats_grid">
+             
                     <div class="student_stat_card">
+             
                         <div class="student_stat_number" id="studentFiles">0</div>
                         <div class="student_stat_label">Files Uploaded</div>
+             
                     </div>
 
+                  
                     <div class="student_stat_card">
+                  
                         <div class="student_stat_number" id="studentNotes">0</div>
                         <div class="student_stat_label">Notes Created</div>
+                  
                     </div>
 
+                  
                     <div class="student_stat_card">
+                  
                         <div class="student_stat_number" id="studentQuizzes">0</div>
+                  
                         <div class="student_stat_label">Quizzes Generated</div>
+                  
                     </div>
+                
                 </div>
 
             </div>
 
             <div class="modal_footer">
+                
                 <button class="delete_user_button" id="deleteUserButton">Delete Account</button>
                 <button class="cancel_modal_button" id="closeStudentModalButton">Close</button>
+           
             </div>
+        
+        
         </div>
+   
     </div>
 
+
 </body>
+
 </html>

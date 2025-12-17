@@ -1,14 +1,12 @@
+
+// I made sure only admins can access this page
 if (!requireAdmin()) {
 
 }
 
 
-
 let allUsers = [];
-
-
 let currentUserId = null;
-
 
 
 async function viewStudent(studentId) {
@@ -49,7 +47,6 @@ async function viewStudent(studentId) {
     } 
     catch (error) {
     
-        console.error('Error loading student details:', error);
     
         showError('Failed to load student details');
     }
@@ -59,10 +56,7 @@ async function viewStudent(studentId) {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    console.log('Admin users page loaded');
 
-
-   
     const modal = document.getElementById('studentDetailModal');
    
     const closeModalButton = document.getElementById('closeStudentModal');
@@ -171,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         await loadAllUsers();
 
                     } catch (error) {
-                        console.error('Error deleting user:', error);
                         showError('Failed to delete user: ' + error.message);
                     }
                 }
@@ -184,23 +177,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Load all users from database
+
 async function loadAllUsers() {
     try {
-        console.log('Loading all users...');
         const response = await getAllUsers();
         
         if (response && response.users) {
             allUsers = response.users;
-            console.log('Users loaded:', allUsers.length, 'users found');
         } else {
             allUsers = [];
-            console.log('No users data received');
         }
 
         const tableBody = document.querySelector('.students_table_body');
         if (!tableBody) {
-            console.error('Students table body not found');
             return;
         }
 
@@ -221,16 +210,14 @@ async function loadAllUsers() {
             row.setAttribute('data-student-id', user.id);
 
             const firstName = user.firstName || user.first_name || '';
-       
-            const lastName = user.lastName || user.last_name || '';
-       
-            const fullName = `${firstName} ${lastName}`.trim();
-            
-            const initials = firstName ? firstName.charAt(0).toUpperCase() : 'U';
 
+            const lastName = user.lastName || user.last_name || '';
+
+            const fullName = `${firstName} ${lastName}`.trim();
+
+            // I created each table row with the user's information
             row.innerHTML = `
                 <td class="name_cell">
-                    <div class="user_avatar">${initials}</div>
                     <span>${fullName || 'Unknown User'}</span>
                 </td>
                 <td>${user.email || ''}</td>
@@ -244,10 +231,8 @@ async function loadAllUsers() {
             tableBody.appendChild(row);
         });
 
-        console.log('User table populated successfully');
 
     } catch (error) {
-        console.error('Error loading users:', error);
         
         const tableBody = document.querySelector('.students_table_body');
        
