@@ -1,8 +1,8 @@
+// I made sure the user is logged in before showing the dashboard
+requireAuth();
 
 
-if (!requireAuth()) {
 
-}
 
 let currentDate = new Date();
 let selectedDate = new Date();
@@ -52,11 +52,9 @@ async function loadUserInfo() {
             }
 
         } else {
-            console.log('No user data found, using default welcome message');
         }
 
     } catch (loadingError) {
-        console.error('Error loading user info:', loadingError);
     }
 }
 
@@ -84,7 +82,6 @@ async function loadUserStats() {
         }
 
     } catch (statsError) {
-        console.error('Error loading user stats:', statsError);
     }
 }
 
@@ -99,28 +96,52 @@ async function loadRecentMaterials() {
         const allNotes = notesResponse.notes || [];
         const allQuizzes = quizzesResponse.quizzes || [];
 
-
+        // I combined notes and quizzes into one list sorted by date
         const combinedMaterials = [
-            ...allNotes.map(note => ({
-                id: note.id,
-                type: 'note',
-                name: note.title,
-                date: new Date(note.updated_at || note.created_at),
-                size: calculateNoteSize(note.content)
-            })),
-            ...allQuizzes.map(quiz => ({
-                id: quiz.id,
-                type: 'quiz',
-                name: quiz.title,
-                date: new Date(quiz.created_at),
-                size: `${quiz.question_count || 0} questions`
-            }))
+            ...allNotes.map(note => {
+                // I made sure to handle cases where the date might be missing
+                const dateString = note.updated_at || note.created_at;
+                let noteDate = new Date();
+
+                if (dateString) {
+                    const parsedDate = new Date(dateString);
+                    if (!isNaN(parsedDate.getTime())) {
+                        noteDate = parsedDate;
+                    }
+                }
+
+                return {
+                    id: note.id,
+                    type: 'note',
+                    name: note.title,
+                    date: noteDate,
+                    size: calculateNoteSize(note.content)
+                };
+            }),
+            ...allQuizzes.map(quiz => {
+                // I made sure to handle cases where the date might be missing
+                let quizDate = new Date();
+
+                if (quiz.created_at) {
+                    const parsedDate = new Date(quiz.created_at);
+                    if (!isNaN(parsedDate.getTime())) {
+                        quizDate = parsedDate;
+                    }
+                }
+
+                return {
+                    id: quiz.id,
+                    type: 'quiz',
+                    name: quiz.title,
+                    date: quizDate,
+                    size: `${quiz.question_count || 0} questions`
+                };
+            })
         ].sort((a, b) => b.date - a.date);
 
         displayMaterials(combinedMaterials);
 
     } catch (materialsError) {
-        console.error('Error loading materials:', materialsError);
     }
 }
 
@@ -141,9 +162,6 @@ function displayMaterials(materialsList) {
         row.className = 'table_row';
 
         row.innerHTML = `
-            <div class="table_cell row_number">
-                <div class="material_icon ${material.type}_icon"></div>
-            </div>
             <div class="table_cell material_name_cell">
                 <span class="material_name">${material.name}</span>
             </div>
@@ -203,7 +221,6 @@ async function loadCalendarEvents() {
         userEvents = eventsResponse.events || [];
 
     } catch (eventsError) {
-        console.error('Error loading events:', eventsError);
         userEvents = [];
     }
 }
@@ -213,7 +230,7 @@ function displayTodayEvents() {
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
 
-
+    // I filtered to show only upcoming events and sorted them by date
     const upcomingEventsList = userEvents
         .filter(event => {
             const eventDate = new Date(event.date);
@@ -287,141 +304,6 @@ function displayTodayEvents() {
         });
 
         upcomingList.appendChild(eventItem);
-    });
-}
-
-
-function openEditEventModal(eventToEdit) {
-    const modal = document.getElementById('editEventModal') || createEditEventModal();
-
-    document.getElementById('editEventTitle').value = eventToEdit.title;
-    document.getElementById('editEventType').value = eventToEdit.type || 'task';
-    document.getElementById('editEventDate').value = eventToEdit.date;
-    document.getElementById('editEventTime').value = eventToEdit.time || '';
-    document.getElementById('editEventDescription').value = eventToEdit.description || '';
-
-    modal.dataset.eventId = eventToEdit.id;
-
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-
-
-function createEditEventModal() {
-    const modal = document.createElement('div');
-    modal.id = 'editEventModal';
-    modal.className = 'modal';
-
-    const modalHTML = '<div class="modal_content">' +
-        '<div class="modal_header">' +
-            '<h2>Edit Event</h2>' +
-            '<button class="close_button" id="closeEditEventModal">&times;</button>' +
-        '</div>' +
-        '<form id="editEventForm">' +
-            '<div class="form_group">' +
-                '<label>Event Title</label>' +
-                '<input type="text" id="editEventTitle" required>' +
-            '</div>' +
-            '<div class="form_group">' +
-                '<label>Type</label>' +
-                '<select id="editEventType">' +
-                    '<option value="task">Task</option>' +
-                    '<option value="quiz">Quiz</option>' +
-                    '<option value="study">Study Session</option>' +
-                    '<option value="deadline">Deadline</option>' +
-                '</select>' +
-            '</div>' +
-            '<div class="form_group">' +
-                '<label>Date</label>' +
-                '<input type="date" id="editEventDate" required>' +
-            '</div>' +
-            '<div class="form_group">' +
-                '<label>Time (optional)</label>' +
-                '<input type="time" id="editEventTime">' +
-            '</div>' +
-            '<div class="form_group">' +
-                '<label>Description</label>' +
-                '<textarea id="editEventDescription" rows="3"></textarea>' +
-            '</div>' +
-            '<div class="modal_actions">' +
-                '<button type="button" class="delete_event_button">Delete</button>' +
-                '<button type="button" class="cancel_button">Cancel</button>' +
-                '<button type="submit" class="save_button">Save Changes</button>' +
-            '</div>' +
-        '</form>' +
-    '</div>';
-
-    modal.innerHTML = modalHTML;
-    document.body.appendChild(modal);
-
-    modal.querySelector('#closeEditEventModal').addEventListener('click', closeEditEventModal);
-    modal.querySelector('.cancel_button').addEventListener('click', closeEditEventModal);
-    modal.querySelector('.delete_event_button').addEventListener('click', handleDeleteEvent);
-    modal.querySelector('#editEventForm').addEventListener('submit', handleUpdateEvent);
-
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeEditEventModal();
-    });
-
-    return modal;
-}
-
-
-function closeEditEventModal() {
-    const modal = document.getElementById('editEventModal');
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-}
-
-
-async function handleUpdateEvent(e) {
-    e.preventDefault();
-
-    const modal = document.getElementById('editEventModal');
-    const eventId = modal.dataset.eventId;
-
-    const updatedEventData = {
-        title: document.getElementById('editEventTitle').value,
-        type: document.getElementById('editEventType').value,
-        date: document.getElementById('editEventDate').value,
-        time: document.getElementById('editEventTime').value,
-        description: document.getElementById('editEventDescription').value
-    };
-
-    try {
-        await updateEvent(eventId, updatedEventData);
-
-        closeEditEventModal();
-        await loadCalendarEvents();
-        displayTodayEvents();
-        renderCalendar();
-
-    } catch (updateError) {
-        console.error('Error updating event:', updateError);
-        showError('Failed to update event: ' + updateError.message);
-    }
-}
-
-
-async function handleDeleteEvent() {
-    showConfirmDialog('Are you sure you want to delete this event?', async () => {
-        const modal = document.getElementById('editEventModal');
-        const eventId = modal.dataset.eventId;
-
-        try {
-            await deleteEvent(eventId);
-
-            closeEditEventModal();
-            await loadCalendarEvents();
-            displayTodayEvents();
-            renderCalendar();
-
-        } catch (deleteError) {
-            console.error('Error deleting event:', deleteError);
-            showError('Failed to delete event: ' + deleteError.message);
-        }
     });
 }
 
@@ -570,7 +452,6 @@ async function handleCreateFolder(e) {
         await loadFoldersToSidebar();
 
     } catch (folderCreationError) {
-        console.error('Failed to create folder:', folderCreationError);
     }
 }
 
