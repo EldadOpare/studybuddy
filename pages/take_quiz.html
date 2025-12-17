@@ -16,7 +16,7 @@
 
     <div class="app_container">
 
-        <!-- Left sidebar -->
+      
         <aside class="sidebar">
 
             <div class="logo_section">
@@ -24,24 +24,31 @@
             </div>
 
             <nav class="sidebar_navigation">
+              
                 <a href="dashboard.html" class="nav_item">
                     <span class="nav_icon"></span>
                     Dashboard
                 </a>
 
                 <a href="my_notes.html" class="nav_item">
+              
                     <span class="nav_icon"></span>
-                    My Materials
+                    My Notes
+              
                 </a>
 
                 <a href="quizzes.html" class="nav_item active">
+              
                     <span class="nav_icon"></span>
                     Quizzes
+              
                 </a>
 
                 <a href="study_plan.html" class="nav_item">
+              
                     <span class="nav_icon"></span>
                     Study Plan
+              
                 </a>
 
                 <a href="settings.html" class="nav_item">
@@ -57,79 +64,111 @@
                 </div>
 
                 <div class="folder_list">
-                    <!-- Folders loaded from database -->
+                  
+                
                 </div>
+            
             </div>
 
         </aside>
 
 
-        <!-- Main content area -->
+     
         <main class="main_content">
 
             <header class="page_header">
+     
                 <div class="header_right">
                     <img src="../images/user.jpg" alt="Profile" class="profile_picture">
                     <button class="logout_button" onclick="logout()">
                         Logout
                     </button>
+     
                 </div>
+     
             </header>
+
 
             <div class="quiz_content">
 
-                <!-- Quiz Header -->
+               
                 <div class="quiz_header">
+               
                     <div class="quiz_info">
-                        <h2 class="quiz_title" id="quizTitle">Biology 101 - Cell Structure</h2>
-                        <p class="quiz_meta" id="quizMeta">10 Questions • Medium Difficulty</p>
+                        <h2 class="quiz_title" id="quizTitle"></h2>
+                        <p class="quiz_meta" id="quizMeta"></p>
                     </div>
+               
                     <button class="exit_quiz_button" id="exitQuizButton">Exit Quiz</button>
+               
                 </div>
 
-                <!-- Progress Bar -->
+              
                 <div class="progress_section">
+               
                     <div class="progress_info">
+              
                         <span class="progress_text" id="progressText">Question 1 of 10</span>
                         <span class="time_text" id="timeText">Time: 0:00</span>
+               
                     </div>
+               
                     <div class="progress_bar_container">
+               
                         <div class="progress_bar" id="progressBar" style="width: 10%;"></div>
+               
                     </div>
+               
                 </div>
 
-                <!-- Question Card -->
+          
                 <div class="question_card">
+          
                     <div class="question_number" id="questionNumber">Question 1</div>
+          
                     <div class="question_text" id="questionText">What is the powerhouse of the cell?</div>
 
                     <div class="options_container" id="optionsContainer">
+          
                         <div class="option_item" data-option="A">
+          
                             <div class="option_label">A</div>
                             <div class="option_text">Nucleus</div>
+          
                         </div>
 
                         <div class="option_item" data-option="B">
+          
                             <div class="option_label">B</div>
                             <div class="option_text">Mitochondria</div>
+          
                         </div>
 
                         <div class="option_item" data-option="C">
+          
                             <div class="option_label">C</div>
                             <div class="option_text">Ribosome</div>
+          
                         </div>
 
                         <div class="option_item" data-option="D">
+          
                             <div class="option_label">D</div>
                             <div class="option_text">Endoplasmic Reticulum</div>
+          
                         </div>
+          
                     </div>
+          
                 </div>
 
-                <!-- Navigation Buttons -->
+             
+
                 <div class="quiz_navigation">
+          
                     <button class="nav_button secondary_button" id="previousButton" disabled>Previous</button>
                     <button class="nav_button primary_button" id="nextButton">Next</button>
+          
                 </div>
 
             </div>
@@ -138,57 +177,89 @@
 
     </div>
 
-    <!-- Exit Confirmation Modal -->
+
     <div class="modal" id="exitConfirmModal">
+
         <div class="modal_content small_modal">
+
             <div class="modal_header">
+
                 <h3 class="modal_title">Exit Quiz?</h3>
+
                 <button class="close_modal_button" id="closeExitModal">&times;</button>
+
             </div>
 
+
             <div class="modal_body">
+
                 <p class="confirmation_text">Are you sure you want to exit? Your progress will be saved.</p>
+
             </div>
 
             <div class="modal_footer">
+
                 <button class="modal_button secondary_button" id="cancelExitButton">Cancel</button>
                 <button class="modal_button primary_button" id="confirmExitButton">Exit Quiz</button>
+
             </div>
+
         </div>
+
     </div>
 
-    <!-- Submit Confirmation Modal -->
+   
     <div class="modal" id="submitConfirmModal">
+
         <div class="modal_content small_modal">
+
             <div class="modal_header">
+
                 <h3 class="modal_title">Submit Quiz?</h3>
+
                 <button class="close_modal_button" id="closeSubmitModal">&times;</button>
+
             </div>
 
+
             <div class="modal_body">
+
                 <p class="confirmation_text" id="submitConfirmText">You have answered 8 out of 10 questions. Are you sure you want to submit?</p>
+
             </div>
+
 
             <div class="modal_footer">
+
                 <button class="modal_button secondary_button" id="cancelSubmitButton">Cancel</button>
                 <button class="modal_button primary_button" id="confirmSubmitButton">Submit Quiz</button>
+
             </div>
+
         </div>
+
     </div>
 
 
-    <!-- Create Folder Modal -->
+   
     <div class="modal_overlay" id="createFolderModal" style="display: none;">
+
         <div class="modal_container modal_small">
+
             <div class="modal_header">
+
                 <h2 class="modal_title">Create New Folder</h2>
                 <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
+ 
             </div>
 
             <div class="modal_body">
+ 
                 <form class="folder_form" id="createFolderForm">
 
+
                     <div class="form_group">
+                    
                         <label class="form_label">Folder Name</label>
                         <input type="text"
                                class="form_input"
@@ -197,92 +268,169 @@
                                required>
                     </div>
 
+
                     <div class="form_group">
+                    
                         <label class="form_label">Choose Color</label>
+                    
                         <div class="color_picker">
+                    
                             <label class="color_option">
+                    
                                 <input type="radio" name="folderColor" value="yellow" class="color_input">
                                 <span class="color_circle" style="background-color: #FFD63A;"></span>
+                    
                             </label>
+                    
+                    
                             <label class="color_option">
+                    
                                 <input type="radio" name="folderColor" value="orange" class="color_input" checked>
                                 <span class="color_circle" style="background-color: #FFA955;"></span>
+                    
                             </label>
+                    
+                    
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="red" class="color_input">
                                 <span class="color_circle" style="background-color: #F75A5A;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="navy" class="color_input">
                                 <span class="color_circle" style="background-color: #0D1164;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="purple_dark" class="color_input">
                                 <span class="color_circle" style="background-color: #640D5F;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="pink" class="color_input">
                                 <span class="color_circle" style="background-color: #EA2264;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="peach" class="color_input">
                                 <span class="color_circle" style="background-color: #F78D60;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="pink_light" class="color_input">
                                 <span class="color_circle" style="background-color: #F29AAE;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="lavender" class="color_input">
                                 <span class="color_circle" style="background-color: #C47BE4;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="purple" class="color_input">
                                 <span class="color_circle" style="background-color: #7132CA;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="blue" class="color_input">
                                 <span class="color_circle" style="background-color: #4A90E2;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="teal" class="color_input">
                                 <span class="color_circle" style="background-color: #00B7B5;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="green" class="color_input">
                                 <span class="color_circle" style="background-color: #50C878;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="mint" class="color_input">
                                 <span class="color_circle" style="background-color: #98D8C8;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="slate" class="color_input">
                                 <span class="color_circle" style="background-color: #64748B;"></span>
+                           
                             </label>
+                           
+                           
                             <label class="color_option">
+                           
                                 <input type="radio" name="folderColor" value="brown" class="color_input">
                                 <span class="color_circle" style="background-color: #A0522D;"></span>
+                           
                             </label>
+                    
                         </div>
+                    
                     </div>
 
                 </form>
             </div>
 
+           
             <div class="modal_footer">
+               
                 <button type="button" class="cancel_modal_button" id="cancelFolderModalButton">
                     Cancel
                 </button>
+               
                 <button type="submit" form="createFolderForm" class="submit_modal_button" id="submitFolderButton">
                     Create Folder
                 </button>
+           
             </div>
         </div>
+    
     </div>
 
 </body>

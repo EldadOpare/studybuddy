@@ -1,7 +1,7 @@
+// I made sure the user is logged in before they can take the quiz
+requireAuth();
 
-if (!requireAuth()) {
-    
-}
+
 let currentQuiz = null;
 
 
@@ -15,7 +15,6 @@ let timerInterval = null;
 
 
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('Quiz page loaded');
 
     
     await loadFoldersToSidebar();
@@ -82,7 +81,6 @@ async function initializeQuiz() {
         
         currentQuiz = await getQuizById(quizId);
 
-        console.log('Quiz loaded:', currentQuiz);
 
         
         userAnswers = new Array(currentQuiz.questions.length).fill(null);
@@ -90,7 +88,7 @@ async function initializeQuiz() {
         
         document.getElementById('quizTitle').textContent = currentQuiz.title;
 
-        // make the difficulty look nice with capital letter
+        // I made the difficulty look nice with a capital letter
         const difficultyText = currentQuiz.difficulty.charAt(0).toUpperCase() + currentQuiz.difficulty.slice(1);
         document.getElementById('quizMeta').textContent = `${currentQuiz.questions.length} Questions • ${difficultyText} Difficulty`;
 
@@ -98,7 +96,6 @@ async function initializeQuiz() {
         loadQuestion(0);
 
     } catch (error) {
-        console.error('Error loading quiz:', error);
         showError('Failed to load quiz: ' + error.message);
         window.location.href = '/pages/quizzes.html';
     }
@@ -124,7 +121,7 @@ function loadQuestion(index) {
         optionElement.className = 'option_item';
         optionElement.dataset.option = String.fromCharCode(65 + i);
 
-        // check if this option was previously selected
+        // I checked if this option was previously selected
         if (userAnswers[index] === i) {
             optionElement.classList.add('selected');
         }
@@ -161,7 +158,6 @@ function selectOption(optionIndex) {
         }
     });
 
-    console.log('Selected option:', optionIndex, 'for question', currentQuestionIndex + 1);
 }
 
 
@@ -313,7 +309,7 @@ function showSubmitConfirmation() {
 
 
 function saveProgress() {
-    // save quiz progress so user can come back later
+    // I saved quiz progress so the user can come back later
     const progress = {
         quizId: currentQuiz.id,
         currentQuestion: currentQuestionIndex,
@@ -323,7 +319,6 @@ function saveProgress() {
     };
 
     localStorage.setItem('quiz_progress_' + currentQuiz.id, JSON.stringify(progress));
-    console.log('Progress saved');
 }
 
 
@@ -338,9 +333,8 @@ async function submitQuiz() {
         
         const response = await submitQuizResult(currentQuiz.id, userAnswers, timeSpent);
         
-        console.log('Quiz submitted successfully:', response);
 
-        // build result object with all the data the results page needs
+        // I built a result object with all the data the results page needs
         const result = {
             quizId: currentQuiz.id,
             quizTitle: currentQuiz.title,
@@ -368,7 +362,6 @@ async function submitQuiz() {
         window.location.href = `quiz_results.html?id=${currentQuiz.id}`;
 
     } catch (error) {
-        console.error('Error submitting quiz:', error);
         showError('Failed to submit quiz: ' + error.message);
         
         

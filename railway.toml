@@ -1,5 +1,5 @@
 # Railway Configuration
-# Tells Railway to deploy the server folder
+
 
 [build]
 builder = "NIXPACKS"
