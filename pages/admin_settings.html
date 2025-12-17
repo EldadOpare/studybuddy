@@ -16,7 +16,7 @@
 
     <div class="app_container">
 
-        <!-- Left sidebar - simpler for admin -->
+
         <aside class="sidebar">
 
             <div class="logo_section">
@@ -43,7 +43,7 @@
         </aside>
 
 
-        <!-- Main content area -->
+
         <main class="main_content">
 
             <header class="page_header">
@@ -58,109 +58,152 @@
 
             <div class="content_grid">
 
-                <!-- Left column - Profile Card and Settings Menu -->
+              
                 <div class="left_column">
 
-                    <!-- Profile Card -->
+                   
                     <div class="profile_card">
+                   
                         <div class="profile_picture_container">
+                   
                             <img src="../images/user.jpg" alt="Profile Picture" class="profile_picture_large" id="profilePicture">
                             <button class="edit_picture_button" id="uploadButton">
+                   
                                 <span class="edit_icon">✎</span>
+                   
                             </button>
+                   
                         </div>
 
                         <h2 class="profile_name">Admin User</h2>
                         <p class="profile_email">admin@studybuddy.com</p>
+                   
                     </div>
 
 
-                    <!-- Settings Menu -->
+          
                     <div class="settings_menu">
+          
                         <a href="#profile" class="settings_menu_item active">
+          
                             <span class="menu_icon profile_icon"></span>
                             Profile
+          
                         </a>
 
                         <a href="#security" class="settings_menu_item">
+          
                             <span class="menu_icon security_icon"></span>
                             Security
+          
                         </a>
+          
                     </div>
 
                 </div>
 
 
-                <!-- Right column - Settings Content -->
+               
                 <div class="right_column">
 
-                    <!-- Profile Information Section -->
+                
                     <div class="settings_section" id="profileSection">
+               
                         <h3 class="section_title">Profile Information</h3>
+               
                         <p class="section_description">Update your personal details here.</p>
 
                         <form class="settings_form" id="profileForm">
+                           
                             <div class="form_row">
+                           
                                 <div class="form_field">
+                           
                                     <label class="form_label">First Name</label>
                                     <input type="text" class="form_input" value="Admin" placeholder="Enter first name">
+                           
                                 </div>
 
                                 <div class="form_field">
+                           
                                     <label class="form_label">Last Name</label>
                                     <input type="text" class="form_input" value="User" placeholder="Enter last name">
+                           
                                 </div>
+                           
                             </div>
 
                             <div class="form_field">
+                           
                                 <label class="form_label">Email Address</label>
                                 <input type="email" class="form_input" value="admin@studybuddy.com" placeholder="Enter email address">
+                           
                             </div>
 
                             <div class="form_field">
+                           
                                 <label class="form_label">Bio</label>
                                 <textarea class="form_textarea" placeholder="Tell us about yourself">Managing StudyBuddy platform and helping students succeed.</textarea>
+                           
                             </div>
 
                             <div class="form_actions">
+                           
                                 <button type="button" class="cancel_button">Cancel</button>
                                 <button type="submit" class="save_button">Save Changes</button>
+                           
                             </div>
                         </form>
                     </div>
 
 
-                    <!-- Security Section -->
+                   
                     <div class="settings_section" id="securitySection" style="display: none;">
+                   
                         <h3 class="section_title">Change Password</h3>
                         <p class="section_description">Update your password to keep your account secure.</p>
 
                         <form class="settings_form" id="passwordForm">
+                   
                             <div class="form_field">
+                   
                                 <label class="form_label">Current Password</label>
                                 <input type="password" class="form_input" placeholder="Enter current password">
+                   
                             </div>
 
                             <div class="form_field">
+                   
                                 <label class="form_label">New Password</label>
                                 <input type="password" class="form_input" placeholder="Enter new password">
+                   
                             </div>
 
+                   
                             <div class="form_field">
+                   
                                 <label class="form_label">Confirm New Password</label>
                                 <input type="password" class="form_input" placeholder="Confirm new password">
+                   
                             </div>
 
+
+
                             <div class="form_actions">
+                            
                                 <button type="button" class="cancel_button">Cancel</button>
                                 <button type="submit" class="save_button">Update Password</button>
+                            
                             </div>
+                        
                         </form>
+                    
                     </div>
 
 
-                    <!-- Delete Account Section -->
+                 
                     <div class="settings_section delete_section">
+                 
                         <h3 class="section_title delete_title">Delete Account</h3>
                         <p class="section_description">Permanently delete your account and all of your content. This action is not reversible.</p>
 

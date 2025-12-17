@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         profilePicture.src = result.info.secure_url;
                         
-                        console.log('Image uploaded successfully:', result.info.secure_url);
 
                         // Saving the user's profile picture URL to the database
                         await saveProfilePicture(result.info.secure_url);
@@ -146,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.reload();
 
             } catch (error) {
-                console.error('Error updating admin profile:', error);
                 showError('Failed to update profile: ' + error.message);
             }
         });
@@ -195,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 passwordForm.reset();
 
             } catch (error) {
-                console.error('Error updating password:', error);
                 showError('Failed to update password: ' + error.message);
             }
         });
@@ -224,7 +221,6 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteButton.addEventListener('click', function() {
             showConfirmDialog('Are you sure you want to delete your admin account? This action cannot be undone.', () => {
                 // Here you would call your API to delete the account
-                console.log('Deleting admin account...');
                 showInfo('Account deletion would happen here');
             });
         });
@@ -268,7 +264,6 @@ async function loadAdminProfile() {
         }
 
     } catch (error) {
-        console.error('Error loading admin profile:', error);
     }
 }
 
@@ -282,9 +277,7 @@ async function saveProfilePicture(imageUrl) {
         userData.profilePicture = imageUrl;
         saveUserData(userData);
 
-        console.log('Profile picture saved successfully');
     } catch (error) {
-        console.error('Error saving profile picture:', error);
         showError('Failed to save profile picture');
     }
 }
