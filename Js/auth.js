@@ -1,30 +1,32 @@
 
 
 
+// I handle login and signup forms on the authentication pages
+
 function togglePassword(inputIdentifier) {
-    
+
     const passwordInputElement = document.getElementById(inputIdentifier);
-    
+
     const toggleButtonElement = passwordInputElement.parentElement.querySelector('.toggle_password_button');
-    
+
     const eyeIconElement = toggleButtonElement.querySelector('.eye_icon');
 
     if (passwordInputElement.type === 'password') {
-        
+
         passwordInputElement.type = 'text';
-        
+
         eyeIconElement.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
     }
-    
+
     else {
         passwordInputElement.type = 'password';
-     
+
         eyeIconElement.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
     }
 }
 
 
-
+// I made sure passwords are strong enough with this validation using regex to validate the presence of at least one uppercase letter, one number, and one special character
 function validatePassword(passwordText) {
     const minimumLength = 8;
 
@@ -78,21 +80,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 const serverResponse = await loginUser(userEmail, userPassword);
 
                 if (serverResponse.token) {
-                    
+
                     saveAuthToken(serverResponse.token);
-                    
+
                     saveUserData(serverResponse.user);
                 }
 
-                showSuccess('Login successful! Redirecting...');
-
-                setTimeout(() => {
-                    if (serverResponse.user.role === 'admin') {
-                        window.location.href = '/pages/admin_dashboard.html';
-                    } else {
-                        window.location.href = '/pages/dashboard.html';
-                    }
-                }, 500);
+                if (serverResponse.user.role === 'admin') {
+                    window.location.href = '/pages/admin_dashboard.html';
+                } else {
+                    window.location.href = '/pages/dashboard.html';
+                }
 
             } catch (loginError) {
                 showError(loginError.message || 'Invalid email or password');
@@ -147,18 +145,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 if (serverResponse.token) {
-                    
+
                     saveAuthToken(serverResponse.token);
-                    
+
                     saveUserData(serverResponse.user);
                 }
 
-                showSuccess('Account created successfully! Redirecting...');
-
-
-                setTimeout(() => {
-                    window.location.href = '/pages/dashboard.html';
-                }, 500);
+                window.location.href = '/pages/dashboard.html';
 
             } catch (signupError) {
                 showError(signupError.message || 'Signup failed. Please try again');
