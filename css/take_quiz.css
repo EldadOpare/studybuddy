@@ -62,7 +62,7 @@
     color: white;
 }
 
-/* Progress Section */
+
 .progress_section {
     margin-bottom: 32px;
 }
@@ -96,7 +96,7 @@
     border-radius: 10px;
 }
 
-/* Question Card */
+
 .question_card {
     background-color: white;
     border-radius: 16px;
@@ -120,7 +120,7 @@
     line-height: 1.6;
 }
 
-/* Options Container */
+
 .options_container {
     display: flex;
     flex-direction: column;
@@ -204,7 +204,7 @@
     flex: 1;
 }
 
-/* Quiz Navigation */
+
 .quiz_navigation {
     display: flex;
     justify-content: space-between;
@@ -251,7 +251,7 @@
     cursor: not-allowed;
 }
 
-/* Modal Styles */
+
 .modal {
     display: none;
     position: fixed;
@@ -360,7 +360,7 @@
     background-color: #f7fafc;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .quiz_content {
         padding: 20px;
@@ -380,7 +380,7 @@
 }
 
 
-/* Small add folder button styling */
+
 .add_folder_button_small {
     background: none;
     border: none;
