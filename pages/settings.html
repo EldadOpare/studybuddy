@@ -17,7 +17,7 @@
 
     <div class="app_container">
 
-        <!-- Left sidebar -->
+      
         <aside class="sidebar">
 
             <div class="logo_section">
@@ -25,6 +25,7 @@
             </div>
 
             <nav class="sidebar_navigation">
+              
                 <a href="dashboard.html" class="nav_item">
                     <span class="nav_icon"></span>
                     Dashboard
@@ -32,7 +33,7 @@
 
                 <a href="my_notes.html" class="nav_item">
                     <span class="nav_icon"></span>
-                    My Materials
+                    My Notes
                 </a>
 
                 <a href="quizzes.html" class="nav_item">
@@ -58,14 +59,14 @@
                 </div>
 
                 <div class="folder_list">
-                    <!-- Folders loaded from database -->
+                    
                 </div>
             </div>
 
         </aside>
 
 
-        <!-- Main content area -->
+
         <main class="main_content">
 
             <header class="page_header">
@@ -80,10 +81,10 @@
 
             <div class="content_grid">
 
-                <!-- Left column - Profile Card and Settings Menu -->
+              
                 <div class="left_column">
 
-                    <!-- Profile Card -->
+              
                     <div class="profile_card">
                         <div class="profile_picture_container">
                             <img src="../images/user.jpg" alt="Profile Picture" class="profile_picture" id="profilePicture">
@@ -92,12 +93,12 @@
                             </button>
                         </div>
 
-                        <h2 class="profile_name">Alex Morgan</h2>
-                        <p class="profile_email">alex.morgan@email.com</p>
+                        <h2 class="profile_name"></h2>
+                        <p class="profile_email"></p>
                     </div>
 
 
-                    <!-- Settings Menu -->
+                    
                     <div class="settings_menu">
                         <a href="#profile" class="settings_menu_item active">
                             <span class="menu_icon profile_icon"></span>
@@ -113,11 +114,12 @@
                 </div>
 
 
-                <!-- Right column - Settings Content -->
+
                 <div class="right_column">
 
-                    <!-- Profile Information Section -->
+                   
                     <div class="settings_section" id="profileSection">
+                   
                         <h3 class="section_title">Profile Information</h3>
                         <p class="section_description">Update your personal details here.</p>
 
@@ -125,35 +127,39 @@
                             <div class="form_row">
                                 <div class="form_field">
                                     <label class="form_label">First Name</label>
-                                    <input type="text" class="form_input" value="Alex" placeholder="Enter first name">
+                                    <input type="text" class="form_input" placeholder="Enter first name">
                                 </div>
 
                                 <div class="form_field">
                                     <label class="form_label">Last Name</label>
-                                    <input type="text" class="form_input" value="Morgan" placeholder="Enter last name">
+                                    <input type="text" class="form_input" placeholder="Enter last name">
                                 </div>
                             </div>
 
                             <div class="form_field">
                                 <label class="form_label">Email Address</label>
-                                <input type="email" class="form_input" value="alex.morgan@email.com" placeholder="Enter email address">
+                                <input type="email" class="form_input" placeholder="Enter email address">
                             </div>
 
                             <div class="form_field">
                                 <label class="form_label">Bio</label>
-                                <textarea class="form_textarea" placeholder="Tell us about yourself">Loves to learn about Calculus and Computer Science.</textarea>
+                                <textarea class="form_textarea" placeholder="Tell us about yourself"></textarea>
                             </div>
 
                             <div class="form_actions">
+                     
                                 <button type="button" class="cancel_button">Cancel</button>
                                 <button type="submit" class="save_button">Save Changes</button>
+                     
                             </div>
+                     
                         </form>
+                   
                     </div>
 
 
-                    <!-- Security Section -->
                     <div class="settings_section" id="securitySection" style="display: none;">
+
                         <h3 class="section_title">Change Password</h3>
                         <p class="section_description">Update your password to keep your account secure.</p>
 
@@ -181,12 +187,15 @@
                     </div>
 
 
-                    <!-- Delete Account Section -->
+                 
                     <div class="settings_section delete_section">
+                 
                         <h3 class="section_title delete_title">Delete Account</h3>
+                 
                         <p class="section_description">Permanently delete your account and all of your content. This action is not reversible.</p>
 
                         <button class="delete_account_button">Delete My Account</button>
+                 
                     </div>
 
                 </div>
@@ -198,88 +207,148 @@
     </div>
 
 
-    <!-- Create Folder Modal -->
+
     <div class="modal_overlay" id="createFolderModal" style="display: none;">
+    
         <div class="modal_container modal_small">
+    
             <div class="modal_header">
+    
                 <h2 class="modal_title">Create New Folder</h2>
                 <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
+    
             </div>
 
+    
             <div class="modal_body">
+    
                 <form class="folder_form" id="createFolderForm">
 
                     <div class="form_group">
+    
                         <label class="form_label">Folder Name</label>
                         <input type="text"
-                               class="form_input"
+    
+                        class="form_input"
                                id="folderName"
                                placeholder="Enter folder name..."
                                required>
                     </div>
 
                     <div class="form_group">
+    
                         <label class="form_label">Choose Color</label>
+    
                         <div class="color_picker">
+    
                             <label class="color_option">
                                 <input type="radio" name="folderColor" value="yellow" class="color_input">
+    
                                 <span class="color_circle" style="background-color: #FFD63A;"></span>
                             </label>
+    
+    
                             <label class="color_option">
+    
                                 <input type="radio" name="folderColor" value="orange" class="color_input" checked>
                                 <span class="color_circle" style="background-color: #FFA955;"></span>
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="red" class="color_input">
                                 <span class="color_circle" style="background-color: #F75A5A;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="navy" class="color_input">
                                 <span class="color_circle" style="background-color: #0D1164;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="purple_dark" class="color_input">
+                      
                                 <span class="color_circle" style="background-color: #640D5F;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="pink" class="color_input">
                                 <span class="color_circle" style="background-color: #EA2264;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="peach" class="color_input">
                                 <span class="color_circle" style="background-color: #F78D60;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="pink_light" class="color_input">
                                 <span class="color_circle" style="background-color: #F29AAE;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="lavender" class="color_input">
+                      
                                 <span class="color_circle" style="background-color: #C47BE4;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="purple" class="color_input">
                                 <span class="color_circle" style="background-color: #7132CA;"></span>
+                      
                             </label>
+                      
+                      
                             <label class="color_option">
+                      
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
+                      
                             </label>
+                      
                         </div>
+                    
                     </div>
 
                 </form>
             </div>
 
             <div class="modal_footer">
+              
                 <button type="button" class="cancel_modal_button" id="cancelFolderModalButton">
                     Cancel
                 </button>
+              
                 <button type="submit" form="createFolderForm" class="submit_modal_button" id="submitFolderButton">
                     Create Folder
                 </button>
+            
             </div>
+      
         </div>
+    
     </div>
 
 </body>

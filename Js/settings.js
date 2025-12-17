@@ -1,6 +1,9 @@
-if (!requireAuth()) {
 
-}
+
+// I handle all the user settings including profile updates and password changes
+
+requireAuth();
+
 
 
 const CLOUDINARY_CLOUD_NAME = 'dbx5yulyl';
@@ -89,7 +92,6 @@ async function loadUserProfile() {
         }
 
     } catch (loadingError) {
-        console.error('Error loading profile:', loadingError);
     }
 }
 
@@ -133,10 +135,8 @@ function setupProfilePictureUpload() {
                                 pic.src = uploadedImageUrl;
                             });
 
-                            console.log('Profile picture updated successfully');
 
                         } catch (saveError) {
-                            console.error('Error saving profile picture:', saveError);
                             showError('Failed to save profile picture');
                         }
                     }
@@ -208,7 +208,6 @@ function setupProfileForm() {
                 showSuccess('Profile updated successfully!');
 
             } catch (updateError) {
-                console.error('Error updating profile:', updateError);
                 showError('Failed to update profile: ' + updateError.message);
             }
         });
@@ -264,7 +263,6 @@ function setupPasswordForm() {
                 passwordForm.reset();
 
             } catch (passwordUpdateError) {
-                console.error('Error updating password:', passwordUpdateError);
                 showError('Failed to update password: ' + passwordUpdateError.message);
             }
         });
@@ -277,23 +275,29 @@ function setupDeleteAccount() {
 
     if (deleteButton) {
         deleteButton.addEventListener('click', function() {
-            showConfirmDialog('Are you sure you want to delete your account? This action cannot be undone.', () => {
-                showConfirmDialog('This will permanently delete all your data. Are you absolutely sure?', async () => {
-                    try {
+            showConfirmDialog(
+                'Delete Account',
+                'Are you sure you want to delete your account? This action cannot be undone.',
+                () => {
+                    showConfirmDialog(
+                        'Final Confirmation',
+                        'This will permanently delete all your data. Are you absolutely sure?',
+                        async () => {
+                            try {
+                                await makeAuthApiCall('/users/delete', {
+                                    method: 'DELETE'
+                                });
 
-                        await makeAuthApiCall('/users/delete', {
-                            method: 'DELETE'
-                        });
+                                showSuccess('Account deleted successfully');
+                                logout();
 
-                        showSuccess('Account deleted successfully');
-                        logout();
-
-                    } catch (deletionError) {
-                        console.error('Error deleting account:', deletionError);
-                        showError('Failed to delete account: ' + deletionError.message);
-                    }
-                });
-            });
+                            } catch (deletionError) {
+                                showError('Failed to delete account: ' + deletionError.message);
+                            }
+                        }
+                    );
+                }
+            );
         });
     }
 }

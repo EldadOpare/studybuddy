@@ -42,7 +42,7 @@ body {
 
 .logo_text {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: normal;
     color: #1D1D1F;
 }
 
@@ -209,7 +209,7 @@ body {
 }
 
 
-/* Main content */
+
 .main_content {
     flex: 1;
     display: flex;
@@ -291,7 +291,7 @@ body {
 }
 
 
-/* Left Column - Profile Card and Settings Menu */
+
 .left_column {
     display: flex;
     flex-direction: column;
@@ -299,7 +299,7 @@ body {
 }
 
 
-/* Profile Card */
+
 .profile_card {
     background-color: white;
     border-radius: 12px;
@@ -361,7 +361,7 @@ body {
 }
 
 
-/* Settings Menu */
+
 .settings_menu {
     background-color: white;
     border-radius: 12px;
@@ -402,7 +402,7 @@ body {
 }
 
 
-/* Right Column - Settings Content */
+
 .right_column {
     display: flex;
     flex-direction: column;
@@ -410,7 +410,7 @@ body {
 }
 
 
-/* Settings Section */
+
 .settings_section {
     background-color: white;
     border-radius: 12px;
@@ -431,7 +431,7 @@ body {
 }
 
 
-/* Settings Form */
+
 .settings_form {
     display: flex;
     flex-direction: column;
@@ -528,7 +528,7 @@ body {
 }
 
 
-/* Delete Account Section */
+
 .delete_section {
     border: 1px solid #FEE2E2;
 }
@@ -554,7 +554,7 @@ body {
 }
 
 
-/* Responsive */
+
 @media (max-width: 1200px) {
     .content_grid {
         grid-template-columns: 1fr;
@@ -683,12 +683,12 @@ body {
     background-color: #018790;
 }
 
-/* Smaller modal for simple forms */
+
 .modal_small {
     max-width: 450px;
 }
 
-/* Color Picker */
+
 .color_picker {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -735,7 +735,7 @@ body {
 }
 
 
-/* Small add folder button styling */
+
 .add_folder_button_small {
     background: none;
     border: none;
