@@ -1,30 +1,25 @@
-function showToast(messageText, messageType = 'info') {
+
+
+// I built a custom toast notification system to show success and error messages to users
+
+function showToast(messageText) {
+    // I removed any existing toast first to avoid stacking notifications
     const existingToastElement = document.querySelector('.custom_toast');
     if (existingToastElement) {
         existingToastElement.remove();
     }
 
-
     const toastElement = document.createElement('div');
-    toastElement.className = `custom_toast custom_toast_${messageType}`;
-
-    const toastColors = {
-        success: '#22c55e',
-        error: '#ef4444',
-        warning: '#f59e0b',
-        info: '#3b82f6'
-    };
-
-    const selectedBackgroundColor = toastColors[messageType] || toastColors.info;
+    toastElement.className = 'custom_toast';
 
     toastElement.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        background: ${selectedBackgroundColor};
+        background: #018790;
         color: white;
         padding: 14px 20px;
-        border-radius: 6px;
+        border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         z-index: 10000;
         font-size: 14px;
@@ -66,7 +61,6 @@ function showToast(messageText, messageType = 'info') {
 
     document.body.appendChild(toastElement);
 
-
     setTimeout(() => {
         toastElement.style.animation = 'slideOut 0.2s ease';
         setTimeout(() => toastElement.remove(), 200);
@@ -76,19 +70,19 @@ function showToast(messageText, messageType = 'info') {
 
 
 function showSuccess(messageText) {
-    showToast(messageText, 'success');
+    showToast(messageText);
 }
 
 function showError(messageText) {
-    showToast(messageText, 'error');
+    showToast(messageText);
 }
 
 function showWarning(messageText) {
-    showToast(messageText, 'warning');
+    showToast(messageText);
 }
 
 function showInfo(messageText) {
-    showToast(messageText, 'info');
+    showToast(messageText);
 }
 
 
