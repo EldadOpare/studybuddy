@@ -157,15 +157,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             const folderSelectValue = folderSelect?.value;
 
             const selectedFolderId = folderSelectValue && folderSelectValue !== '' ? folderSelectValue : null;
-            const selectedColor = document.getElementById('colorSelect')?.value || 'blue';
-            const tagsInput = document.getElementById('tagsInput')?.value || '';
 
             const finalNoteData = {
                 title: finalTitle,
                 content: finalContent,
                 folderId: selectedFolderId,
-                color: selectedColor,
-                tags: tagsInput,
                 status: 'published'
             };
 
@@ -299,27 +295,21 @@ async function loadExistingNote(noteId) {
     try {
         const noteData = await getNoteById(noteId);
 
-        document.getElementById('noteTitleInput').value = noteData.title || '';
-        document.getElementById('noteEditor').innerHTML = noteData.content || '';
+        const titleInput = document.getElementById('noteTitleInput');
+        const editorDiv = document.getElementById('noteEditor');
+
+        if (titleInput) {
+            titleInput.value = noteData.title || '';
+        }
+
+        if (editorDiv) {
+            editorDiv.innerHTML = noteData.content || '';
+        }
 
         if (noteData.folderId) {
             const folderSelect = document.getElementById('folderSelect');
             if (folderSelect) {
                 folderSelect.value = noteData.folderId;
-            }
-        }
-
-        if (noteData.color) {
-            const colorSelect = document.getElementById('colorSelect');
-            if (colorSelect) {
-                colorSelect.value = noteData.color;
-            }
-        }
-
-        if (noteData.tags) {
-            const tagsInput = document.getElementById('tagsInput');
-            if (tagsInput) {
-                tagsInput.value = noteData.tags;
             }
         }
 

@@ -51,6 +51,7 @@
             </nav>
 
             <div class="folders_section">
+           
                 <div class="folders_header">
                     <span class="folders_title">FOLDERS</span>
                     <button class="add_folder_button_small" onclick="openFolderModal()">+</button>
@@ -142,12 +143,16 @@
     </div>
 
 
-    <!-- Create Folder Modal -->
+ 
     <div class="modal_overlay" id="createFolderModal" style="display: none;">
+       
         <div class="modal_container modal_small">
+       
             <div class="modal_header">
+       
                 <h2 class="modal_title">Create New Folder</h2>
                 <button class="modal_close_button" id="closeFolderModalButton">&times;</button>
+       
             </div>
 
             <div class="modal_body">
@@ -163,76 +168,148 @@
                     </div>
 
                     <div class="form_group">
+                       
                         <label class="form_label">Choose Color</label>
+                       
+                       
                         <div class="color_picker">
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="yellow" class="color_input">
                                 <span class="color_circle" style="background-color: #FFD63A;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="orange" class="color_input" checked>
                                 <span class="color_circle" style="background-color: #FFA955;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="red" class="color_input">
                                 <span class="color_circle" style="background-color: #F75A5A;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="navy" class="color_input">
                                 <span class="color_circle" style="background-color: #0D1164;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="purple_dark" class="color_input">
                                 <span class="color_circle" style="background-color: #640D5F;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="pink" class="color_input">
                                 <span class="color_circle" style="background-color: #EA2264;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="peach" class="color_input">
                                 <span class="color_circle" style="background-color: #F78D60;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="pink_light" class="color_input">
                                 <span class="color_circle" style="background-color: #F29AAE;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="lavender" class="color_input">
                                 <span class="color_circle" style="background-color: #C47BE4;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="purple" class="color_input">
                                 <span class="color_circle" style="background-color: #7132CA;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="indigo" class="color_input">
                                 <span class="color_circle" style="background-color: #301CA0;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="blue" class="color_input">
                                 <span class="color_circle" style="background-color: #4A90E2;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="teal" class="color_input">
                                 <span class="color_circle" style="background-color: #00B7B5;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="green" class="color_input">
                                 <span class="color_circle" style="background-color: #50C878;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="mint" class="color_input">
                                 <span class="color_circle" style="background-color: #98D8C8;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="slate" class="color_input">
                                 <span class="color_circle" style="background-color: #64748B;"></span>
+                       
                             </label>
+                       
+                       
                             <label class="color_option">
+                       
                                 <input type="radio" name="folderColor" value="brown" class="color_input">
                                 <span class="color_circle" style="background-color: #A0522D;"></span>
+                       
                             </label>
+                       
+                       
                         </div>
                     </div>
 
@@ -251,12 +328,16 @@
     </div>
 
 
-    <!-- Add Activity Modal -->
+   
     <div class="modal_overlay" id="addActivityModal" style="display: none;">
+   
         <div class="modal_container">
+   
             <div class="modal_header">
+   
                 <h2 class="modal_title">Add Activity</h2>
                 <button class="modal_close_button" id="closeActivityModalButton">&times;</button>
+   
             </div>
 
             <div class="modal_body">
@@ -308,14 +389,21 @@
                     </div>
 
                     <div class="form_group">
+                  
                         <label class="checkbox_label">
+                
                             <input type="checkbox" id="repeatWeekly" class="checkbox_input">
                             <span class="checkbox_text">Repeat weekly</span>
+                
                         </label>
+                
                     </div>
 
+
                     <div class="form_group" id="repeatUntilGroup" style="display: none;">
+          
                         <label class="form_label">Repeat Until</label>
+          
                         <input type="date"
                                class="form_input"
                                id="repeatUntilDate">
@@ -323,63 +411,91 @@
                     </div>
 
                 </form>
+          
             </div>
 
             <div class="modal_footer">
+            
                 <button type="button" class="cancel_modal_button" id="cancelActivityModalButton">
                     Cancel
                 </button>
+            
                 <button type="submit" form="addActivityForm" class="submit_modal_button" id="submitActivityButton">
                     Add Activity
                 </button>
+  
             </div>
+  
         </div>
+  
     </div>
 
 
-    <!-- Event Details Modal -->
+
     <div class="modal_overlay" id="eventDetailsModal" style="display: none;">
+
         <div class="modal_container modal_small">
+
             <div class="modal_header">
+
                 <h2 class="modal_title" id="eventDetailsTitle">Event Details</h2>
                 <button class="modal_close_button" id="closeEventDetailsButton">&times;</button>
+
             </div>
 
             <div class="modal_body">
+            
                 <div class="event_details_content">
+            
                     <div class="detail_row">
                         <span class="detail_label">Date:</span>
                         <span class="detail_value" id="eventDate"></span>
                     </div>
+            
+            
                     <div class="detail_row">
                         <span class="detail_label">Time:</span>
                         <span class="detail_value" id="eventTime"></span>
                     </div>
+            
+            
                     <div class="detail_row" id="recurringDetail" style="display: none;">
+            
                         <span class="detail_label">Recurring:</span>
                         <span class="detail_value" id="eventRecurring"></span>
+            
                     </div>
+            
                 </div>
+            
             </div>
 
             <div class="modal_footer">
+               
                 <button type="button" class="modal_button secondary_button" id="editEventButton">
                     Edit
                 </button>
                 <button type="button" class="modal_button danger_button" id="deleteEventButton">
                     Delete
                 </button>
+           
             </div>
+        
         </div>
+    
     </div>
 
 
-    <!-- Edit Activity Modal -->
+ 
     <div class="modal_overlay" id="editActivityModal" style="display: none;">
+ 
         <div class="modal_container">
+ 
             <div class="modal_header">
+ 
                 <h2 class="modal_title">Edit Activity</h2>
                 <button class="modal_close_button" id="closeEditModalButton">&times;</button>
+ 
             </div>
 
             <div class="modal_body">
@@ -396,17 +512,23 @@
                     </div>
 
                     <div class="form_group">
+                    
                         <label class="form_label">Color</label>
+                    
                         <select class="form_select" id="editActivityColor" required>
                             <option value="blue">Blue</option>
                             <option value="orange">Orange</option>
                             <option value="pink">Pink</option>
                             <option value="green">Green</option>
                         </select>
+                    
                     </div>
 
+
                     <div class="form_row">
+
                         <div class="form_group">
+
                             <label class="form_label">Date</label>
                             <input type="date"
                                    class="form_input"
@@ -414,22 +536,29 @@
                                    required>
                         </div>
 
+
                         <div class="form_group">
+                        
                             <label class="form_label">Start Time</label>
                             <input type="time"
                                    class="form_input"
                                    id="editActivityStartTime"
                                    required>
-                        </div>
+                        
+                                </div>
+
 
                         <div class="form_group">
+                        
                             <label class="form_label">End Time</label>
+                        
                             <input type="time"
                                    class="form_input"
                                    id="editActivityEndTime"
                                    required>
                         </div>
                     </div>
+
 
                     <div class="form_group">
                         <label class="checkbox_label">
@@ -438,24 +567,31 @@
                         </label>
                     </div>
 
+
                     <div class="form_group" id="editRepeatUntilGroup" style="display: none;">
+                        
                         <label class="form_label">Repeat Until</label>
+                        
                         <input type="date"
                                class="form_input"
                                id="editRepeatUntilDate">
                         <span class="form_hint">Leave empty to repeat indefinitely</span>
+                   
                     </div>
 
                 </form>
             </div>
 
             <div class="modal_footer">
+             
                 <button type="button" class="cancel_modal_button" id="cancelEditModalButton">
                     Cancel
                 </button>
+             
                 <button type="submit" form="editActivityForm" class="submit_modal_button" id="submitEditButton">
                     Save Changes
                 </button>
+           
             </div>
         </div>
     </div>

@@ -350,11 +350,15 @@
     </div>
 
 
-    <!-- Create Quiz from PDF Modal -->
+
     <div class="modal_overlay" id="pdfQuizModal" style="display: none;">
+
         <div class="modal_container">
+
             <div class="modal_header">
+                
                 <h2 class="modal_title">Generate Quiz from PDF</h2>
+
                 <button class="modal_close_button" id="closePdfModalButton">&times;</button>
             </div>
 
@@ -382,16 +386,19 @@
                         </div>
                     </div>
 
-                    <!-- Cloudinary Materials List -->
+                  
                     <div class="form_group" id="cloudinarySection">
+                       
                         <label class="form_label">Select from Your Notes</label>
+                       
                         <select class="form_input" id="cloudinaryPdfSelect" required>
+                       
                             <option value="">Choose a note...</option>
-                            <!-- Notes will be loaded from database by JavaScript -->
+                            
                         </select>
                     </div>
 
-                    <!-- Upload New PDF Section -->
+                   
                     <div class="form_group" id="uploadSection" style="display: none;">
                         <label class="form_label">Upload PDF Document</label>
                         <div class="file_upload_area" id="fileUploadArea">
@@ -411,24 +418,38 @@
                     </div>
 
                     <div class="form_row">
+                        
                         <div class="form_group">
+                        
                             <label class="form_label">Number of Questions</label>
+                        
                             <select class="form_input" id="pdfQuizCount" required>
+                        
                                 <option value="5">5 Questions</option>
                                 <option value="10" selected>10 Questions</option>
                                 <option value="15">15 Questions</option>
                                 <option value="20">20 Questions</option>
+                        
                             </select>
+                        
                         </div>
 
                         <div class="form_group">
+                        
                             <label class="form_label">Difficulty</label>
+                        
                             <select class="form_input" id="pdfQuizDifficulty" required>
+                        
                                 <option value="easy">Easy</option>
+                        
                                 <option value="medium" selected>Medium</option>
+                        
                                 <option value="hard">Hard</option>
+                        
                             </select>
+                        
                         </div>
+                    
                     </div>
 
                 </form>
@@ -446,7 +467,7 @@
     </div>
 
 
-    <!-- Create Folder Modal -->
+
     <div class="modal_overlay" id="createFolderModal" style="display: none;">
         <div class="modal_container modal_small">
             <div class="modal_header">

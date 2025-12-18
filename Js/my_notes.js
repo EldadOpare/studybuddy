@@ -1,4 +1,3 @@
-
 if (!requireAuth()) {
 }
 
@@ -63,21 +62,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (createNoteButton && folderId) {
         createNoteButton.href = `note_editor.html?folder=${folderId}`;
     }
-
-
-    const materialRows = document.querySelectorAll('.material_row');
-
-    materialRows.forEach(function (row) {
-        row.addEventListener('click', function (e) {
-            
-            if (e.target.classList.contains('more_button')) {
-                return;
-            }
-
-
-            window.location.href = 'note_editor.html';
-        });
-    });
 
 
     const moreButtons = document.querySelectorAll('.more_button');
@@ -290,16 +274,32 @@ async function loadNotesFromDatabase(folderId) {
                     <span class="date_text">${formattedDate || 'Recently'}</span>
                 </div>
                 <div class="material_actions_section">
-                    <button class="material_action_btn edit_btn" onclick="editNote(${note.id})">Edit</button>
-                    <button class="material_action_btn delete_btn" onclick="deleteNoteById(${note.id})">Delete</button>
+                    <button class="material_action_btn edit_btn">Edit</button>
+                    <button class="material_action_btn delete_btn">Delete</button>
                 </div>
             `;
 
 
-            noteRow.addEventListener('click', function (e) {
-                if (!e.target.classList.contains('material_action_btn')) {
-                    window.location.href = '/pages/note_editor.html?id=' + note.id;
+  
+            noteRow.addEventListener('click', function(e) {
+                if (e.target.classList.contains('edit_btn') || e.target.classList.contains('delete_btn')) {
+                    return;
                 }
+                window.location.href = '/pages/note_editor.html?id=' + note.id;
+            });
+
+            const deleteBtn = noteRow.querySelector('.delete_btn');
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                deleteNoteById(note.id);
+            });
+
+            const editBtn = noteRow.querySelector('.edit_btn');
+            editBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                window.location.href = '/pages/note_editor.html?id=' + note.id;
             });
 
             tableBody.appendChild(noteRow);
